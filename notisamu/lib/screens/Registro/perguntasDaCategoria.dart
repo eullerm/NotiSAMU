@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Registro/infoExtra.dart';
+import 'package:noti_samu/screens/Registro/perguntasDaCategoria2.dart';
 
 class Perguntas extends StatefulWidget {
   @override
@@ -29,7 +29,7 @@ class _PerguntasState extends State<Perguntas> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Perguntas sobre o incidente"),
+        title: Text("Erro de Prescrição"),
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
@@ -44,7 +44,7 @@ class _PerguntasState extends State<Perguntas> {
           SizedBox(
             height: 20,
           ),
-          _texto('Exemplo de como ficará uma pergunta.'),
+          _texto('A dosagem recomendada pelo médico foi correta?'),
           SizedBox(
             height: 50,
           ),
@@ -68,9 +68,8 @@ class _PerguntasState extends State<Perguntas> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _radioButton('Exemplo de escolha'),
-        _radioButton('Outro exemplo de escolha'),
-        _radioButton('E um terceiro exemplo de escolha'),
+        _radioButton('Sim'),
+        _radioButton('Não'),
       ],
     );
   }
@@ -90,7 +89,7 @@ class _PerguntasState extends State<Perguntas> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => InfoExtra()));
+            .push(MaterialPageRoute(builder: (context) => Perguntas2()));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

@@ -8,10 +8,10 @@ class Categoria extends StatefulWidget {
 
 class _CategoriaState extends State<Categoria> {
   Map<String, bool> _categorias = {
-    'X': false,
-    'Y': false,
-    'Z': false,
-    'S': false,
+    'Erro de Prescrição': false,
+    'Erro de Dispensação': false,
+    'Erro de Preparo': false,
+    'Erro de Administração': false,
   };
 
   @override

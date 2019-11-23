@@ -175,15 +175,24 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         ),
         GestureDetector(
           onTap: () => print("!"),
-          child: Text(
-            "Xxxxxxx \n Yyyyyyy",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
+          child: Column(
+            children: <Widget>[
+              _text("Erro de Prescrição"),
+              _text("Erro de Administração"),
+            ],
           ),
         ),
       ],
+    );
+  }
+
+  _text(string) {
+    return Text(
+      string,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 20,
+      ),
     );
   }
 }
