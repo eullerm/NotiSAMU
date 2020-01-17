@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Registro/registroDadosObrigatorio.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class Paciente extends StatefulWidget {
+  Notificacao notificacao;
+  Paciente(this.notificacao);
   @override
   _PacienteState createState() => _PacienteState();
 }
 
 class _PacienteState extends State<Paciente> {
+  
   String _radioValue;
-
+  final paciente = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -60,6 +64,7 @@ class _PacienteState extends State<Paciente> {
 
   _nomeDoPaciente() {
     return TextFormField(
+      controller: paciente,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -82,12 +87,12 @@ class _PacienteState extends State<Paciente> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: Colors.red, //color of the main banner
+            primaryColor: Colors.red, 
             accentColor:
-                Colors.red, //color of circle indicating the selected date
+                Colors.red, 
             buttonTheme: ButtonThemeData(
                 textTheme: ButtonTextTheme
-                    .accent //color of the text in the button "OK/CANCEL"
+                    .accent 
                 ),
           ),
           child: child,
@@ -153,21 +158,23 @@ class _PacienteState extends State<Paciente> {
   }
 
   _radioButton(String string) {
-    return ListTile(
+    return RadioListTile(
       title: Text(string),
-      leading: Radio(
-        value: string,
-        groupValue: _radioValue,
-        onChanged: radioButtonChanges,
-      ),
+      value: string,
+      groupValue: _radioValue,
+      onChanged: radioButtonChanges,
     );
   }
 
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
+        if(paciente.text.isEmpty) this.widget.notificacao.paciente = "Não informado";
+        else this.widget.notificacao.paciente = paciente.text;
+        this.widget.notificacao.nascimento = selectedDate;
+        this.widget.notificacao.sexo = _radioValue;
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Ocorrencia()));
+            .push(MaterialPageRoute(builder: (context) => Ocorrencia(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

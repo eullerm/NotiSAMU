@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/VisualizacaoDeDados/dadosObrigatorios.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class DadosOpcionais extends StatefulWidget {
+  
+  Notificacao notificacao;
+  DadosOpcionais(this.notificacao);
+
   @override
   _DadosOpcionaisState createState() => _DadosOpcionaisState();
 }
@@ -54,7 +59,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosObrigatorios()));
+            .push(MaterialPageRoute(builder: (context) => DadosObrigatorios(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -76,7 +81,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "Texto de exemplo",
+            this.widget.notificacao.notificante ?? "Não informado.", 
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -101,7 +106,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "Texto de exemplo",
+            this.widget.notificacao.profissao ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -126,7 +131,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "Texto de exemplo",
+            this.widget.notificacao.paciente ?? "Não informado.",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -151,7 +156,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}",
+            "${this.widget.notificacao.nascimento.day.toString()}/${this.widget.notificacao.nascimento.month.toString()}/${this.widget.notificacao.nascimento.year.toString()}",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -176,7 +181,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "T",
+            this.widget.notificacao.sexo,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,

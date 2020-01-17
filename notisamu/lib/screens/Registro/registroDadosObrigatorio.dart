@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Registro/categoriaIncidente.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class Ocorrencia extends StatefulWidget {
+  Notificacao notificacao;
+  Ocorrencia(this.notificacao);
+
   @override
   _OcorrenciaState createState() => _OcorrenciaState();
 }
 
 class _OcorrenciaState extends State<Ocorrencia> {
-  
+  final numeroDaOcorrencia = TextEditingController();
+  final localDaOcorrencia = TextEditingController();
+
   DateTime selectedDate = DateTime.now();
   String _radioValue;
 
@@ -42,15 +48,22 @@ class _OcorrenciaState extends State<Ocorrencia> {
     return ListView(
       padding: EdgeInsets.all(16),
       children: <Widget>[
-        SizedBox(height: 20,),
+        SizedBox(
+          height: 20,
+        ),
         _numeroOcorrencia(),
-        SizedBox(height: 40,),
+        SizedBox(
+          height: 40,
+        ),
         _localOcorrencia(),
-        SizedBox(height: 40,),
+        SizedBox(
+          height: 40,
+        ),
         _dataOcorrencia(selectedDate),
-        SizedBox(height: 40,),
+        SizedBox(
+          height: 40,
+        ),
         _periodoOcorrencia(),
-        
       ],
     );
   }
@@ -64,12 +77,12 @@ class _OcorrenciaState extends State<Ocorrencia> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: Colors.red, //color of the main banner
+            primaryColor: Colors.red, 
             accentColor:
-                Colors.red, //color of circle indicating the selected date
+                Colors.red, 
             buttonTheme: ButtonThemeData(
                 textTheme: ButtonTextTheme
-                    .accent //color of the text in the button "OK/CANCEL"
+                    .accent 
                 ),
           ),
           child: child,
@@ -136,6 +149,7 @@ class _OcorrenciaState extends State<Ocorrencia> {
 
   _localOcorrencia() {
     return TextFormField(
+      controller: localDaOcorrencia,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -151,6 +165,7 @@ class _OcorrenciaState extends State<Ocorrencia> {
 
   _numeroOcorrencia() {
     return TextFormField(
+      controller: numeroDaOcorrencia,
       keyboardType: TextInputType.number,
       style: TextStyle(
         color: Colors.black,
@@ -179,8 +194,12 @@ class _OcorrenciaState extends State<Ocorrencia> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
+        this.widget.notificacao.numeroDaOcorrencia = numeroDaOcorrencia.text;
+        this.widget.notificacao.local = localDaOcorrencia.text;
+        this.widget.notificacao.dataDaOcorrencia = selectedDate;
+        this.widget.notificacao.periodo = _radioValue;
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Categoria()));
+            .push(MaterialPageRoute(builder: (context) => Categoria(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

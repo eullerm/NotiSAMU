@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/VisualizacaoDeDados/dadosEspecificos.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class DadosObrigatorios extends StatefulWidget {
+  
+  Notificacao notificacao;
+  DadosObrigatorios(this.notificacao);
+  
   @override
   _DadosObrigatoriosState createState() => _DadosObrigatoriosState();
 }
@@ -54,7 +59,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosEspecificos()));
+            .push(MaterialPageRoute(builder: (context) => DadosEspecificos(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -76,7 +81,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "65123",
+            this.widget.notificacao.numeroDaOcorrencia,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -101,7 +106,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "Texto de exemplo",
+            this.widget.notificacao.local,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -126,7 +131,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "${DateTime.now().day.toString()}/${DateTime.now().month.toString()}/${DateTime.now().year.toString()}",
+            """${this.widget.notificacao.dataDaOcorrencia.day.toString()}/${this.widget.notificacao.dataDaOcorrencia.month.toString()}/${this.widget.notificacao.dataDaOcorrencia.year.toString()}""",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -151,7 +156,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "Noite",
+            this.widget.notificacao.periodo ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -175,11 +180,8 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         ),
         GestureDetector(
           onTap: () => print("!"),
-          child: Column(
-            children: <Widget>[
-              _text("Erro de Prescrição"),
-              _text("Erro de Administração"),
-            ],
+          child: Column( 
+            children: this.widget.notificacao.incidente.map<Widget>((data) => _text(data)).toList(),
           ),
         ),
       ],

@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Envio/sucesso.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class VisualizaInfoExtra extends StatefulWidget {
+
+  Notificacao notificacao;
+  VisualizaInfoExtra(this.notificacao);
+
   @override
   _VisualizaInfoExtraState createState() => _VisualizaInfoExtraState();
 }
@@ -28,7 +33,7 @@ class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
             SizedBox(
               height: 20,
             ),
-            _texto("Aqui pode conter um texto de até 300 caracteres..."),
+            _texto(widget.notificacao.infoExtra),
           ],
         ),
       ),

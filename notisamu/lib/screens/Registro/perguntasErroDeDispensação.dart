@@ -90,8 +90,7 @@ class _PerguntasState extends State<Perguntas2> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => InfoExtra()));
+        
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

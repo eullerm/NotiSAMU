@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/VisualizacaoDeDados/dadoInfoExtra.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class DadosEspecificos extends StatefulWidget {
+  Notificacao notificacao;
+  DadosEspecificos(this.notificacao);
   @override
   _DadosEspecificosState createState() => _DadosEspecificosState();
 }
@@ -74,7 +77,7 @@ class _DadosEspecificosState extends State<DadosEspecificos> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => VisualizaInfoExtra()));
+            .push(MaterialPageRoute(builder: (context) => VisualizaInfoExtra(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

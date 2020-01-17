@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Registro/registroPacienteOpcional.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class Relator extends StatefulWidget {
   @override
@@ -7,7 +8,9 @@ class Relator extends StatefulWidget {
 }
 
 class _RelatorState extends State<Relator> {
+  Notificacao notificacao = Notificacao();
   String _radioValue;
+  final notificante = TextEditingController();
 
   @override
   void initState() {
@@ -20,7 +23,7 @@ class _RelatorState extends State<Relator> {
   void radioButtonChanges(String value) {
     setState(() {
       _radioValue = value;
-      debugPrint(_radioValue); //Debug the choice in console
+      debugPrint(_radioValue);
     });
   }
 
@@ -54,6 +57,7 @@ class _RelatorState extends State<Relator> {
 
   _nomeDoNotificante() {
     return TextFormField(
+      controller: notificante,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -81,27 +85,30 @@ class _RelatorState extends State<Relator> {
         _radioButton('Enfermagem'),
         _radioButton('Técnico de enfermagem'),
         _radioButton('Médico'),
-        _radioButton('Prefiro não mencionar'),
+        _radioButton('Não informar'),
       ],
     );
   }
 
   _radioButton(String string) {
-    return ListTile(
+    return RadioListTile(
       title: Text(string),
-      leading: Radio(
-        value: string,
-        groupValue: _radioValue,
-        onChanged: radioButtonChanges,
-      ),
+      value: string,
+      groupValue: _radioValue,
+      onChanged: radioButtonChanges,
     );
   }
 
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Paciente()));
+        if (notificante.text.isEmpty) this.notificacao.notificante = "Nao informado";
+
+        else
+          this.notificacao.notificante = notificante.text;
+        this.notificacao.profissao = _radioValue;
+        Navigator.of(context).push(
+            MaterialPageRoute(builder: (context) => Paciente(notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -109,18 +116,3 @@ class _RelatorState extends State<Relator> {
     );
   }
 }
-
-//_horario() {
-//  return TextFormField(
-//    style: TextStyle(
-//      color: Colors.black,
-//      fontSize: 18,
-//    ),
-//    decoration: InputDecoration(
-//      border: OutlineInputBorder(
-//        borderRadius: BorderRadius.circular(32),
-//      ),
-//      hintText: "Nome do notificante(opcional).",
-//    ),
-//  );
-//}

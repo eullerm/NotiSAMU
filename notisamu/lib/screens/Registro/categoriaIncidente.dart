@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Registro/perguntasDaCategoria.dart';
+import 'package:noti_samu/screens/Registro/perguntasErroDePrescri%C3%A7%C3%A3o.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class Categoria extends StatefulWidget {
+  Notificacao notificacao;
+  Categoria(this.notificacao);
   @override
   _CategoriaState createState() => _CategoriaState();
 }
 
 class _CategoriaState extends State<Categoria> {
+
   Map<String, bool> _categorias = {
     'Erro de Prescrição': false,
     'Erro de Dispensação': false,
@@ -72,8 +76,12 @@ class _CategoriaState extends State<Categoria> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
+        _categorias.forEach((k, v) {
+           if(v == true) this.widget.notificacao.incidente.add(k);
+           });
+        print(widget.notificacao.notificante);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Perguntas()));
+            .push(MaterialPageRoute(builder: (context) => Perguntas(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

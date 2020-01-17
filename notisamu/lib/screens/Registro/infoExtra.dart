@@ -1,12 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/VisualizacaoDeDados/dadosOpcionais.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class InfoExtra extends StatefulWidget {
+  Notificacao notificacao;
+  InfoExtra(this.notificacao);
+  
   @override
   _InfoExtraState createState() => _InfoExtraState();
 }
 
 class _InfoExtraState extends State<InfoExtra> {
+
+  final informacao = TextEditingController();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,6 +54,7 @@ class _InfoExtraState extends State<InfoExtra> {
 
   _info() {
     return TextFormField(
+      controller: informacao,
       maxLength: 300,
       maxLines: null,
       minLines: null,
@@ -65,8 +73,10 @@ class _InfoExtraState extends State<InfoExtra> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
+        if(informacao.text.isEmpty) this.widget.notificacao.infoExtra = "Nada informado.";
+        else this.widget.notificacao.infoExtra = informacao.text;
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosOpcionais()));
+            .push(MaterialPageRoute(builder: (context) => DadosOpcionais(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

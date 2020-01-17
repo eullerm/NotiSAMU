@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Registro/perguntasDaCategoria2.dart';
+import 'package:noti_samu/screens/Registro/infoExtra.dart';
+import 'package:noti_samu/screens/notificacao.dart';
 
 class Perguntas extends StatefulWidget {
+  Notificacao notificacao;
+  Perguntas(this.notificacao);
   @override
   _PerguntasState createState() => _PerguntasState();
 }
@@ -75,13 +78,11 @@ class _PerguntasState extends State<Perguntas> {
   }
 
   _radioButton(String string) {
-    return ListTile(
+    return RadioListTile(
       title: Text(string),
-      leading: Radio(
-        value: string,
-        groupValue: _radioValue,
-        onChanged: radioButtonChanges,
-      ),
+      value: string,
+      groupValue: _radioValue,
+      onChanged: radioButtonChanges,
     );
   }
 
@@ -89,7 +90,7 @@ class _PerguntasState extends State<Perguntas> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Perguntas2()));
+            .push(MaterialPageRoute(builder: (context) => InfoExtra(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
