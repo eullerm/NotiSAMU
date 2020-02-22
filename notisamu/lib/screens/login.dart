@@ -81,7 +81,7 @@ class _LoginState extends State<Login> {
         ),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Aviso()));
+              .pushReplacement(MaterialPageRoute(builder: (context) => Aviso()));
         },
       ),
     );

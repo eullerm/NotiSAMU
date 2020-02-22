@@ -13,5 +13,6 @@ class Notificacao extends Model {
   String periodo;
   List<String> incidente = List();
   String infoExtra;
+  final Map<String, String> respostas = {};
 
 }

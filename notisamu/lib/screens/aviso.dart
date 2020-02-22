@@ -56,7 +56,7 @@ class _AvisoState extends State<Aviso> {
         ),
         onPressed: () {
           Navigator.of(context)
-              .push(MaterialPageRoute(builder: (context) => Relator()));
+              .pushReplacement(MaterialPageRoute(builder: (context) => Relator()));
         },
       ),
     );

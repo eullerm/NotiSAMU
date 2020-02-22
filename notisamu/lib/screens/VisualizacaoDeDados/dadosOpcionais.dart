@@ -181,7 +181,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.sexo,
+            this.widget.notificacao.sexo ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
