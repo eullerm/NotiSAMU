@@ -77,13 +77,9 @@ class _OcorrenciaState extends State<Ocorrencia> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: Colors.red, 
-            accentColor:
-                Colors.red, 
-            buttonTheme: ButtonThemeData(
-                textTheme: ButtonTextTheme
-                    .accent 
-                ),
+            primaryColor: Colors.red,
+            accentColor: Colors.red,
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
           ),
           child: child,
         );
@@ -181,13 +177,11 @@ class _OcorrenciaState extends State<Ocorrencia> {
   }
 
   _radioButton(String string) {
-    return ListTile(
+    return RadioListTile(
       title: Text(string),
-      leading: Radio(
-        value: string,
-        groupValue: _radioValue,
-        onChanged: radioButtonChanges,
-      ),
+      value: string,
+      groupValue: _radioValue,
+      onChanged: radioButtonChanges,
     );
   }
 
@@ -198,8 +192,8 @@ class _OcorrenciaState extends State<Ocorrencia> {
         this.widget.notificacao.local = localDaOcorrencia.text;
         this.widget.notificacao.dataDaOcorrencia = selectedDate;
         this.widget.notificacao.periodo = _radioValue;
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Categoria(widget.notificacao)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Categoria(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

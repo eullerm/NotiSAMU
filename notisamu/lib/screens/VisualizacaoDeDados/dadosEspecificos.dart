@@ -45,7 +45,7 @@ class _DadosEspecificosState extends State<DadosEspecificos> {
     return GestureDetector(
       onTap: () => print(_categorias.keys.toList()),
       child: Column(
-        children: _categorias.keys
+        children: widget.notificacao.respostas.keys
             .map(
               (String key) => Column(
                 children: <Widget>[
@@ -57,7 +57,7 @@ class _DadosEspecificosState extends State<DadosEspecificos> {
                     ),
                   ),
                   Text(
-                    _categorias[key],
+                    widget.notificacao.respostas[key],
                     style: TextStyle(
                       fontSize: 20,
                     ),
