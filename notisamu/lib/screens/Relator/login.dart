@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/aviso.dart';
+import 'package:noti_samu/screens/Relator/aviso.dart';
+import 'package:noti_samu/screens/Admin/notificacoes.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -7,6 +8,15 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+
+  final email = TextEditingController();
+
+   @override
+  void dispose() {
+    email.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -39,6 +49,7 @@ class _LoginState extends State<Login> {
 
   _usuario() {
     return TextFormField(
+      controller: email,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -80,8 +91,13 @@ class _LoginState extends State<Login> {
           ),
         ),
         onPressed: () {
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (context) => Aviso()));
+          print(email.text);
+          if(email.text.compareTo("notificante") == 0)
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (context) => Aviso()));
+          else if(email.text.compareTo("admin") == 0)
+            Navigator.of(context)
+                .pushReplacement(MaterialPageRoute(builder: (context) => Notificacoes()));
         },
       ),
     );

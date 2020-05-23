@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Registro/registroRelatorOpcional.dart';
+import 'package:noti_samu/screens/Relator/Registro/registroRelatorOpcional.dart';
 
 class Sucesso extends StatefulWidget {
   @override

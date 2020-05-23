@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/VisualizacaoDeDados/dadoInfoExtra.dart';
-import 'package:noti_samu/screens/notificacao.dart';
+import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadoInfoExtra.dart';
+import 'package:noti_samu/screens/Relator/notificacao.dart';
 
 class DadosEspecificos extends StatefulWidget {
   Notificacao notificacao;

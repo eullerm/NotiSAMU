@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/VisualizacaoDeDados/dadosObrigatorios.dart';
-import 'package:noti_samu/screens/notificacao.dart';
+import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosEspecificos.dart';
+import 'package:noti_samu/screens/Relator/notificacao.dart';
 
-class DadosOpcionais extends StatefulWidget {
+class DadosObrigatorios extends StatefulWidget {
   
   Notificacao notificacao;
-  DadosOpcionais(this.notificacao);
-
+  DadosObrigatorios(this.notificacao);
+  
   @override
-  _DadosOpcionaisState createState() => _DadosOpcionaisState();
+  _DadosObrigatoriosState createState() => _DadosObrigatoriosState();
 }
 
-class _DadosOpcionaisState extends State<DadosOpcionais> {
+class _DadosObrigatoriosState extends State<DadosObrigatorios> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,23 +31,23 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         child: Center(
           child: Column(
             children: <Widget>[
-              _nomeDoNotificante(),
+              _numeroDaOcorrencia(),
               SizedBox(
                 height: 20,
               ),
-              _profissao(),
+              _localDaOcorrencia(),
               SizedBox(
                 height: 20,
               ),
-              _nomeDoPaciente(),
+              _dataDaOcorrencia(),
               SizedBox(
                 height: 20,
               ),
-              _dataDeNascimento(),
+              _periodoDaOcorrencia(),
               SizedBox(
                 height: 20,
               ),
-              _sexoDoPaciente(),
+              _categorias(),
             ],
           ),
         ),
@@ -59,7 +59,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosObrigatorios(widget.notificacao)));
+            .push(MaterialPageRoute(builder: (context) => DadosEspecificos(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -67,12 +67,12 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     );
   }
 
-  _nomeDoNotificante() {
+  _numeroDaOcorrencia() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Nome do relator:",
+          "Número da ocorrência:",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -81,7 +81,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.notificante ?? "Não informado.", 
+            this.widget.notificacao.numeroDaOcorrencia,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -92,12 +92,12 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     );
   }
 
-  _profissao() {
+  _localDaOcorrencia() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Profissão:",
+          "Local da ocorrência:",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -106,7 +106,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.profissao ?? "Não informado",
+            this.widget.notificacao.local,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -117,12 +117,12 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     );
   }
 
-  _nomeDoPaciente() {
+  _dataDaOcorrencia() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Nome do Paciente:",
+          "Data da ocorrência:",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -131,7 +131,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.paciente ?? "Não informado.",
+            """${this.widget.notificacao.dataDaOcorrencia.day.toString()}/${this.widget.notificacao.dataDaOcorrencia.month.toString()}/${this.widget.notificacao.dataDaOcorrencia.year.toString()}""",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -142,12 +142,12 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     );
   }
 
-  _dataDeNascimento() {
+  _periodoDaOcorrencia() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Data de nascimento:",
+          "Periodo da ocorrência:",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -156,7 +156,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "${this.widget.notificacao.nascimento.day.toString()}/${this.widget.notificacao.nascimento.month.toString()}/${this.widget.notificacao.nascimento.year.toString()}",
+            this.widget.notificacao.periodo ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -167,12 +167,12 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
     );
   }
 
-  _sexoDoPaciente() {
+  _categorias() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Sexo do Paciente:",
+          "Categorias:",
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
@@ -180,15 +180,21 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         ),
         GestureDetector(
           onTap: () => print("!"),
-          child: Text(
-            this.widget.notificacao.sexo ?? "Não informado",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
+          child: Column( 
+            children: this.widget.notificacao.incidente.map<Widget>((data) => _text(data)).toList(),
           ),
         ),
       ],
+    );
+  }
+
+  _text(string) {
+    return Text(
+      string,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 20,
+      ),
     );
   }
 }

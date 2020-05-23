@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/VisualizacaoDeDados/dadosOpcionais.dart';
-import 'package:noti_samu/screens/notificacao.dart';
+import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosOpcionais.dart';
+import 'package:noti_samu/screens/Relator/notificacao.dart';
 
 class InfoExtra extends StatefulWidget {
   Notificacao notificacao;

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Registro/registroPacienteOpcional.dart';
-import 'package:noti_samu/screens/notificacao.dart';
+import 'package:noti_samu/screens/Relator/Registro/registroPacienteOpcional.dart';
+import 'package:noti_samu/screens/Relator/notificacao.dart';
 
 class Relator extends StatefulWidget {
   @override

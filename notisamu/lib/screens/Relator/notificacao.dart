@@ -1,7 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 
 class Notificacao extends Model {
-
   String notificante;
   String profissao;
   String paciente;
@@ -13,6 +12,20 @@ class Notificacao extends Model {
   String periodo;
   List<String> incidente = List();
   String infoExtra;
-  final Map<String, String> respostas = {};
+  Map<String, String> respostas = {};
 
+  Notificacao({
+    this.notificante,
+    this.profissao,
+    this.paciente,
+    this.nascimento,
+    this.sexo,
+    this.numeroDaOcorrencia,
+    this.local,
+    this.dataDaOcorrencia,
+    this.periodo,
+    this.incidente,
+    this.infoExtra,
+    this.respostas,
+  });
 }
