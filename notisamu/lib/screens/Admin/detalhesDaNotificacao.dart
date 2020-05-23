@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 import 'package:intl/intl.dart';
 
 class DetalhesNotificacao extends StatelessWidget {

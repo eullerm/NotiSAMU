@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/Envio/sucesso.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 
 class VisualizaInfoExtra extends StatefulWidget {
 

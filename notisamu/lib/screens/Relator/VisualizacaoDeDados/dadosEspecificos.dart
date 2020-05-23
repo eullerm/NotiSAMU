@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadoInfoExtra.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 
 class DadosEspecificos extends StatefulWidget {
   Notificacao notificacao;
@@ -45,7 +45,7 @@ class _DadosEspecificosState extends State<DadosEspecificos> {
     return GestureDetector(
       onTap: () => print(_categorias.keys.toList()),
       child: Column(
-        children: widget.notificacao.respostas.keys
+        children: this.widget.notificacao.respostas != null ? this.widget.notificacao.respostas.keys
             .map(
               (String key) => Column(
                 children: <Widget>[
@@ -68,7 +68,7 @@ class _DadosEspecificosState extends State<DadosEspecificos> {
                 ],
               ),
             )
-            .toList(),
+            .toList() : <Widget>[],
       ),
     );
   }

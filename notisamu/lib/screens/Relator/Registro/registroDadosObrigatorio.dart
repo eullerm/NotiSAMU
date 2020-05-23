@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/Registro/categoriaIncidente.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 
 class Ocorrencia extends StatefulWidget {
   Notificacao notificacao;

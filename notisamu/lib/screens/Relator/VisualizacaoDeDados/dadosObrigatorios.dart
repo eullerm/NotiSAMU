@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosEspecificos.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 
 class DadosObrigatorios extends StatefulWidget {
-  
   Notificacao notificacao;
   DadosObrigatorios(this.notificacao);
-  
+
   @override
   _DadosObrigatoriosState createState() => _DadosObrigatoriosState();
 }
@@ -58,8 +57,8 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosEspecificos(widget.notificacao)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => DadosEspecificos(widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -180,8 +179,15 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         ),
         GestureDetector(
           onTap: () => print("!"),
-          child: Column( 
-            children: this.widget.notificacao.incidente.map<Widget>((data) => _text(data)).toList(),
+          child: Column(
+            children: this.widget.notificacao.incidente != null
+                ? this
+                    .widget
+                    .notificacao
+                    .incidente
+                    .map<Widget>((data) => _text(data))
+                    .toList()
+                : <Widget>[],
           ),
         ),
       ],

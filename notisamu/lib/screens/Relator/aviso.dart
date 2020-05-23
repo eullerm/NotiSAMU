@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/Registro/registroRelatorOpcional.dart';
+import 'package:noti_samu/login.dart';
 
 class Aviso extends StatefulWidget {
   @override
@@ -13,27 +14,37 @@ class _AvisoState extends State<Aviso> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Noti SAMU"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Login()));
+          },
+        ),
       ),
       body: _body(context),
     );
   }
 
-  _body(context){
+  _body(context) {
     Size size = MediaQuery.of(context).size;
     return Container(
       padding: EdgeInsets.all(16),
       width: size.width,
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: <Widget> [
+        children: <Widget>[
           _msg(size),
-          _botaoContinuar(size), 
+          _botaoContinuar(size),
         ],
       ),
     );
   }
 
-  _msg(size){
+  _msg(size) {
     return Text(
       ("""A notificação não apresenta caráter punitivo. Ela visa a segurança do paciente e uma melhor qualidade no atendimento ao usuário da unidade de saúde."""),
       textAlign: TextAlign.center,
@@ -43,7 +54,7 @@ class _AvisoState extends State<Aviso> {
     );
   }
 
-  _botaoContinuar(size){
+  _botaoContinuar(size) {
     return ButtonTheme(
       minWidth: size.width,
       child: RaisedButton(
@@ -55,8 +66,8 @@ class _AvisoState extends State<Aviso> {
           ),
         ),
         onPressed: () {
-          Navigator.of(context)
-              .pushReplacement(MaterialPageRoute(builder: (context) => Relator()));
+          Navigator.of(context).pushReplacement(
+              MaterialPageRoute(builder: (context) => Relator()));
         },
       ),
     );

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/Registro/registroPacienteOpcional.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/login.dart';
 
 class Relator extends StatefulWidget {
   @override
@@ -33,6 +34,16 @@ class _RelatorState extends State<Relator> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Registro de dados opcionais"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Login()));
+          },
+        ),
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
@@ -82,7 +93,7 @@ class _RelatorState extends State<Relator> {
             fontSize: 18,
           ),
         ),
-        _radioButton('Enfermagem'),
+        _radioButton('Enfermeiro'),
         _radioButton('Técnico de enfermagem'),
         _radioButton('Médico'),
         _radioButton('Não informar'),
@@ -102,8 +113,8 @@ class _RelatorState extends State<Relator> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if (notificante.text.isEmpty) this.notificacao.notificante = "Nao informado";
-
+        if (notificante.text.isEmpty)
+          this.notificacao.notificante = "Nao informado";
         else
           this.notificacao.notificante = notificante.text;
         this.notificacao.profissao = _radioValue;

@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 import 'package:noti_samu/components/cardIssue.dart';
 import 'package:noti_samu/screens/Admin/detalhesDaNotificacao.dart';
+import 'package:noti_samu/login.dart';
 
 class Notificacoes extends StatefulWidget {
   @override
@@ -20,9 +21,15 @@ class _NotificacoesState extends State<Notificacoes> {
       local: "a",
       dataDaOcorrencia: DateTime.now(),
       periodo: "a",
-      incidente: ["a", "a",],
+      incidente: [
+        "a",
+        "a",
+      ],
       infoExtra: "aa",
-      respostas: {"a": "a", "b": "b",},
+      respostas: {
+        "a": "a",
+        "b": "b",
+      },
     ),
     Notificacao(
       notificante: "asdf",
@@ -34,9 +41,15 @@ class _NotificacoesState extends State<Notificacoes> {
       local: "asdf",
       dataDaOcorrencia: DateTime.now(),
       periodo: "asdg",
-      incidente: ["a", "a",],
+      incidente: [
+        "a",
+        "a",
+      ],
       infoExtra: "sadga",
-      respostas: {"a": "a", "b": "b",},
+      respostas: {
+        "a": "a",
+        "b": "b",
+      },
     ),
     Notificacao(
       notificante: "asdgasd",
@@ -48,9 +61,15 @@ class _NotificacoesState extends State<Notificacoes> {
       local: "adgas",
       dataDaOcorrencia: DateTime.now(),
       periodo: "asdg",
-      incidente: ["a", "a",],
+      incidente: [
+        "a",
+        "a",
+      ],
       infoExtra: "adsgasdg",
-      respostas: {"a": "a", "b": "b",},
+      respostas: {
+        "a": "a",
+        "b": "b",
+      },
     ),
     Notificacao(
       notificante: "adgas",
@@ -62,9 +81,15 @@ class _NotificacoesState extends State<Notificacoes> {
       local: "asdg",
       dataDaOcorrencia: DateTime.now(),
       periodo: "asdgg",
-      incidente: ["a", "a",],
+      incidente: [
+        "a",
+        "a",
+      ],
       infoExtra: "aa",
-      respostas: {"a": "a", "b": "b",},
+      respostas: {
+        "a": "a",
+        "b": "b",
+      },
     ),
   ];
 
@@ -74,6 +99,16 @@ class _NotificacoesState extends State<Notificacoes> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Noti SAMU"),
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back,
+            color: Colors.white,
+          ),
+          onPressed: () {
+            Navigator.of(context).pushReplacement(
+                MaterialPageRoute(builder: (context) => Login()));
+          },
+        ),
       ),
       body: _body(context, list),
     );
@@ -81,19 +116,18 @@ class _NotificacoesState extends State<Notificacoes> {
 
   _body(context, list) {
     return Container(
-      padding: EdgeInsets.only(top:5, left: 5, right: 5),
+      padding: EdgeInsets.only(top: 5, left: 5, right: 5),
       child: ListView(
         children: list.map<Widget>((Notificacao notificacao) {
           return GestureDetector(
-            onTap: (){
-              Navigator.of(context).push(
-                    MaterialPageRoute(builder: (context) => DetalhesNotificacao(notificacao)));
+            onTap: () {
+              Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => DetalhesNotificacao(notificacao)));
             },
             child: CardIssue(notificacao),
           );
         }).toList(),
       ),
-
     );
   }
 }

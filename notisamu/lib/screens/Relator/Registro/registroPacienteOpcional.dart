@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/Relator/Registro/registroDadosObrigatorio.dart';
-import 'package:noti_samu/screens/Relator/notificacao.dart';
+import 'package:noti_samu/components/notificacao.dart';
 
 class Paciente extends StatefulWidget {
   Notificacao notificacao;
@@ -36,6 +36,7 @@ class _PacienteState extends State<Paciente> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Registro de dados opcionais"),
+        
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
