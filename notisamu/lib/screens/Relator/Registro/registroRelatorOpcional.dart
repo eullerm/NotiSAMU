@@ -93,9 +93,9 @@ class _RelatorState extends State<Relator> {
             fontSize: 18,
           ),
         ),
-        _radioButton('Enfermeiro'),
+        _radioButton('Enfermeira(o)'),
         _radioButton('Técnico de enfermagem'),
-        _radioButton('Médico'),
+        _radioButton('Médica(o)'),
         _radioButton('Não informar'),
       ],
     );
