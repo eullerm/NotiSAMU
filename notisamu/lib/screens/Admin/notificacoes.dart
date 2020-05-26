@@ -10,6 +10,7 @@ class Notificacoes extends StatefulWidget {
 }
 
 class _NotificacoesState extends State<Notificacoes> {
+  
   List<Notificacao> list = [
     Notificacao(
       notificante: "Não informado",

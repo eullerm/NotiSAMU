@@ -11,8 +11,23 @@ class Notificacao extends Model {
   DateTime dataDaOcorrencia;
   String periodo;
   List<String> incidente = List();
-  String infoExtra;
   Map<String, String> respostas = {};
+  String infoExtra;
+
+  setIncidentes(String string){
+    if(incidente == null)
+      incidente = [string];
+    else
+      incidente.add(string);
+  }
+
+  setRespostas(String key, String value){
+    if(respostas == null)
+      respostas = {key: value};
+    else
+      respostas.putIfAbsent(key, () => value);
+
+  }
 
   Notificacao({
     this.notificante,

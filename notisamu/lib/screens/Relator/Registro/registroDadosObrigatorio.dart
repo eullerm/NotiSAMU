@@ -28,7 +28,6 @@ class _OcorrenciaState extends State<Ocorrencia> {
   void radioButtonChanges(String value) {
     setState(() {
       _radioValue = value;
-      debugPrint(_radioValue); //Debug the choice in console
     });
   }
 

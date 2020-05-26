@@ -26,7 +26,6 @@ class _PacienteState extends State<Paciente> {
   void radioButtonChanges(String value) {
     setState(() {
       _radioValue = value;
-      debugPrint(_radioValue); //Debug the choice in console
     });
   }
 

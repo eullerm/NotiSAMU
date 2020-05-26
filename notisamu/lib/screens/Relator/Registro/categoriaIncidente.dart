@@ -183,22 +183,21 @@ class _CategoriaState extends State<Categoria> {
       onPressed: () {
         _categorias.forEach((k, v) {
           if (v == true) {
-            this.widget.notificacao.incidente.add(k);
+            debugPrint(k);
+            this.widget.notificacao.setIncidentes(k);
             _categoriasMapPerguntasRespostas.forEach((key, listPerguntas) {
               if (key == k) {
                 for (var pergunta in listPerguntas.keys.toList()) {
                   for (var resposta in listPerguntas[pergunta].keys) {
+                    debugPrint(resposta);
                     if (listPerguntas[pergunta][
                         resposta]) //Se a boleana da resposta for true coloca a resposta na notificação
                       this
                           .widget
                           .notificacao
-                          .respostas
-                          .putIfAbsent(pergunta, () => resposta);
+                          .setRespostas(pergunta, resposta);
                   }
-                  ;
                 }
-                ;
               }
             });
           }
