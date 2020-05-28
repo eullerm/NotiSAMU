@@ -169,10 +169,11 @@ class _PacienteState extends State<Paciente> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(paciente.text.isEmpty) this.widget.notificacao.paciente = "Não informado";
-        else this.widget.notificacao.paciente = paciente.text;
-        this.widget.notificacao.nascimento = selectedDate;
-        this.widget.notificacao.sexo = _radioValue;
+        if(paciente.text.isEmpty) this.widget.notificacao.setPatient("Não informado");
+        else this.widget.notificacao.setPatient(paciente.text);
+        this.widget.notificacao.setBirth(selectedDate);
+        this.widget.notificacao.setSex(_radioValue);
+        
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => Ocorrencia(widget.notificacao)));
       },

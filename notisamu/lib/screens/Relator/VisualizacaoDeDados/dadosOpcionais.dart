@@ -81,7 +81,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.notificante ?? "Não informado.", 
+            this.widget.notificacao.notifying ?? "Não informado.", 
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -106,7 +106,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.profissao ?? "Não informado",
+            this.widget.notificacao.profission ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -131,7 +131,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.paciente ?? "Não informado.",
+            this.widget.notificacao.patient ?? "Não informado.",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -156,7 +156,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "${this.widget.notificacao.nascimento.day.toString()}/${this.widget.notificacao.nascimento.month.toString()}/${this.widget.notificacao.nascimento.year.toString()}",
+            "${this.widget.notificacao.birth.day.toString()}/${this.widget.notificacao.birth.month.toString()}/${this.widget.notificacao.birth.year.toString()}",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -181,7 +181,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.sexo ?? "Não informado",
+            this.widget.notificacao.sex ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,

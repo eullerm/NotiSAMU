@@ -14,15 +14,15 @@ class CardIssue extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Row(
-            children: _rowText("Relator:", notificacao.notificante),
+            children: _rowText("Relator:", notificacao.notifying),
           ),
           Row(
             children:
-                _rowText("Nº da Ocorrência:", notificacao.numeroDaOcorrencia),
+                _rowText("Nº da Ocorrência:", notificacao.occurrenceNumber),
           ),
           Row(
             children: _rowText("Data:",
-                DateFormat("dd/MM/yyyy").format(notificacao.dataDaOcorrencia)),
+                DateFormat("dd/MM/yyyy").format(notificacao.occurrenceDate)),
           ),
           Row(
             children: _rowText("Local:", notificacao.local),

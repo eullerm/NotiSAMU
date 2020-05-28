@@ -73,10 +73,10 @@ class _InfoExtraState extends State<InfoExtra> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(informacao.text.isEmpty) this.widget.notificacao.infoExtra = "Nada informado.";
-        else this.widget.notificacao.infoExtra = informacao.text;
+        if(informacao.text.isEmpty) this.widget.notificacao.setInfoExtra("Nada informado.");
+        else this.widget.notificacao.setInfoExtra(informacao.text);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosOpcionais(widget.notificacao)));
+            .push(MaterialPageRoute(builder: (context) => DadosOpcionais(this.widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

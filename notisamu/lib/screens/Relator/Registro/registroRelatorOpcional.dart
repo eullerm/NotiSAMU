@@ -114,10 +114,11 @@ class _RelatorState extends State<Relator> {
     return FloatingActionButton.extended(
       onPressed: () {
         if (notificante.text.isEmpty)
-          this.notificacao.notificante = "Nao informado";
+          this.notificacao.setNotifying("Nao informado");
         else
-          this.notificacao.notificante = notificante.text;
-        this.notificacao.profissao = _radioValue;
+          this.notificacao.setNotifying(notificante.text);
+        this.notificacao.setProfission(_radioValue);
+        
         Navigator.of(context).push(
             MaterialPageRoute(builder: (context) => Paciente(notificacao)));
       },

@@ -187,12 +187,13 @@ class _OcorrenciaState extends State<Ocorrencia> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notificacao.numeroDaOcorrencia = numeroDaOcorrencia.text;
-        this.widget.notificacao.local = localDaOcorrencia.text;
-        this.widget.notificacao.dataDaOcorrencia = selectedDate;
-        this.widget.notificacao.periodo = _radioValue;
+        this.widget.notificacao.setOccurrenceNumber(numeroDaOcorrencia.text);
+        this.widget.notificacao.setLocal(localDaOcorrencia.text);
+        this.widget.notificacao.setDate(selectedDate);
+        this.widget.notificacao.setPeriod(_radioValue);
+
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Categoria(widget.notificacao)));
+            builder: (context) => Categoria(this.widget.notificacao)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

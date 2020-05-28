@@ -13,84 +13,85 @@ class _NotificacoesState extends State<Notificacoes> {
   
   List<Notificacao> list = [
     Notificacao(
-      notificante: "Não informado",
-      profissao: "Médico",
-      paciente: "Alberto",
-      nascimento: DateTime.now(),
-      sexo: "M",
-      numeroDaOcorrencia: "56456",
+      notifying: "Não informado",
+      profission: "Médico",
+      patient: "Alberto",
+      birth: DateTime.now(),
+      sex: "M",
+      occurrenceNumber: "56456",
       local: "Niteroi",
-      dataDaOcorrencia: DateTime.now(),
-      periodo: "Manhã",
-      incidente: [
+      occurrenceDate: DateTime.now(),
+      period: "Manhã",
+      incident: [
         "a",
         "a",
       ],
-      infoExtra: "aa",
-      respostas: {
+      answer: {
         "a": "a",
         "b": "b",
       },
+      infoExtra: "aa",
+      
     ),
     Notificacao(
-      notificante: "Aline",
-      profissao: "Médico",
-      paciente: "Miguel",
-      nascimento: DateTime.now(),
-      sexo: "M",
-      numeroDaOcorrencia: "4653",
+      notifying: "Aline",
+      profission: "Médico",
+      patient: "Miguel",
+      birth: DateTime.now(),
+      sex: "M",
+      occurrenceNumber: "4653",
       local: "Niteroi",
-      dataDaOcorrencia: DateTime.now(),
-      periodo: "Noite",
-      incidente: [
+      occurrenceDate: DateTime.now(),
+      period: "Noite",
+      incident: [
         "a",
         "a",
       ],
+      answer: {
+        "a": "a",
+        "b": "b",
+      },
       infoExtra: "sadga",
-      respostas: {
-        "a": "a",
-        "b": "b",
-      },
     ),
     Notificacao(
-      notificante: "Não informado",
-      profissao: "Não informado",
-      paciente: "Carla",
-      nascimento: DateTime.now(),
-      sexo: "F",
-      numeroDaOcorrencia: "1955159",
+      notifying: "Não informado",
+      profission: "Não informado",
+      patient: "Carla",
+      birth: DateTime.now(),
+      sex: "F",
+      occurrenceNumber: "1955159",
       local: "Niteroi",
-      dataDaOcorrencia: DateTime.now(),
-      periodo: "Noite",
-      incidente: [
+      occurrenceDate: DateTime.now(),
+      period: "Noite",
+      incident: [
         "a",
         "a",
       ],
+      answer: {
+        "a": "a",
+        "b": "b",
+      },
       infoExtra: "adsgasdg",
-      respostas: {
-        "a": "a",
-        "b": "b",
-      },
     ),
     Notificacao(
-      notificante: "Cleber",
-      profissao: "Enfermeiro",
-      paciente: "Jessica",
-      nascimento: DateTime.now(),
-      sexo: "F",
-      numeroDaOcorrencia: "815621",
+      notifying: "Cleber",
+      profission: "Enfermeiro",
+      patient: "Jessica",
+      birth: DateTime.now(),
+      sex: "F",
+      occurrenceNumber: "815621",
       local: "Niteroi",
-      dataDaOcorrencia: DateTime.now(),
-      periodo: "Noite",
-      incidente: [
+      occurrenceDate: DateTime.now(),
+      period: "Noite",
+      incident: [
         "a",
         "a",
       ],
-      infoExtra: "aa",
-      respostas: {
+      answer: {
         "a": "a",
         "b": "b",
       },
+      infoExtra: "aa",
     ),
   ];
 

@@ -1,4 +1,4 @@
-package com.example.notisamu
+package com.example.notisamuapp
 
 import android.os.Bundle
 

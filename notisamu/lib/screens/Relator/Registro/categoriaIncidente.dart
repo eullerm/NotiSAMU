@@ -184,7 +184,7 @@ class _CategoriaState extends State<Categoria> {
         _categorias.forEach((k, v) {
           if (v == true) {
             debugPrint(k);
-            this.widget.notificacao.setIncidentes(k);
+            this.widget.notificacao.setIncident(k);
             _categoriasMapPerguntasRespostas.forEach((key, listPerguntas) {
               if (key == k) {
                 for (var pergunta in listPerguntas.keys.toList()) {
@@ -195,7 +195,7 @@ class _CategoriaState extends State<Categoria> {
                       this
                           .widget
                           .notificacao
-                          .setRespostas(pergunta, resposta);
+                          .setAnswer(pergunta, resposta);
                   }
                 }
               }

@@ -80,7 +80,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.numeroDaOcorrencia,
+            this.widget.notificacao.occurrenceNumber,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -130,7 +130,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            """${this.widget.notificacao.dataDaOcorrencia.day.toString()}/${this.widget.notificacao.dataDaOcorrencia.month.toString()}/${this.widget.notificacao.dataDaOcorrencia.year.toString()}""",
+            """${this.widget.notificacao.occurrenceDate.day.toString()}/${this.widget.notificacao.occurrenceDate.month.toString()}/${this.widget.notificacao.occurrenceDate.year.toString()}""",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -155,7 +155,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.periodo ?? "Não informado",
+            this.widget.notificacao.period ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -180,11 +180,11 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Column(
-            children: this.widget.notificacao.incidente != null
+            children: this.widget.notificacao.incident != null
                 ? this
                     .widget
                     .notificacao
-                    .incidente
+                    .incident
                     .map<Widget>((data) => _text(data))
                     .toList()
                 : <Widget>[],

@@ -1,4 +1,4 @@
-package com.example.noti_samu;
+package com.example.notisamuapp;
 
 import android.os.Bundle;
 import io.flutter.app.FlutterActivity;
