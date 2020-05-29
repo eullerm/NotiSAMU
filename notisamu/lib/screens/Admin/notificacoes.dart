@@ -1,6 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notificacao.dart';
-import 'package:noti_samu/components/cardIssue.dart';
+import 'package:noti_samu/components/cardNotify.dart';
 import 'package:noti_samu/screens/Admin/detalhesDaNotificacao.dart';
 import 'package:noti_samu/login.dart';
 
@@ -10,90 +10,6 @@ class Notificacoes extends StatefulWidget {
 }
 
 class _NotificacoesState extends State<Notificacoes> {
-  
-  List<Notificacao> list = [
-    Notificacao(
-      notifying: "Não informado",
-      profission: "Médico",
-      patient: "Alberto",
-      birth: DateTime.now(),
-      sex: "M",
-      occurrenceNumber: "56456",
-      local: "Niteroi",
-      occurrenceDate: DateTime.now(),
-      period: "Manhã",
-      incident: [
-        "a",
-        "a",
-      ],
-      answer: {
-        "a": "a",
-        "b": "b",
-      },
-      infoExtra: "aa",
-      
-    ),
-    Notificacao(
-      notifying: "Aline",
-      profission: "Médico",
-      patient: "Miguel",
-      birth: DateTime.now(),
-      sex: "M",
-      occurrenceNumber: "4653",
-      local: "Niteroi",
-      occurrenceDate: DateTime.now(),
-      period: "Noite",
-      incident: [
-        "a",
-        "a",
-      ],
-      answer: {
-        "a": "a",
-        "b": "b",
-      },
-      infoExtra: "sadga",
-    ),
-    Notificacao(
-      notifying: "Não informado",
-      profission: "Não informado",
-      patient: "Carla",
-      birth: DateTime.now(),
-      sex: "F",
-      occurrenceNumber: "1955159",
-      local: "Niteroi",
-      occurrenceDate: DateTime.now(),
-      period: "Noite",
-      incident: [
-        "a",
-        "a",
-      ],
-      answer: {
-        "a": "a",
-        "b": "b",
-      },
-      infoExtra: "adsgasdg",
-    ),
-    Notificacao(
-      notifying: "Cleber",
-      profission: "Enfermeiro",
-      patient: "Jessica",
-      birth: DateTime.now(),
-      sex: "F",
-      occurrenceNumber: "815621",
-      local: "Niteroi",
-      occurrenceDate: DateTime.now(),
-      period: "Noite",
-      incident: [
-        "a",
-        "a",
-      ],
-      answer: {
-        "a": "a",
-        "b": "b",
-      },
-      infoExtra: "aa",
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -112,24 +28,45 @@ class _NotificacoesState extends State<Notificacoes> {
           },
         ),
       ),
-      body: _body(context, list),
+      body: _body(context),
     );
   }
 
-  _body(context, list) {
+  _body(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(top: 5, left: 5, right: 5),
-      child: ListView(
-        children: list.map<Widget>((Notificacao notificacao) {
-          return GestureDetector(
-            onTap: () {
-              Navigator.of(context).push(MaterialPageRoute(
-                  builder: (context) => DetalhesNotificacao(notificacao)));
-            },
-            child: CardIssue(notificacao),
-          );
-        }).toList(),
+      child: StreamBuilder(
+        stream: Firestore.instance.collection('notification').snapshots(),
+        builder: (BuildContext context, AsyncSnapshot snapshot) {
+          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+
+          switch (snapshot.connectionState) {
+            case ConnectionState.waiting:
+              return Center(
+                child: CircularProgressIndicator(),
+              );
+              break;
+            default:
+              return Center(
+                child: ListView(
+                  children: _listNotify(snapshot),
+                ),
+              );
+          }
+        },
       ),
     );
+  }
+
+  _listNotify(AsyncSnapshot snapshot) {
+    return snapshot.data.documents.map<Widget>((DocumentSnapshot doc) {
+      return GestureDetector(
+        onTap: () {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetalhesNotificacao(doc)));
+        },
+        child: CardNotify(doc),
+      );
+    }).toList();
   }
 }

@@ -1,9 +1,10 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/notificacao.dart';
 import 'package:intl/intl.dart';
 
 class DetalhesNotificacao extends StatelessWidget {
-  final Notificacao notificacao;
+  final DocumentSnapshot notificacao;
 
   DetalhesNotificacao(this.notificacao);
 
@@ -31,20 +32,20 @@ class DetalhesNotificacao extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _text("Relator:", notificacao.notifying),
-            _text("Profissão:", notificacao.profission),
-            _text("Paciente:", notificacao.patient),
+            _text("Relator:", notificacao.data['notifying']),
+            _text("Profissão:", notificacao.data['profission']),
+            _text("Paciente:", notificacao.data['patient']),
             _text("Nascimento:",
-                DateFormat("dd/MM/yyyy").format(notificacao.birth)),
-            _text("Sexo:", notificacao.sex),
-            _text("Nº da ocorrência:", notificacao.occurrenceNumber),
-            _text("Local:", notificacao.local),
+                DateFormat("dd/MM/yyyy").format(notificacao.data['birth'].toDate())),
+            _text("Sexo:", notificacao.data['sex']),
+            _text("Nº da ocorrência:", notificacao.data['occurrenceNumber']),
+            _text("Local:", notificacao.data['local']),
             _text("Data da ocorrência:",
-                DateFormat("dd/MM/yyyy").format(notificacao.occurrenceDate)),
-            _text("Periodo:", notificacao.period),
-            _textList("Incidentes:", notificacao.incident),
-            _textMap("Respostas:", notificacao.answer),
-            _text("Info extra:", notificacao.infoExtra),
+                DateFormat("dd/MM/yyyy").format(notificacao.data['occurrenceDate'].toDate())),
+            _text("Periodo:", notificacao.data['period']),
+            //_textList("Incidentes:", notificacao.data['incident']),
+            //_textMap("Respostas:", notificacao.data['answer']),
+            _text("Info extra:", notificacao.data['infoExtra']),
           ],
         ),
       )

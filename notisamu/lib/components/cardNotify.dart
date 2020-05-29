@@ -1,11 +1,12 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/notificacao.dart';
 import 'package:intl/intl.dart';
 
-class CardIssue extends StatelessWidget {
-  final Notificacao notificacao;
+class CardNotify extends StatelessWidget {
+  final DocumentSnapshot notificacao;
 
-  CardIssue(this.notificacao);
+  CardNotify(this.notificacao);
 
   @override
   Widget build(BuildContext context) {
@@ -14,18 +15,18 @@ class CardIssue extends StatelessWidget {
       child: Column(
         children: <Widget>[
           Row(
-            children: _rowText("Relator:", notificacao.notifying),
+            children: _rowText("Relator:", notificacao.data['notifying']),
           ),
           Row(
             children:
-                _rowText("Nº da Ocorrência:", notificacao.occurrenceNumber),
+                _rowText("Nº da Ocorrência:", notificacao.data['occurrenceNumber']),
           ),
           Row(
             children: _rowText("Data:",
-                DateFormat("dd/MM/yyyy").format(notificacao.occurrenceDate)),
+                DateFormat("dd/MM/yyyy").format(notificacao.data['occurrenceDate'].toDate())),
           ),
           Row(
-            children: _rowText("Local:", notificacao.local),
+            children: _rowText("Local:", notificacao.data['local']),
           ),
         ],
       ),
