@@ -91,7 +91,7 @@ class _SucessoState extends State<Sucesso> {
       'incident': this.widget.notificacao.incident,
       'answer': this.widget.notificacao.answer,
       'infoExtra': this.widget.notificacao.infoExtra,
-    }).whenComplete(() => _body(context));
+    });
 
   }
 }
