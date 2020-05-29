@@ -28,7 +28,6 @@ dependencies:
   appcenter:
   appcenter_analytics:
   appcenter_crashes:
-  sqflite: ^1.3.0
   path_provider: ^1.4.5
   cloud_firestore: ^0.13.6
     
