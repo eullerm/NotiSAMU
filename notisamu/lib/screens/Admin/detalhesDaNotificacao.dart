@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notificacao.dart';
 import 'package:intl/intl.dart';
 
 class DetalhesNotificacao extends StatelessWidget {
@@ -43,8 +42,9 @@ class DetalhesNotificacao extends StatelessWidget {
             _text("Data da ocorrência:",
                 DateFormat("dd/MM/yyyy").format(notificacao.data['occurrenceDate'].toDate())),
             _text("Periodo:", notificacao.data['period']),
-            //_textList("Incidentes:", notificacao.data['incident']),
-            //_textMap("Respostas:", notificacao.data['answer']),
+            _textList("Incidentes:", notificacao.data['incident']),
+            //Foi necessario fazer o .reversed pois o firebase manda o map de trás para frente.
+            _textMap("Respostas:", Map.fromEntries(notificacao.data['answer'].entries.toList().reversed)),
             _text("Info extra:", notificacao.data['infoExtra']),
           ],
         ),
@@ -52,7 +52,7 @@ class DetalhesNotificacao extends StatelessWidget {
     ];
   }
 
-  _text(string, string2) {
+  _text(String string, String string2) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -73,7 +73,7 @@ class DetalhesNotificacao extends StatelessWidget {
     );
   }
 
-  _textList(string, list) {
+  _textList(String string, List list) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -100,7 +100,7 @@ class DetalhesNotificacao extends StatelessWidget {
     );
   }
 
-  _textMap(string, Map<String, String> map) {
+  _textMap(String string, Map map) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -124,7 +124,7 @@ class DetalhesNotificacao extends StatelessWidget {
     );
   }
 
-  _textRow(string, string2) {
+  _textRow(String string, String string2) {
     return Row(
       children: <Widget>[
         Text(
@@ -136,7 +136,7 @@ class DetalhesNotificacao extends StatelessWidget {
         ),
         SizedBox(width: 5),
         Text(
-          string,
+          string2,
           style: TextStyle(fontSize: 20),
         ),
       ],

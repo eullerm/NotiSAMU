@@ -53,7 +53,7 @@ class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Sucesso()));
+            .push(MaterialPageRoute(builder: (context) => Sucesso(this.widget.notificacao)));
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),

@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notificacao.dart';
 import 'package:intl/intl.dart';
 
 class CardNotify extends StatelessWidget {

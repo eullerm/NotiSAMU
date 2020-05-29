@@ -1,20 +1,20 @@
 import 'package:scoped_model/scoped_model.dart';
 
 class Notificacao extends Model {
-  String notifying;
-  String profission;
-  String patient;
-  DateTime birth;
-  String sex;
-  String occurrenceNumber;
-  String local;
-  DateTime occurrenceDate;
-  String period;
-  List<String> incident = List();
-  Map<String, String> answer = {};
-  String infoExtra;
+  String _notifying;
+  String _profission;
+  String _patient;
+  DateTime _birth;
+  String _sex;
+  String _occurrenceNumber;
+  String _local;
+  DateTime _occurrenceDate;
+  String _period;
+  List<String> _incident = List();
+  Map<String, String> _answer = {};
+  String _infoExtra;
 
-  /*Getters
+  
   String get notifying{
     return _notifying;
   }
@@ -63,110 +63,62 @@ class Notificacao extends Model {
     return _infoExtra;
   }
 
-  */
+  
 
   setNotifying(String string){
-    this.notifying = string;
+    this._notifying = string;
   }
 
   setProfission(String string){
-    this.profission = string;
+    this._profission = string;
   }
 
   setPatient(String string){
-    this.patient = string;
+    this._patient = string;
   }
 
   setBirth(DateTime date){
-    this.birth = date;
+    this._birth = date;
   }
 
   setSex(String string){
-    this.sex = string;
+    this._sex = string;
   }
 
   setOccurrenceNumber(String number){
-    this.occurrenceNumber = number;
+    this._occurrenceNumber = number;
   }
 
   setLocal(String string){
-    this.local = string;
+    this._local = string;
   }
 
   setDate(DateTime date){
-    this.occurrenceDate = date;
+    this._occurrenceDate = date;
   }
 
   setPeriod(String string){
-    this.period = string;
+    this._period = string;
   }
 
   setIncident(String string){
-    if(this.incident == null)
-      this.incident = [string];
+    if(this._incident == null)
+      this._incident = [string];
     else
-      this.incident.add(string);
+      this._incident.add(string);
   }
 
   setAnswer(String key, String value){
-    if(this.answer == null)
-      this.answer = {key: value};
+    if(this._answer == null)
+      this._answer = {key: value};
     else
-      this.answer.putIfAbsent(key, () => value);
+      this._answer.putIfAbsent(key, () => value);
 
   }
 
   setInfoExtra(String info){
-    infoExtra = info;
+    _infoExtra = info;
   }
 
-  Map<String, dynamic> toMap(){
-
-    var map = <String, dynamic>{
-      'notifying': notifying,
-      'profission': profission,
-      'patient': patient,
-      'birth': birth,
-      'sex': sex,
-      'occurrenceNumber': occurrenceNumber,
-      'local': local,
-      'occurrenceDate': occurrenceDate,
-      'period': period,
-      'incident': incident,
-      'answer': answer,
-      'infoExtra': infoExtra, 
-    };
-      return map;
-  }
-
-  Notificacao.fromMap(Map<String, dynamic> map){
-      notifying = map['notifying'];
-      profission = map['profission'];
-      patient = map['patient'];
-      birth = map['birth'];
-      sex = map['sex'];
-      occurrenceNumber = map['occurrenceNumber'];
-      local = map['local'];
-      occurrenceDate = map['occurrenceDate'];
-      period = map['period'];
-      incident = map['incident'];
-      answer = map['answer'];
-      infoExtra = map['infoExtra'];
-  }
-
-  Notificacao({
-    this.notifying,
-    this.profission,
-    this.patient,
-    this.birth,
-    this.sex,
-    this.occurrenceNumber,
-    this.local,
-    this.occurrenceDate,
-    this.period,
-    this.incident,
-    this.answer,
-    this.infoExtra,
-  });
-
+  
 }

@@ -8,8 +8,6 @@ import 'package:appcenter/appcenter.dart';
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:appcenter_crashes/appcenter_crashes.dart';
 
-import 'package:sqflite/sqflite.dart';
-
 
 void main()  {
 
