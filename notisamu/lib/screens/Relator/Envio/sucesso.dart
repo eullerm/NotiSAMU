@@ -15,7 +15,6 @@ class Sucesso extends StatefulWidget {
 
 class _SucessoState extends State<Sucesso> {
   final database = Firestore.instance;
-  final _fromKey = GlobalKey<FormState>();
   bool send = false;
 
   @override
