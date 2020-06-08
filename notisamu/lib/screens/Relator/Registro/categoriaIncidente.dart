@@ -10,19 +10,35 @@ class Categoria extends StatefulWidget {
 }
 
 class _CategoriaState extends State<Categoria> {
-  final Map<String, Map<String, bool>> _mapQuestionsAnswers = {
-    'Pergunta Prescrição 1': {'A0': false, 'A1': false},
-    'Pergunta Prescrição 2': {'B0': false, 'B2': false},
-    'Pergunta Prescrição 3': {'C0': false, 'C1': false, 'C2': false},
-    'Pergunta Dispensação 1': {'A0': false, 'A1': false, 'A2': false},
-    'Pergunta Dispensação 2': {'B1': false, 'B2': false},
-    'Pergunta Dispensação 3': {'C0': false, 'C2': false},
-    'Pergunta Preparo 1': {'A0': false, 'A2': false},
-    'Pergunta Preparo 2': {'B0': false, 'B2': false},
-    'Pergunta Preparo 3': {'C0': false, 'C1': false},
-    'Pergunta Administração 1': {'A0': false, 'A1': false, 'A2': false},
-    'Pergunta Administração 2': {'B0': false, 'B1': false, 'B2': false},
-    'Pergunta Administração 3': {'C0': false, 'C1': false, 'C2': false},
+  final Map<String, bool> _categorias = {
+    'Erro de Prescrição': false,
+    'Erro de Dispensação': false,
+    'Erro de Preparo': false,
+    'Erro de Administração': false,
+  };
+
+  final Map<String, Map<String, Map<String, bool>>>
+      _categoriasMapPerguntasRespostas = {
+    'Erro de Prescrição': {
+      'Pergunta Prescrição 1': {'A0': false, 'A1': false},
+      'Pergunta Prescrição 2': {'B0': false, 'B2': false},
+      'Pergunta Prescrição 3': {'C0': false, 'C1': false, 'C2': false},
+    },
+    'Erro de Dispensação': {
+      'Pergunta Dispensação 1': {'A0': false, 'A1': false, 'A2': false},
+      'Pergunta Dispensação 2': {'B1': false, 'B2': false},
+      'Pergunta Dispensação 3': {'C0': false, 'C2': false},
+    },
+    'Erro de Preparo': {
+      'Pergunta Preparo 1': {'A0': false, 'A2': false},
+      'Pergunta Preparo 2': {'B0': false, 'B2': false},
+      'Pergunta Preparo 3': {'C0': false, 'C1': false},
+    },
+    'Erro de Administração': {
+      'Pergunta Administração 1': {'A0': false, 'A1': false, 'A2': false},
+      'Pergunta Administração 2': {'B0': false, 'B1': false, 'B2': false},
+      'Pergunta Administração 3': {'C0': false, 'C1': false, 'C2': false},
+    },
   };
 
   @override
@@ -44,33 +60,64 @@ class _CategoriaState extends State<Categoria> {
         child: ListView(
           padding: EdgeInsets.all(16),
           children: <Widget>[
-            _question(),
+            _categoriaIncidente(),
           ],
         ),
       ),
     );
   }
 
-  _question() {
+  _categoriaIncidente() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Perguntas sobre o incidente:',
+          'Categoria de incidente:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
-        _questionsToList(_mapQuestionsAnswers),
+        _checkBoxButton("Erro de Prescrição",
+            _categoriasMapPerguntasRespostas["Erro de Prescrição"]),
+        _checkBoxButton("Erro de Dispensação",
+            _categoriasMapPerguntasRespostas["Erro de Dispensação"]),
+        _checkBoxButton("Erro de Preparo",
+            _categoriasMapPerguntasRespostas["Erro de Preparo"]),
+        _checkBoxButton("Erro de Administração",
+            _categoriasMapPerguntasRespostas["Erro de Administração"]),
       ],
     );
   }
 
-  _questionsToList(map) {
+  _checkBoxButton(key, perguntas) {
+    return Column(
+      children: <Widget>[
+        CheckboxListTile(
+          title: Text(key),
+          value: _categorias[key],
+          onChanged: (bool value) {
+            setState(
+              () {
+                _categorias[key] = value;
+              },
+            );
+          },
+        ),
+        _validaPerguntas(key, perguntas),
+      ],
+    );
+  }
+
+  _validaPerguntas(key, perguntas) {
+    return _categorias[key] == true
+        ? _perguntas(perguntas)
+        : SingleChildScrollView(
+            child: Container(),
+          );
+  }
+
+  _perguntas(map) {
     return Column(
       children: map.keys
           .toList()
@@ -80,7 +127,7 @@ class _CategoriaState extends State<Categoria> {
                 SizedBox(
                   height: 5,
                 ),
-                _text(string),
+                _texto(string),
                 SizedBox(
                   height: 5,
                 ),
@@ -95,12 +142,12 @@ class _CategoriaState extends State<Categoria> {
     );
   }
 
-  _text(perguntas) {
+  _texto(perguntas) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
-        fontSize: 18,
+        fontSize: 15,
       ),
     );
   }
@@ -116,7 +163,7 @@ class _CategoriaState extends State<Categoria> {
             .keys
             .map<Widget>(
               (String key) => CheckboxListTile(
-                title: _text(key),
+                title: _texto(key),
                 value: erros[i][key],
                 onChanged: (bool value) {
                   setState(() {
@@ -134,11 +181,25 @@ class _CategoriaState extends State<Categoria> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        _mapQuestionsAnswers.forEach((question, listAnswer) {
-          for (var answer in listAnswer.keys) {
-            if (listAnswer[
-                answer]) //Se a boleana da resposta for true coloca a resposta na notificação
-              this.widget.notificacao.setAnswer(question, answer);
+        _categorias.forEach((k, v) {
+          if (v == true) {
+            debugPrint(k);
+            this.widget.notificacao.setIncident(k);
+            _categoriasMapPerguntasRespostas.forEach((key, listPerguntas) {
+              if (key == k) {
+                for (var pergunta in listPerguntas.keys.toList()) {
+                  for (var resposta in listPerguntas[pergunta].keys) {
+                    debugPrint(resposta);
+                    if (listPerguntas[pergunta][
+                        resposta]) //Se a boleana da resposta for true coloca a resposta na notificação
+                      this
+                          .widget
+                          .notificacao
+                          .setAnswer(pergunta, resposta);
+                  }
+                }
+              }
+            });
           }
         });
         Navigator.of(context).push(MaterialPageRoute(
