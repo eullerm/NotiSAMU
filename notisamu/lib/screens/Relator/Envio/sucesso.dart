@@ -2,7 +2,6 @@ import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/notificacao.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:noti_samu/screens/Relator/Registro/registroRelatorOpcional.dart';
 
 class Sucesso extends StatefulWidget {
@@ -108,7 +107,7 @@ class _SucessoState extends State<Sucesso> {
           'local': this.widget.notificacao.local,
           'occurrenceDate': this.widget.notificacao.occurrenceDate,
           'period': this.widget.notificacao.period,
-          'incident': this.widget.notificacao.incident,
+          'incident': '',
           'answer': this.widget.notificacao.answer,
           'infoExtra': this.widget.notificacao.infoExtra,
         })

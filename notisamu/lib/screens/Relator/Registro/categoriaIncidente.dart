@@ -10,6 +10,7 @@ class Categoria extends StatefulWidget {
 }
 
 class _CategoriaState extends State<Categoria> {
+  
   final Map<String, Map<String, bool>> _mapQuestionsAnswers = {
     'Pergunta Prescrição 1': {'A0': false, 'A1': false},
     'Pergunta Prescrição 2': {'B0': false, 'B2': false},
