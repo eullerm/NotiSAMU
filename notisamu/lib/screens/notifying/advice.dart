@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Registro/registroRelatorOpcional.dart';
+import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/login.dart';
 
-class Aviso extends StatefulWidget {
+class Advice extends StatefulWidget {
   @override
-  _AvisoState createState() => _AvisoState();
+  _AdviceState createState() => _AdviceState();
 }
 
-class _AvisoState extends State<Aviso> {
+class _AdviceState extends State<Advice> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,14 +37,14 @@ class _AvisoState extends State<Aviso> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _msg(size),
-          _botaoContinuar(size),
+          _advice(size),
+          _button(size),
         ],
       ),
     );
   }
 
-  _msg(size) {
+  _advice(size) {
     return Text(
       ("""A notificação não apresenta caráter punitivo. Ela visa a segurança do paciente e uma melhor qualidade no atendimento ao usuário da unidade de saúde."""),
       textAlign: TextAlign.center,
@@ -54,7 +54,7 @@ class _AvisoState extends State<Aviso> {
     );
   }
 
-  _botaoContinuar(size) {
+  _button(size) {
     return ButtonTheme(
       minWidth: size.width,
       child: RaisedButton(
@@ -67,7 +67,7 @@ class _AvisoState extends State<Aviso> {
         ),
         onPressed: () {
           Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => Relator()));
+              MaterialPageRoute(builder: (context) => Notifying()));
         },
       ),
     );

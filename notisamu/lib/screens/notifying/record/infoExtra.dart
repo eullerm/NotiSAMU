@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosOpcionais.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/opcionalDataPreview.dart';
 
 class InfoExtra extends StatefulWidget {
-  Notificacao notificacao;
-  InfoExtra(this.notificacao);
+  Notify notification;
+  InfoExtra(this.notification);
   
   @override
   _InfoExtraState createState() => _InfoExtraState();
@@ -73,10 +73,10 @@ class _InfoExtraState extends State<InfoExtra> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(informacao.text.isEmpty) this.widget.notificacao.setInfoExtra("Nada informado.");
-        else this.widget.notificacao.setInfoExtra(informacao.text);
+        if(informacao.text.isEmpty) this.widget.notification.setInfoExtra("Nada informado.");
+        else this.widget.notification.setInfoExtra(informacao.text);
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosOpcionais(this.widget.notificacao)));
+            .push(MaterialPageRoute(builder: (context) => OptionalData(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

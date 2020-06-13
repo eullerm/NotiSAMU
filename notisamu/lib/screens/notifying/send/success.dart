@@ -1,18 +1,18 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notificacao.dart';
-import 'package:noti_samu/screens/Relator/Registro/registroRelatorOpcional.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/record/notifying.dart';
 
-class Sucesso extends StatefulWidget {
-  Notificacao notificacao;
-  Sucesso(this.notificacao);
+class Success extends StatefulWidget {
+  Notify notification;
+  Success(this.notification);
 
   @override
-  _SucessoState createState() => _SucessoState();
+  _SuccessState createState() => _SuccessState();
 }
 
-class _SucessoState extends State<Sucesso> {
+class _SuccessState extends State<Success> {
   final database = Firestore.instance;
   bool send = false;
 
@@ -50,7 +50,7 @@ class _SucessoState extends State<Sucesso> {
               SizedBox(
                 height: 20,
               ),
-              _texto("Sua notificação foi enviada com sucesso!!"),
+              _text("Sua notificação foi enviada com Successo!!"),
             ],
           ),
         ],
@@ -76,7 +76,7 @@ class _SucessoState extends State<Sucesso> {
               SizedBox(
                 height: 20,
               ),
-              _texto("Enviando."),
+              _text("Enviando."),
             ],
           ),
         ],
@@ -84,7 +84,7 @@ class _SucessoState extends State<Sucesso> {
     );
   }
 
-  _texto(String string) {
+  _text(String string) {
     return Text(
       string,
       style: TextStyle(
@@ -94,22 +94,24 @@ class _SucessoState extends State<Sucesso> {
   }
 
   _addData() async {
+    FieldValue timestamp = FieldValue.serverTimestamp();
     await database
         .collection("notification")
         .document()
         .setData({
-          'notifying': this.widget.notificacao.notifying,
-          'profission': this.widget.notificacao.profission,
-          'patient': this.widget.notificacao.patient,
-          'birth': this.widget.notificacao.birth,
-          'sex': this.widget.notificacao.sex,
-          'occurrenceNumber': this.widget.notificacao.occurrenceNumber,
-          'local': this.widget.notificacao.local,
-          'occurrenceDate': this.widget.notificacao.occurrenceDate,
-          'period': this.widget.notificacao.period,
+          'notifying': this.widget.notification.notifying,
+          'profission': this.widget.notification.profission,
+          'patient': this.widget.notification.patient,
+          'birth': this.widget.notification.birth,
+          'sex': this.widget.notification.sex,
+          'occurrenceNumber': this.widget.notification.occurrenceNumber,
+          'local': this.widget.notification.local,
+          'occurrenceDate': this.widget.notification.occurrenceDate,
+          'period': this.widget.notification.period,
           'incident': '',
-          'answer': this.widget.notificacao.answer,
-          'infoExtra': this.widget.notificacao.infoExtra,
+          'answer': this.widget.notification.answer,
+          'infoExtra': this.widget.notification.infoExtra,
+          'createdAt': timestamp,
         })
         .timeout(Duration(seconds: 10))
         .whenComplete(
@@ -118,7 +120,7 @@ class _SucessoState extends State<Sucesso> {
             Timer(
               Duration(seconds: 2),
               () => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Relator()),
+                MaterialPageRoute(builder: (context) => Notifying()),
                 ModalRoute.withName('/'),
               ),
             );

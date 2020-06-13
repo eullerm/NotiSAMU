@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/aviso.dart';
-import 'package:noti_samu/screens/Admin/notificacoes.dart';
+import 'package:noti_samu/screens/notifying/advice.dart';
+import 'package:noti_samu/screens/admin/feed.dart';
 
 class Login extends StatefulWidget {
   @override
@@ -36,18 +36,18 @@ class _LoginState extends State<Login> {
       child: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-            _usuario(),
+            _user(),
             Divider(),
-            _senha(),
+            _password(),
             Divider(),
-            _botaoDeLogin(size),
+            _loginButton(size),
           ],
         ),
       ),
     );
   }
 
-  _usuario() {
+  _user() {
     return TextFormField(
       controller: email,
       style: TextStyle(
@@ -63,7 +63,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  _senha() {
+  _password() {
     return TextFormField(
       obscureText: true,
       style: TextStyle(
@@ -79,7 +79,7 @@ class _LoginState extends State<Login> {
     );
   }
 
-  _botaoDeLogin(size) {
+  _loginButton(size) {
     return ButtonTheme(
       minWidth: size.width,
       child: RaisedButton(
@@ -94,10 +94,10 @@ class _LoginState extends State<Login> {
           print(email.text);
           if(email.text.compareTo("notificante") == 0)
             Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (context) => Aviso()));
+                .pushReplacement(MaterialPageRoute(builder: (context) => Advice()));
           else if(email.text.compareTo("admin") == 0)
             Navigator.of(context)
-                .pushReplacement(MaterialPageRoute(builder: (context) => Notificacoes()));
+                .pushReplacement(MaterialPageRoute(builder: (context) => Feed()));
         },
       ),
     );

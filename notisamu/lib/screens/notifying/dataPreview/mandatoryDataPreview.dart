@@ -1,16 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosEspecificos.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/specificDataPreview.dart';
 
-class DadosObrigatorios extends StatefulWidget {
-  Notificacao notificacao;
-  DadosObrigatorios(this.notificacao);
+class MandatoryData extends StatefulWidget {
+  Notify notification;
+  MandatoryData(this.notification);
 
   @override
-  _DadosObrigatoriosState createState() => _DadosObrigatoriosState();
+  _MandatoryDataState createState() => _MandatoryDataState();
 }
 
-class _DadosObrigatoriosState extends State<DadosObrigatorios> {
+class _MandatoryDataState extends State<MandatoryData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -31,21 +31,13 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
           child: Column(
             children: <Widget>[
               _numeroDaOcorrencia(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _localDaOcorrencia(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _dataDaOcorrencia(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _periodoDaOcorrencia(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _categorias(),
             ],
           ),
@@ -58,7 +50,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => DadosEspecificos(widget.notificacao)));
+            builder: (context) => SpecificData(widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -80,7 +72,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.occurrenceNumber,
+            this.widget.notification.occurrenceNumber,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -105,7 +97,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.local,
+            this.widget.notification.local,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -130,7 +122,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            """${this.widget.notificacao.occurrenceDate.day.toString()}/${this.widget.notificacao.occurrenceDate.month.toString()}/${this.widget.notificacao.occurrenceDate.year.toString()}""",
+            """${this.widget.notification.occurrenceDate.day.toString()}/${this.widget.notification.occurrenceDate.month.toString()}/${this.widget.notification.occurrenceDate.year.toString()}""",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -155,7 +147,7 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.period ?? "Não informado",
+            this.widget.notification.period ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -180,10 +172,10 @@ class _DadosObrigatoriosState extends State<DadosObrigatorios> {
         GestureDetector(
           onTap: () => print("!"),
           child: Column(
-            children: this.widget.notificacao.incident != null
+            children: this.widget.notification.incident != null
                 ? this
                     .widget
-                    .notificacao
+                    .notification
                     .incident
                     .map<Widget>((data) => _text(data))
                     .toList()

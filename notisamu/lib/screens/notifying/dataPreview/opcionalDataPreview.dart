@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/VisualizacaoDeDados/dadosObrigatorios.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/mandatoryDataPreview.dart';
 
-class DadosOpcionais extends StatefulWidget {
-  
-  Notificacao notificacao;
-  DadosOpcionais(this.notificacao);
+class OptionalData extends StatefulWidget {
+  Notify notification;
+  OptionalData(this.notification);
 
   @override
-  _DadosOpcionaisState createState() => _DadosOpcionaisState();
+  _OptionalDataState createState() => _OptionalDataState();
 }
 
-class _DadosOpcionaisState extends State<DadosOpcionais> {
+class _OptionalDataState extends State<OptionalData> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,21 +31,13 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
           child: Column(
             children: <Widget>[
               _nomeDoNotificante(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _profissao(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _nomeDoPaciente(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _dataDeNascimento(),
-              SizedBox(
-                height: 20,
-              ),
+              SizedBox(height: 20),
               _sexoDoPaciente(),
             ],
           ),
@@ -58,8 +49,8 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => DadosObrigatorios(widget.notificacao)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => MandatoryData(widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -81,7 +72,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.notifying ?? "Não informado.", 
+            this.widget.notification.notifying ?? "Não informado.",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -106,7 +97,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.profission ?? "Não informado",
+            this.widget.notification.profission ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -131,7 +122,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.patient ?? "Não informado.",
+            this.widget.notification.patient ?? "Não informado.",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -156,7 +147,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            "${this.widget.notificacao.birth.day.toString()}/${this.widget.notificacao.birth.month.toString()}/${this.widget.notificacao.birth.year.toString()}",
+            "${this.widget.notification.birth.day.toString()}/${this.widget.notification.birth.month.toString()}/${this.widget.notification.birth.year.toString()}",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -181,7 +172,7 @@ class _DadosOpcionaisState extends State<DadosOpcionais> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notificacao.sex ?? "Não informado",
+            this.widget.notification.sex ?? "Não informado",
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,

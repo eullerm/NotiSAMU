@@ -2,16 +2,16 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-class DetalhesNotificacao extends StatefulWidget {
-  final DocumentSnapshot notificacao;
+class DetailsNotice extends StatefulWidget {
+  final DocumentSnapshot notice;
 
-  DetalhesNotificacao(this.notificacao);
+  DetailsNotice(this.notice);
 
   @override
-  _DetalhesNotificacaoState createState() => _DetalhesNotificacaoState();
+  _DetailsNoticeState createState() => _DetailsNoticeState();
 }
 
-class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
+class _DetailsNoticeState extends State<DetailsNotice> {
   Map<String, bool> _incidents = {
     "Incidente com dano": false,
     "Incidente sem dano": false,
@@ -20,15 +20,21 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
   };
 
   int buttonState = 2;
-  Color colorButton = Colors.green;
+  Color colorButton = Colors.blue;
   IconData buttonIcon = Icons.assignment; //alterar
   bool showCheckBox = false;
+
+  final database = Firestore.instance;
+
+  final snackBar = SnackBar(
+    content: Text('Inserido com sucesso!'),
+  );
 
   @override
   void initState() {
     super.initState();
     _incidents.forEach((key, value) {
-      if (key.compareTo(widget.notificacao.data['incident']) == 0) {
+      if (key.compareTo(widget.notice.data['incident']) == 0) {
         value = true;
         buttonState = 1;
         colorButton = Colors.orange;
@@ -65,8 +71,7 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
             child: showCheckBox
                 ? _checkboxIncidents(context)
                 : Container(
-                    color: Colors.black,
-                    key: UniqueKey(),
+                    key: ValueKey<bool>(showCheckBox),
                   ),
           ),
         )
@@ -81,30 +86,29 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _textColumn("Relator:", widget.notificacao.data['notifying']),
-            _textColumn("Profissão:", widget.notificacao.data['profission']),
-            _textColumn("Paciente:", widget.notificacao.data['patient']),
+            _textColumn("Relator:", widget.notice.data['notifying']),
+            _textColumn("Profissão:", widget.notice.data['profission']),
+            _textColumn("Paciente:", widget.notice.data['patient']),
             _textColumn(
                 "Nascimento:",
                 DateFormat("dd/MM/yyyy")
-                    .format(widget.notificacao.data['birth'].toDate())),
-            _textColumn("Sexo:", widget.notificacao.data['sex']),
-            _textColumn("Nº da ocorrência:",
-                widget.notificacao.data['occurrenceNumber']),
-            _textColumn("Local:", widget.notificacao.data['local']),
+                    .format(widget.notice.data['birth'].toDate())),
+            _textColumn("Sexo:", widget.notice.data['sex']),
+            _textColumn(
+                "Nº da ocorrência:", widget.notice.data['occurrenceNumber']),
+            _textColumn("Local:", widget.notice.data['local']),
             _textColumn(
                 "Data da ocorrência:",
-                DateFormat("dd/MM/yyyy").format(
-                    widget.notificacao.data['occurrenceDate'].toDate())),
-            _textColumn("Periodo:", widget.notificacao.data['period']),
-            _textColumn("Incidentes:", widget.notificacao.data['incident']),
+                DateFormat("dd/MM/yyyy")
+                    .format(widget.notice.data['occurrenceDate'].toDate())),
+            _textColumn("Periodo:", widget.notice.data['period']),
+            _textColumn("Incidentes:", widget.notice.data['incident']),
             //Foi necessario fazer o .reversed pois o firebase manda o map de trás para frente.
             _textMap(
                 "Respostas:",
-                Map.fromEntries(widget.notificacao.data['answer'].entries
-                    .toList()
-                    .reversed)),
-            _textColumn("Info extra:", widget.notificacao.data['infoExtra']),
+                Map.fromEntries(
+                    widget.notice.data['answer'].entries.toList().reversed)),
+            _textColumn("Info extra:", widget.notice.data['infoExtra']),
             SizedBox(height: 50),
           ],
         ),
@@ -112,7 +116,7 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
     ];
   }
 
-  _text(perguntas) {
+  _text(String perguntas) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
@@ -142,33 +146,6 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
       ],
     );
   }
-
-  /*_textList(String string, List list) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: <Widget>[
-        Text(
-          string,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-          textAlign: TextAlign.left,
-        ),
-        Column(
-          children: list
-              .map<Widget>(
-                (incidente) => Text(
-                  incidente,
-                  style: TextStyle(fontSize: 20),
-                ),
-              )
-              .toList(),
-        ),
-        SizedBox(height: 20),
-      ],
-    );
-  }*/
 
   _textMap(String string, Map map) {
     return Column(
@@ -224,7 +201,6 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
         onPressed: () {
           switch (integer) {
             case 1: //Insere
-
               setState(() {
                 buttonState = 3;
                 showCheckBox = true;
@@ -244,9 +220,12 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
               break;
 
             case 3: //Confirma
-
               setState(() {
-                if (widget.notificacao.data['incident'].isEmpty) {
+                _incidents.forEach((key, value) {
+                  if (value) _addIncident(key);
+                });
+
+                if (widget.notice.data['incident'].isEmpty) {
                   buttonState = 1;
                   buttonIcon = Icons.assignment;
                   colorButton = Colors.blue;
@@ -270,9 +249,9 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
     );
   }
 
-  _checkboxIncidents(context) {
+  _checkboxIncidents(BuildContext context) {
     return Container(
-      key: UniqueKey(),
+      key: ValueKey<bool>(showCheckBox),
       width: MediaQuery.of(this.context).size.width - 48,
       padding: EdgeInsets.only(left: 16, right: 16),
       margin: EdgeInsets.only(right: 8, left: 8),
@@ -299,5 +278,25 @@ class _DetalhesNotificacaoState extends State<DetalhesNotificacao> {
             .toList(),
       ),
     );
+  }
+
+  _addIncident(String incident) async {
+    await database
+        .collection("notification")
+        .document(widget.notice.documentID)
+        .setData(
+          {
+            'incident': incident,
+          },
+          merge: true,
+        )
+        .timeout(Duration(seconds: 10))
+        .whenComplete(() => setState(() {
+              Navigator.of(context).pop(
+                MaterialPageRoute(
+                    builder: (context) => DetailsNotice(widget.notice)),
+              );
+            }))
+        .catchError((error) => print("${error}"));
   }
 }

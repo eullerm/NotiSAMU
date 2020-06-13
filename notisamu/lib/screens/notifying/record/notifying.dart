@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Registro/registroPacienteOpcional.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
 import 'package:noti_samu/login.dart';
+import 'package:noti_samu/screens/notifying/record/patient.dart';
 
-class Relator extends StatefulWidget {
+class Notifying extends StatefulWidget {
   @override
-  _RelatorState createState() => _RelatorState();
+  _NotifyingState createState() => _NotifyingState();
 }
 
-class _RelatorState extends State<Relator> {
-  Notificacao notificacao = Notificacao();
+class _NotifyingState extends State<Notifying> {
+  Notify notification = Notify();
   String _radioValue;
-  final notificante = TextEditingController();
+  final notifying = TextEditingController();
 
   @override
   void initState() {
@@ -57,18 +57,18 @@ class _RelatorState extends State<Relator> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 20),
-            _nomeDoNotificante(),
+            _notifyingName(),
             SizedBox(height: 40),
-            _radioButtonProfissao(),
+            _radioButtonProfission(),
           ],
         ),
       ),
     );
   }
 
-  _nomeDoNotificante() {
+  _notifyingName() {
     return TextFormField(
-      controller: notificante,
+      controller: notifying,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -77,12 +77,12 @@ class _RelatorState extends State<Relator> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do notificante(opcional)",
+        hintText: "Nome do Notifying(opcional)",
       ),
     );
   }
 
-  _radioButtonProfissao() {
+  _radioButtonProfission() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -113,14 +113,17 @@ class _RelatorState extends State<Relator> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if (notificante.text.isEmpty)
-          this.notificacao.setNotifying("Nao informado");
+        if (notifying.text.isEmpty)
+          this.notification.setNotifying("Nao informado");
         else
-          this.notificacao.setNotifying(notificante.text);
-        this.notificacao.setProfission(_radioValue);
+          this.notification.setNotifying(notifying.text);
+        if(_radioValue == null)
+          this.notification.setProfission("Não informado");
+        else
+          this.notification.setProfission(_radioValue);
         
         Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Paciente(notificacao)));
+            MaterialPageRoute(builder: (context) => Patient(notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

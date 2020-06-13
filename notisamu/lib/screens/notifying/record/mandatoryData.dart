@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Registro/categoriaIncidente.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/record/incident.dart';
 
-class Ocorrencia extends StatefulWidget {
-  Notificacao notificacao;
-  Ocorrencia(this.notificacao);
+class Occurrence extends StatefulWidget {
+  Notify notification;
+  Occurrence(this.notification);
 
   @override
-  _OcorrenciaState createState() => _OcorrenciaState();
+  _OccurrenceState createState() => _OccurrenceState();
 }
 
-class _OcorrenciaState extends State<Ocorrencia> {
-  final numeroDaOcorrencia = TextEditingController();
-  final localDaOcorrencia = TextEditingController();
+class _OccurrenceState extends State<Occurrence> {
+  final occurrenceNumber = TextEditingController();
+  final local = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
   String _radioValue;
@@ -47,22 +47,14 @@ class _OcorrenciaState extends State<Ocorrencia> {
     return ListView(
       padding: EdgeInsets.all(16),
       children: <Widget>[
-        SizedBox(
-          height: 20,
-        ),
-        _numeroOcorrencia(),
-        SizedBox(
-          height: 40,
-        ),
-        _localOcorrencia(),
-        SizedBox(
-          height: 40,
-        ),
-        _dataOcorrencia(selectedDate),
-        SizedBox(
-          height: 40,
-        ),
-        _periodoOcorrencia(),
+        SizedBox(height: 20),
+        _numeroOccurrence(),
+        SizedBox(height: 40),
+        _localOccurrence(),
+        SizedBox(height: 40),
+        _dataOccurrence(selectedDate),
+        SizedBox(height: 40),
+        _periodoOccurrence(),
       ],
     );
   }
@@ -96,7 +88,7 @@ class _OcorrenciaState extends State<Ocorrencia> {
       );
   }
 
-  _dataOcorrencia(selectedDate) {
+  _dataOccurrence(selectedDate) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -124,7 +116,7 @@ class _OcorrenciaState extends State<Ocorrencia> {
     );
   }
 
-  _periodoOcorrencia() {
+  _periodoOccurrence() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -142,9 +134,9 @@ class _OcorrenciaState extends State<Ocorrencia> {
     );
   }
 
-  _localOcorrencia() {
+  _localOccurrence() {
     return TextFormField(
-      controller: localDaOcorrencia,
+      controller: local,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -158,9 +150,9 @@ class _OcorrenciaState extends State<Ocorrencia> {
     );
   }
 
-  _numeroOcorrencia() {
+  _numeroOccurrence() {
     return TextFormField(
-      controller: numeroDaOcorrencia,
+      controller: occurrenceNumber,
       keyboardType: TextInputType.number,
       style: TextStyle(
         color: Colors.black,
@@ -187,13 +179,16 @@ class _OcorrenciaState extends State<Ocorrencia> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notificacao.setOccurrenceNumber(numeroDaOcorrencia.text);
-        this.widget.notificacao.setLocal(localDaOcorrencia.text);
-        this.widget.notificacao.setDate(selectedDate);
-        this.widget.notificacao.setPeriod(_radioValue);
+        this.widget.notification.setOccurrenceNumber(occurrenceNumber.text);
+        this.widget.notification.setLocal(local.text);
+        this.widget.notification.setDate(selectedDate);
+        if(_radioValue == null)//Retirar depois.
+          this.widget.notification.setPeriod("Não informado.");
+        else
+          this.widget.notification.setPeriod(_radioValue);
 
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Categoria(this.widget.notificacao)));
+            builder: (context) => Category(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

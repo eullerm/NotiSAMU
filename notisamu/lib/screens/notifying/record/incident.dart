@@ -1,16 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Registro/infoExtra.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/screens/notifying/record/infoExtra.dart';
+import 'package:noti_samu/components/notification.dart';
 
-class Categoria extends StatefulWidget {
-  Notificacao notificacao;
-  Categoria(this.notificacao);
+class Category extends StatefulWidget {
+  Notify notification;
+  Category(this.notification);
   @override
-  _CategoriaState createState() => _CategoriaState();
+  _CategoryState createState() => _CategoryState();
 }
 
-class _CategoriaState extends State<Categoria> {
-  
+class _CategoryState extends State<Category> {
   final Map<String, Map<String, bool>> _mapQuestionsAnswers = {
     'Pergunta Prescrição 1': {'A0': false, 'A1': false},
     'Pergunta Prescrição 2': {'B0': false, 'B2': false},
@@ -63,9 +62,7 @@ class _CategoriaState extends State<Categoria> {
             fontSize: 18,
           ),
         ),
-        SizedBox(
-          height: 20,
-        ),
+        SizedBox(height: 20),
         _questionsToList(_mapQuestionsAnswers),
       ],
     );
@@ -78,17 +75,11 @@ class _CategoriaState extends State<Categoria> {
           .map<Widget>(
             (String string) => Column(
               children: <Widget>[
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 _text(string),
-                SizedBox(
-                  height: 5,
-                ),
+                SizedBox(height: 5),
                 _checkBoxButtonQuestion(map, string),
-                SizedBox(
-                  height: 20,
-                ),
+                SizedBox(height: 20),
               ],
             ),
           )
@@ -119,10 +110,10 @@ class _CategoriaState extends State<Categoria> {
               (String key) => CheckboxListTile(
                 title: _text(key),
                 value: erros[i][key],
-                onChanged: (bool value) {
+                onChanged: (bool change) {
                   setState(() {
                     erros[i].forEach((k, v) => erros[i][k] = false);
-                    erros[i][key] = value;
+                    erros[i][key] = change;
                   });
                 },
               ),
@@ -139,11 +130,14 @@ class _CategoriaState extends State<Categoria> {
           for (var answer in listAnswer.keys) {
             if (listAnswer[
                 answer]) //Se a boleana da resposta for true coloca a resposta na notificação
-              this.widget.notificacao.setAnswer(question, answer);
+              this.widget.notification.setAnswer(question, answer);
           }
         });
+        if(this.widget.notification.answer == null) //Retirar depois
+          this.widget.notification.setAnswer("Não", "Informado");
+
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InfoExtra(widget.notificacao)));
+            builder: (context) => InfoExtra(widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

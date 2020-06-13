@@ -1,17 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Envio/sucesso.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/screens/notifying/send/success.dart';
 
-class VisualizaInfoExtra extends StatefulWidget {
+class InfoExtraPreview extends StatefulWidget {
 
-  Notificacao notificacao;
-  VisualizaInfoExtra(this.notificacao);
+  Notify notification;
+  InfoExtraPreview(this.notification);
 
   @override
-  _VisualizaInfoExtraState createState() => _VisualizaInfoExtraState();
+  _InfoExtraPreviewState createState() => _InfoExtraPreviewState();
 }
 
-class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
+class _InfoExtraPreviewState extends State<InfoExtraPreview> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -20,7 +20,7 @@ class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
         title: Text("Informação Extra."),
       ),
       body: _body(context),
-      floatingActionButton: _enviaNotificacao(),
+      floatingActionButton: _envianotification(),
     );
   }
 
@@ -33,7 +33,7 @@ class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
             SizedBox(
               height: 20,
             ),
-            _texto(widget.notificacao.infoExtra),
+            _texto(widget.notification.infoExtra),
           ],
         ),
       ),
@@ -49,11 +49,11 @@ class _VisualizaInfoExtraState extends State<VisualizaInfoExtra> {
     );
   }
 
-  _enviaNotificacao() {
+  _envianotification() {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Sucesso(this.widget.notificacao)));
+            .push(MaterialPageRoute(builder: (context) => Success(this.widget.notification)));
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),

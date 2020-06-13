@@ -1,18 +1,17 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/screens/Relator/Registro/registroDadosObrigatorio.dart';
-import 'package:noti_samu/components/notificacao.dart';
+import 'package:noti_samu/screens/notifying/record/mandatoryData.dart';
+import 'package:noti_samu/components/notification.dart';
 
-class Paciente extends StatefulWidget {
-  Notificacao notificacao;
-  Paciente(this.notificacao);
+class Patient extends StatefulWidget {
+  Notify notification;
+  Patient(this.notification);
   @override
-  _PacienteState createState() => _PacienteState();
+  _PatientState createState() => _PatientState();
 }
 
-class _PacienteState extends State<Paciente> {
-  
+class _PatientState extends State<Patient> {
   String _radioValue;
-  final paciente = TextEditingController();
+  final patient = TextEditingController();
   DateTime selectedDate = DateTime.now();
 
   @override
@@ -35,7 +34,6 @@ class _PacienteState extends State<Paciente> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Registro de dados opcionais"),
-        
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
@@ -49,22 +47,20 @@ class _PacienteState extends State<Paciente> {
         child: Column(
           children: <Widget>[
             SizedBox(height: 20),
-            _nomeDoPaciente(),
-            SizedBox(
-              height: 40,
-            ),
-            _dataNascimento(selectedDate),
+            _patientName(),
             SizedBox(height: 40),
-            _radioButtonSexo(),
+            _birth(selectedDate),
+            SizedBox(height: 40),
+            _radioButtonSex(),
           ],
         ),
       ),
     );
   }
 
-  _nomeDoPaciente() {
+  _patientName() {
     return TextFormField(
-      controller: paciente,
+      controller: patient,
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -73,7 +69,7 @@ class _PacienteState extends State<Paciente> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do paciente(opcional)",
+        hintText: "Nome do Patient(opcional)",
       ),
     );
   }
@@ -87,13 +83,9 @@ class _PacienteState extends State<Paciente> {
       builder: (context, child) {
         return Theme(
           data: Theme.of(context).copyWith(
-            primaryColor: Colors.red, 
-            accentColor:
-                Colors.red, 
-            buttonTheme: ButtonThemeData(
-                textTheme: ButtonTextTheme
-                    .accent 
-                ),
+            primaryColor: Colors.red,
+            accentColor: Colors.red,
+            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
           ),
           child: child,
         );
@@ -111,7 +103,7 @@ class _PacienteState extends State<Paciente> {
       );
   }
 
-  _dataNascimento(selectedDate) {
+  _birth(selectedDate) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -139,12 +131,12 @@ class _PacienteState extends State<Paciente> {
     );
   }
 
-  _radioButtonSexo() {
+  _radioButtonSex() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Sexo do paciente:',
+          'Sexo do Patient:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
@@ -169,13 +161,18 @@ class _PacienteState extends State<Paciente> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(paciente.text.isEmpty) this.widget.notificacao.setPatient("Não informado");
-        else this.widget.notificacao.setPatient(paciente.text);
-        this.widget.notificacao.setBirth(selectedDate);
-        this.widget.notificacao.setSex(_radioValue);
-        
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Ocorrencia(widget.notificacao)));
+        if (patient.text.isEmpty)
+          this.widget.notification.setPatient("Não informado");
+        else
+          this.widget.notification.setPatient(patient.text);
+        if (_radioValue == null)
+          this.widget.notification.setSex("Não informado");
+        else
+          this.widget.notification.setSex(_radioValue);
+        this.widget.notification.setBirth(selectedDate);
+
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Occurrence(widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

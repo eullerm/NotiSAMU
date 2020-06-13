@@ -11,18 +11,40 @@ class CardNotify extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       color: Colors.grey[300],
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          _columnInfo(),
+          Container(
+            width: 6,
+            height: 110,
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                color: notificacao.data['incident'].isNotEmpty ? Colors.green : null),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _columnInfo() {
+    return Container(
+      padding: EdgeInsets.all(10),
       child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
             children: _rowText("Relator:", notificacao.data['notifying']),
           ),
           Row(
-            children:
-                _rowText("Nº da Ocorrência:", notificacao.data['occurrenceNumber']),
+            children: _rowText(
+                "Nº da Ocorrência:", notificacao.data['occurrenceNumber']),
           ),
           Row(
-            children: _rowText("Data:",
-                DateFormat("dd/MM/yyyy").format(notificacao.data['occurrenceDate'].toDate())),
+            children: _rowText(
+                "Data:",
+                DateFormat("dd/MM/yyyy")
+                    .format(notificacao.data['occurrenceDate'].toDate())),
           ),
           Row(
             children: _rowText("Local:", notificacao.data['local']),

@@ -1,6 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 
-class Notificacao extends Model {
+class Notify extends Model {
   String _notifying;
   String _profission;
   String _patient;
