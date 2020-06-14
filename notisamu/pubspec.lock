@@ -114,7 +114,7 @@ packages:
     source: hosted
     version: "7.3.0"
   firebase_core:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: firebase_core
       url: "https://pub.dartlang.org"
@@ -363,5 +363,5 @@ packages:
     source: hosted
     version: "3.6.1"
 sdks:
-  dart: ">=2.6.0 <3.0.0"
+  dart: ">=2.7.0 <3.0.0"
   flutter: ">=1.12.13+hotfix.5 <2.0.0"

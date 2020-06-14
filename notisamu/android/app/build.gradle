@@ -44,7 +44,7 @@ android {
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
-    
+
     signingConfigs {
         release {
             storeFile rootProject.file("app/android.keystore")
@@ -77,11 +77,7 @@ android {
                     'proguard-android-optimize.txt'),
                     'proguard-rules.pro'
         
-            applicationVariants.all { variant ->
-                variant.outputs.all { output ->
-                    output.outputFileName = "app-release.apk"
-                }
-            }
+
 
         }
     }
