@@ -29,16 +29,3 @@ task clean(type: Delete) {
     delete rootProject.buildDir
 }
 
-configurations.all {
-    resolutionStrategy {
-        force 'com.android.support:support-v4:27.1.0'
-        force 'com.google.android.gms:play-services-gcm:16.1.0'
-        force 'com.google.android.gms:play-services-basement:16.2.0'
-        force 'com.google.android.gms:play-services-auth:16.0.1'
-        force 'com.google.firebase:firebase-messaging:18.0.0'
-        force 'com.google.firebase:firebase-common:17.0.0'        
-        force 'com.google.firebase:firebase-iid:18.0.0'
-        force 'com.google.android.gms:play-services-stats:16.0.1'
-        force 'com.google.android.gms:play-services-base:16.0.1'
-    }
-}
