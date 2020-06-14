@@ -59,7 +59,7 @@ class _OccurrenceState extends State<Occurrence> {
     );
   }
 
-  Future<DateTime> _selectDate(BuildContext context, int tempo) async {
+  _selectDate(BuildContext context, int tempo) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -82,8 +82,6 @@ class _OccurrenceState extends State<Occurrence> {
       setState(
         () {
           selectedDate = picked;
-          print(picked);
-          return picked;
         },
       );
   }

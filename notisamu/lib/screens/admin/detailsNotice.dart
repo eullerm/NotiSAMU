@@ -297,6 +297,6 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                     builder: (context) => DetailsNotice(widget.notice)),
               );
             }))
-        .catchError((error) => print("${error}"));
+        .catchError((error) => print("$error"));
   }
 }

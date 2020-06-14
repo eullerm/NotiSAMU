@@ -126,6 +126,6 @@ class _SuccessState extends State<Success> {
             );
           }),
         )
-        .catchError((error) => print("${error}"));
+        .catchError((error) => print("$error"));
   }
 }

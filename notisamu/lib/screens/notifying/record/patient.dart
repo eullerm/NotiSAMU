@@ -74,7 +74,7 @@ class _PatientState extends State<Patient> {
     );
   }
 
-  Future<DateTime> _selectDate(BuildContext context) async {
+  _selectDate(BuildContext context) async {
     final DateTime picked = await showDatePicker(
       context: context,
       initialDate: selectedDate,
@@ -97,8 +97,6 @@ class _PatientState extends State<Patient> {
       setState(
         () {
           selectedDate = picked;
-          print(picked);
-          return picked;
         },
       );
   }
