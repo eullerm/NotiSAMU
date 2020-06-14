@@ -86,3 +86,9 @@ dependencies {
     implementation 'com.android.support:multidex:1.0.3'
     
 }
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:support-v4:27.1.0'
+    }
+}
