@@ -13,7 +13,7 @@ void main()  {
 
   final ios = defaultTargetPlatform == TargetPlatform.iOS;
 
-  var appSecret = ios ? "7eb2d2ef-3b41-4ca5-a150-8bf0f373821e" : "96356f79-6656-4d14-88a4-263caa82fd1e";
+  var appSecret = ios ? "7eb2d2ef-3b41-4ca5-a150-8bf0f373821e" : "78959eae-23d2-4b96-b122-ca99893bf1a0";
 
   AppCenter.start(appSecret, [AppCenterAnalytics.id, AppCenterCrashes.id]);
 
