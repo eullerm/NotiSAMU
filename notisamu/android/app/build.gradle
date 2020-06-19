@@ -45,21 +45,12 @@ android {
         multiDexEnabled true
     }
 
-    signingConfigs {
-        release {
-            storeFile rootProject.file("app/android.keystore")
-            storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
-            keyAlias System.getenv("APPCENTER_KEY_ALIAS")
-            keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
-        }
-    }
-
     buildTypes {
         release {
 
             // TODO: Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
-            signingConfig signingConfigs.release
+            signingConfig signingConfigs.debug
             // Enables code shrinking, obfuscation, and optimization for only
             // your project's release build type.
             minifyEnabled true
