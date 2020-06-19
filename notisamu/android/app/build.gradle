@@ -37,12 +37,21 @@ android {
     defaultConfig {
         // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.notisamuapp"
-        minSdkVersion 23
+        minSdkVersion 21
         targetSdkVersion 28
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
+    }
+
+    signingConfigs {
+        release {
+            storeFile rootProject.file("app/android.keystore")
+            storePassword System.getenv("APPCENTER_KEYSTORE_PASSWORD")
+            keyAlias System.getenv("APPCENTER_KEY_ALIAS")
+            keyPassword System.getenv("APPCENTER_KEY_PASSWORD")
+        }
     }
 
     buildTypes {
