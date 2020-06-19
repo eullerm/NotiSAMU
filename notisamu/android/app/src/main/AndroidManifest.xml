@@ -9,7 +9,8 @@
     <application
         android:name="io.flutter.app.FlutterApplication"
         android:label="NotiSAMU"
-        android:icon="@mipmap/ic_launcher">
+        android:icon="@mipmap/ic_launcher"
+        android:fullBackupContent="@xml/appcenter_backup_rule">
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"
