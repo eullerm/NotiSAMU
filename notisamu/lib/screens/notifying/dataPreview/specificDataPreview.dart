@@ -10,7 +10,6 @@ class SpecificData extends StatefulWidget {
 }
 
 class _SpecificDataState extends State<SpecificData> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,7 +26,15 @@ class _SpecificDataState extends State<SpecificData> {
     return ListView(
       padding: EdgeInsets.all(16),
       children: <Widget>[
-        SizedBox(height: 20),
+        Text(
+          "Incidentes: ",
+          style: TextStyle(
+            fontSize: 22,
+            fontWeight: FontWeight.bold
+          ),
+          textAlign: TextAlign.center,
+        ),
+        SizedBox(height: 25),
         _incidentCategory(),
       ],
     );
@@ -37,36 +44,25 @@ class _SpecificDataState extends State<SpecificData> {
     return GestureDetector(
       onTap: () => {},
       child: Column(
-        children: this.widget.notification.answer != null
-            ? this
-                .widget
-                .notification
-                .answer
-                .keys
-                .map(
-                  (String key) => Column(
-                    children: <Widget>[
-                      Text(
-                        key,
-                        style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 25,
-                        ),
+        children: this
+            .widget
+            .notification
+            .answer
+            .map((String key) => Column(
+                  children: <Widget>[
+                    Text(
+                      key,
+                      style: TextStyle(
+                        fontSize: 20,
                       ),
-                      Text(
-                        widget.notification.answer[key],
-                        style: TextStyle(
-                          fontSize: 20,
-                        ),
-                      ),
-                      SizedBox(
-                        height: 20,
-                      ),
-                    ],
-                  ),
-                )
-                .toList()
-            : <Widget>[],
+                      textAlign: TextAlign.center,
+                    ),
+                    SizedBox(
+                      height: 20,
+                    ),
+                  ],
+                ))
+            .toList(),
       ),
     );
   }

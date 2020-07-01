@@ -4,14 +4,14 @@ class Notify extends Model {
   String _notifying;
   String _profission;
   String _patient;
-  DateTime _birth;
+  String _age;
   String _sex;
   String _occurrenceNumber;
   String _local;
   DateTime _occurrenceDate;
   String _period;
-  List<String> _incident = List();
-  Map<String, String> _answer = {};
+  List<String> _category = List();
+  List<String> _answer = List();
   String _infoExtra;
 
   
@@ -27,8 +27,8 @@ class Notify extends Model {
     return _patient;
   }
 
-  DateTime get birth{
-    return _birth;
+  String get age{
+    return _age;
   }
 
   String get sex{
@@ -51,11 +51,11 @@ class Notify extends Model {
     return _period;
   }
 
-  List<String> get incident {
-    return _incident;
+  List<String> get category {
+    return _category;
   }
 
-  Map<String, String> get answer {
+  List<String> get answer {
     return _answer;
   }
 
@@ -77,8 +77,8 @@ class Notify extends Model {
     this._patient = string;
   }
 
-  setBirth(DateTime date){
-    this._birth = date;
+  setAge(String date){
+    this._age = date;
   }
 
   setSex(String string){
@@ -102,17 +102,17 @@ class Notify extends Model {
   }
 
   setIncident(String string){
-    if(this._incident == null)
-      this._incident = [string];
+    if(this._category == null)
+      this._category = [string];
     else
-      this._incident.add(string);
+      this._category.add(string);
   }
 
-  setAnswer(String key, String value){
+  setAnswer(String string){
     if(this._answer == null)
-      this._answer = {key: value};
+      this._answer = [string];
     else
-      this._answer.putIfAbsent(key, () => value);
+      this._answer.add(string);
 
   }
 
@@ -120,5 +120,12 @@ class Notify extends Model {
     _infoExtra = info;
   }
 
+  incidentClear(){
+    _category = List();
+  }
+
+  answerClear(){
+    _answer = List();
+  }
   
 }

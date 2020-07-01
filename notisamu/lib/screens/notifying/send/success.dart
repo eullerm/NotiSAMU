@@ -50,7 +50,7 @@ class _SuccessState extends State<Success> {
               SizedBox(
                 height: 20,
               ),
-              _text("Sua notificação foi enviada com Successo!!"),
+              _text("Sua notificação foi enviada com Sucesso!!"),
             ],
           ),
         ],
@@ -90,6 +90,7 @@ class _SuccessState extends State<Success> {
       style: TextStyle(
         fontSize: 20,
       ),
+      textAlign: TextAlign.center,
     );
   }
 
@@ -102,7 +103,7 @@ class _SuccessState extends State<Success> {
           'notifying': this.widget.notification.notifying,
           'profission': this.widget.notification.profission,
           'patient': this.widget.notification.patient,
-          'birth': this.widget.notification.birth,
+          'age': this.widget.notification.age,
           'sex': this.widget.notification.sex,
           'occurrenceNumber': this.widget.notification.occurrenceNumber,
           'local': this.widget.notification.local,
@@ -110,6 +111,7 @@ class _SuccessState extends State<Success> {
           'period': this.widget.notification.period,
           'incident': '',
           'answer': this.widget.notification.answer,
+          'category': this.widget.notification.category,
           'infoExtra': this.widget.notification.infoExtra,
           'createdAt': timestamp,
         })

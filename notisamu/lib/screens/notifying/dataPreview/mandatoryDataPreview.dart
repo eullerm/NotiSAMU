@@ -30,15 +30,15 @@ class _MandatoryDataState extends State<MandatoryData> {
         child: Center(
           child: Column(
             children: <Widget>[
-              _numeroDaOcorrencia(),
+              _occurrenceNumber(),
               SizedBox(height: 20),
-              _localDaOcorrencia(),
+              _local(),
               SizedBox(height: 20),
-              _dataDaOcorrencia(),
+              _date(),
               SizedBox(height: 20),
-              _periodoDaOcorrencia(),
+              _period(),
               SizedBox(height: 20),
-              _categorias(),
+              _category(),
             ],
           ),
         ),
@@ -58,7 +58,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _numeroDaOcorrencia() {
+  _occurrenceNumber() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -83,7 +83,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _localDaOcorrencia() {
+  _local() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -108,7 +108,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _dataDaOcorrencia() {
+  _date() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -133,7 +133,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _periodoDaOcorrencia() {
+  _period() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -147,7 +147,7 @@ class _MandatoryDataState extends State<MandatoryData> {
         GestureDetector(
           onTap: () => print("!"),
           child: Text(
-            this.widget.notification.period ?? "Não informado",
+            this.widget.notification.period,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -158,7 +158,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _categorias() {
+  _category() {
     return Column(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -172,14 +172,12 @@ class _MandatoryDataState extends State<MandatoryData> {
         GestureDetector(
           onTap: () => print("!"),
           child: Column(
-            children: this.widget.notification.incident != null
-                ? this
-                    .widget
-                    .notification
-                    .incident
-                    .map<Widget>((data) => _text(data))
-                    .toList()
-                : <Widget>[],
+            children: this
+                .widget
+                .notification
+                .category
+                .map<Widget>((data) => _text(data))
+                .toList(),
           ),
         ),
       ],

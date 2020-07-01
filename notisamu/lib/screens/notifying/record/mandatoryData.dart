@@ -15,19 +15,27 @@ class _OccurrenceState extends State<Occurrence> {
   final local = TextEditingController();
 
   DateTime selectedDate = DateTime.now();
-  String _radioValue;
+  String _radioValuePeriod;
+  String _radioValueLocal;
 
   @override
   void initState() {
     setState(() {
-      _radioValue = null;
+      _radioValuePeriod = null;
+      _radioValueLocal = "";
     });
     super.initState();
   }
 
-  void radioButtonChanges(String value) {
+  void radioButtonChangesPeriod(String value) {
     setState(() {
-      _radioValue = value;
+      _radioValuePeriod = value;
+    });
+  }
+
+  void radioButtonChangesLocal(String value) {
+    setState(() {
+      _radioValueLocal = value;
     });
   }
 
@@ -48,13 +56,13 @@ class _OccurrenceState extends State<Occurrence> {
       padding: EdgeInsets.all(16),
       children: <Widget>[
         SizedBox(height: 20),
-        _numeroOccurrence(),
+        _occurrenceNumber(),
         SizedBox(height: 40),
-        _localOccurrence(),
+        _occurrenceLocal(),
         SizedBox(height: 40),
-        _dataOccurrence(selectedDate),
+        _occurrenceData(selectedDate),
         SizedBox(height: 40),
-        _periodoOccurrence(),
+        _occurrencePeriod(),
       ],
     );
   }
@@ -86,7 +94,7 @@ class _OccurrenceState extends State<Occurrence> {
       );
   }
 
-  _dataOccurrence(selectedDate) {
+  _occurrenceData(selectedDate) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -114,7 +122,25 @@ class _OccurrenceState extends State<Occurrence> {
     );
   }
 
-  _periodoOccurrence() {
+  _occurrencePeriod() {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: <Widget>[
+        Text(
+          '*Periodo da ocorrência:',
+          textAlign: TextAlign.left,
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+        _radioButton('Manhã', _radioValuePeriod, radioButtonChangesPeriod),
+        _radioButton('Tarde', _radioValuePeriod, radioButtonChangesPeriod),
+        _radioButton('Noite', _radioValuePeriod, radioButtonChangesPeriod),
+      ],
+    );
+  }
+
+  _occurrenceLocal() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -125,30 +151,31 @@ class _OccurrenceState extends State<Occurrence> {
             fontSize: 18,
           ),
         ),
-        _radioButton('Manhã'),
-        _radioButton('Tarde'),
-        _radioButton('Noite'),
+        _radioButton('Residência', _radioValueLocal, radioButtonChangesLocal),
+        _radioButton('Via pública', _radioValueLocal, radioButtonChangesLocal),
+        _radioButton(
+            'Unidade de saúde', _radioValueLocal, radioButtonChangesLocal),
+        _radioButton('Outros', _radioValueLocal, radioButtonChangesLocal),
+        _radioValueLocal.compareTo("Outros") == 0
+            ? TextFormField(
+                controller: local,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 18,
+                ),
+                decoration: InputDecoration(
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(32),
+                  ),
+                  hintText: "Local da ocorrência",
+                ),
+              )
+            : Container(),
       ],
     );
   }
 
-  _localOccurrence() {
-    return TextFormField(
-      controller: local,
-      style: TextStyle(
-        color: Colors.black,
-        fontSize: 18,
-      ),
-      decoration: InputDecoration(
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(32),
-        ),
-        hintText: "Local da ocorrência",
-      ),
-    );
-  }
-
-  _numeroOccurrence() {
+  _occurrenceNumber() {
     return TextFormField(
       controller: occurrenceNumber,
       keyboardType: TextInputType.number,
@@ -165,12 +192,12 @@ class _OccurrenceState extends State<Occurrence> {
     );
   }
 
-  _radioButton(String string) {
+  _radioButton(String string, String radioValue, Function radioButtonChange) {
     return RadioListTile(
       title: Text(string),
       value: string,
-      groupValue: _radioValue,
-      onChanged: radioButtonChanges,
+      groupValue: radioValue,
+      onChanged: radioButtonChange,
     );
   }
 
@@ -178,15 +205,21 @@ class _OccurrenceState extends State<Occurrence> {
     return FloatingActionButton.extended(
       onPressed: () {
         this.widget.notification.setOccurrenceNumber(occurrenceNumber.text);
-        this.widget.notification.setLocal(local.text);
         this.widget.notification.setDate(selectedDate);
-        if(_radioValue == null)//Retirar depois.
-          this.widget.notification.setPeriod("Não informado.");
-        else
-          this.widget.notification.setPeriod(_radioValue);
 
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Category(this.widget.notification)));
+        if (_radioValuePeriod != null)
+          this.widget.notification.setPeriod(_radioValuePeriod);
+
+        if (_radioValueLocal != null &&
+            _radioValueLocal.compareTo("Outros") != 0)
+          this.widget.notification.setLocal(_radioValueLocal);
+        else if (local.text.isNotEmpty)
+          this.widget.notification.setLocal(local.text);
+
+        if (_radioValuePeriod != null &&
+            (_radioValueLocal != null || local.text.isNotEmpty))
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Category(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

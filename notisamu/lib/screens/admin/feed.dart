@@ -244,10 +244,10 @@ class _FeedState extends State<Feed> {
             .orderBy("occurrenceDate", descending: true)
             .snapshots();
         break;
-      case "Data de nascimento":
+      case "Idade":
         return Firestore.instance
             .collection('notification')
-            .orderBy("birth")
+            .orderBy("age")
             .snapshots();
         break;
       case "Categoria":

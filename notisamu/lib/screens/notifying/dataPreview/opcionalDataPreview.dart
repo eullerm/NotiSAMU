@@ -11,6 +11,14 @@ class OptionalData extends StatefulWidget {
 }
 
 class _OptionalDataState extends State<OptionalData> {
+  List<String> data = [
+    "Nome do relator: ",
+    "Profissão: ",
+    "Paciente: ",
+    "Idade: ",
+    "Sexo do paciente: "
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +38,15 @@ class _OptionalDataState extends State<OptionalData> {
         child: Center(
           child: Column(
             children: <Widget>[
-              _nomeDoNotificante(),
+              _notifyName(),
               SizedBox(height: 20),
-              _profissao(),
+              _profission(),
               SizedBox(height: 20),
-              _nomeDoPaciente(),
+              _patientName(),
               SizedBox(height: 20),
-              _dataDeNascimento(),
+              _age(),
               SizedBox(height: 20),
-              _sexoDoPaciente(),
+              _sex(),
             ],
           ),
         ),
@@ -58,21 +66,40 @@ class _OptionalDataState extends State<OptionalData> {
     );
   }
 
-  _nomeDoNotificante() {
+  _notifyName() {
+    return _text(data[0], this.widget.notification.notifying);
+  }
+
+  _profission() {
+    return _text(data[1], this.widget.notification.profission);
+  }
+
+  _patientName() {
+    return _text(data[2], this.widget.notification.patient);
+  }
+
+  _age() {
+    return _text(data[3], this.widget.notification.age);
+  }
+
+  _sex() {
+    return _text(data[4], this.widget.notification.sex);
+  }
+
+  _text(String string, String string2) {
     return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Nome do relator:",
+          string,
           style: TextStyle(
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
         ),
         GestureDetector(
-          onTap: () => print("!"),
+          onTap: () => _change(string),
           child: Text(
-            this.widget.notification.notifying ?? "Não informado.",
+            string2,
             textAlign: TextAlign.left,
             style: TextStyle(
               fontSize: 20,
@@ -83,103 +110,16 @@ class _OptionalDataState extends State<OptionalData> {
     );
   }
 
-  _profissao() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Profissão:",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => print("!"),
-          child: Text(
-            this.widget.notification.profission ?? "Não informado",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  _nomeDoPaciente() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Nome do Paciente:",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => print("!"),
-          child: Text(
-            this.widget.notification.patient ?? "Não informado.",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  _dataDeNascimento() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Data de nascimento:",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => print("!"),
-          child: Text(
-            "${this.widget.notification.birth.day.toString()}/${this.widget.notification.birth.month.toString()}/${this.widget.notification.birth.year.toString()}",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],
-    );
-  }
-
-  _sexoDoPaciente() {
-    return Column(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Sexo do Paciente:",
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
-        ),
-        GestureDetector(
-          onTap: () => print("!"),
-          child: Text(
-            this.widget.notification.sex ?? "Não informado",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 20,
-            ),
-          ),
-        ),
-      ],
-    );
+  _change(String string) {
+    //Será usado para alterar algum dado.
+    if (string.compareTo(data[0]) == 0)
+      print(string);
+    else if (string.compareTo(data[0]) == 0)
+      print(string);
+    else if (string.compareTo(data[0]) == 0)
+      print(string);
+    else if (string.compareTo(data[0]) == 0)
+      print(string);
+    else if (string.compareTo(data[0]) == 0) print(string);
   }
 }

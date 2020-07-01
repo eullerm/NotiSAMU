@@ -89,10 +89,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             _textColumn("Relator:", widget.notice.data['notifying']),
             _textColumn("Profissão:", widget.notice.data['profission']),
             _textColumn("Paciente:", widget.notice.data['patient']),
-            _textColumn(
-                "Nascimento:",
-                DateFormat("dd/MM/yyyy")
-                    .format(widget.notice.data['birth'].toDate())),
+            _textColumn("Idade:", widget.notice.data['age']),
             _textColumn("Sexo:", widget.notice.data['sex']),
             _textColumn(
                 "Nº da ocorrência:", widget.notice.data['occurrenceNumber']),
@@ -102,12 +99,9 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 DateFormat("dd/MM/yyyy")
                     .format(widget.notice.data['occurrenceDate'].toDate())),
             _textColumn("Periodo:", widget.notice.data['period']),
+            _textList("Categorias:", widget.notice.data['category']),
+            _textList("Respostas:", widget.notice.data['answer']),
             _textColumn("Incidentes:", widget.notice.data['incident']),
-            //Foi necessario fazer o .reversed pois o firebase manda o map de trás para frente.
-            _textMap(
-                "Respostas:",
-                Map.fromEntries(
-                    widget.notice.data['answer'].entries.toList().reversed)),
             _textColumn("Info extra:", widget.notice.data['infoExtra']),
             SizedBox(height: 50),
           ],
@@ -138,16 +132,17 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           ),
           textAlign: TextAlign.left,
         ),
+        SizedBox(height: 5,),
         Text(
           string2,
           style: TextStyle(fontSize: 20),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
       ],
     );
   }
 
-  _textMap(String string, Map map) {
+  _textList(String string, List list) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -157,16 +152,20 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             fontWeight: FontWeight.bold,
             fontSize: 25,
           ),
-          textAlign: TextAlign.left,
         ),
+        SizedBox(height: 5,),
         Column(
-          children: map.entries
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: list
               .map<Widget>(
-                (entry) => _textRow(entry.key, entry.value),
+                (entry) => Text(
+                  entry,
+                  style: TextStyle(fontSize: 20),
+                ),
               )
               .toList(),
         ),
-        SizedBox(height: 20),
+        SizedBox(height: 30),
       ],
     );
   }

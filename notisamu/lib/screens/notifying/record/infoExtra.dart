@@ -12,14 +12,21 @@ class InfoExtra extends StatefulWidget {
 
 class _InfoExtraState extends State<InfoExtra> {
 
-  final informacao = TextEditingController();
+  TextEditingController  information =  TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    if(this.widget.notification.infoExtra != null)
+      information = TextEditingController(text: this.widget.notification.infoExtra);
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Informações extras sobre o incidente"),
+        title: Text("Informações extras."),
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
@@ -54,7 +61,7 @@ class _InfoExtraState extends State<InfoExtra> {
 
   _info() {
     return TextFormField(
-      controller: informacao,
+      controller: information,
       maxLength: 300,
       maxLines: null,
       minLines: null,
@@ -73,8 +80,8 @@ class _InfoExtraState extends State<InfoExtra> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(informacao.text.isEmpty) this.widget.notification.setInfoExtra("Nada informado.");
-        else this.widget.notification.setInfoExtra(informacao.text);
+        if(information.text.isEmpty) this.widget.notification.setInfoExtra("Nada informado.");
+        else this.widget.notification.setInfoExtra(information.text);
         Navigator.of(context)
             .push(MaterialPageRoute(builder: (context) => OptionalData(this.widget.notification)));
       },

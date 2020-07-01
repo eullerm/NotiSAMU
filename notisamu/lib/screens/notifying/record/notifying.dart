@@ -77,7 +77,7 @@ class _NotifyingState extends State<Notifying> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Notifying(opcional)",
+        hintText: "Nome do Notificante(opcional)",
       ),
     );
   }
@@ -87,7 +87,7 @@ class _NotifyingState extends State<Notifying> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Profissão:',
+          '*Profissão:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
@@ -96,7 +96,6 @@ class _NotifyingState extends State<Notifying> {
         _radioButton('Enfermeira(o)'),
         _radioButton('Técnico de enfermagem'),
         _radioButton('Médica(o)'),
-        _radioButton('Não informar'),
       ],
     );
   }
@@ -114,16 +113,14 @@ class _NotifyingState extends State<Notifying> {
     return FloatingActionButton.extended(
       onPressed: () {
         if (notifying.text.isEmpty)
-          this.notification.setNotifying("Nao informado");
+          this.notification.setNotifying("Não informado");
         else
           this.notification.setNotifying(notifying.text);
-        if(_radioValue == null)
-          this.notification.setProfission("Não informado");
-        else
+        if (_radioValue != null) {
           this.notification.setProfission(_radioValue);
-        
-        Navigator.of(context).push(
-            MaterialPageRoute(builder: (context) => Patient(notification)));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Patient(notification)));
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

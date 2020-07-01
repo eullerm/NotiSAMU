@@ -45,11 +45,22 @@ class _AdviceState extends State<Advice> {
   }
 
   _advice(size) {
+    return Column(
+      children: <Widget>[
+        _text(
+            "A notificação não apresenta caráter punitivo. Ela visa a segurança do paciente e uma melhor qualidade no atendimento ao usuário da unidade de saúde.",
+            25.0),
+        _text("Você não será identificado.", 26.0)
+      ],
+    );
+  }
+
+  _text(String string, double font) {
     return Text(
-      ("""A notificação não apresenta caráter punitivo. Ela visa a segurança do paciente e uma melhor qualidade no atendimento ao usuário da unidade de saúde."""),
+      (string),
       textAlign: TextAlign.center,
       style: TextStyle(
-        fontSize: 25,
+        fontSize: font,
       ),
     );
   }

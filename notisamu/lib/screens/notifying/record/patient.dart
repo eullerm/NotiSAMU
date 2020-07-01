@@ -12,7 +12,7 @@ class Patient extends StatefulWidget {
 class _PatientState extends State<Patient> {
   String _radioValue;
   final patient = TextEditingController();
-  DateTime selectedDate = DateTime.now();
+  final age = TextEditingController();
 
   @override
   void initState() {
@@ -49,7 +49,7 @@ class _PatientState extends State<Patient> {
             SizedBox(height: 20),
             _patientName(),
             SizedBox(height: 40),
-            _birth(selectedDate),
+            _age(),
             SizedBox(height: 40),
             _radioButtonSex(),
           ],
@@ -69,63 +69,25 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Patient(opcional)",
+        hintText: "Nome do Paciente(opcional)",
       ),
     );
   }
 
-  _selectDate(BuildContext context) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: new DateTime.now().subtract(Duration(days: 120 * 365)),
-      lastDate: new DateTime.now().add(Duration(days: 367)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: Colors.red,
-            accentColor: Colors.red,
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
-          ),
-          child: child,
-        );
-      },
-    );
-    if (picked != null &&
-        picked != selectedDate &&
-        picked.compareTo(DateTime.now()) <= 0)
-      setState(
-        () {
-          selectedDate = picked;
-        },
-      );
-  }
-
-  _birth(selectedDate) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: <Widget>[
-        Text(
-          "Data de nascimento:",
-          style: TextStyle(
-            fontSize: 18,
-          ),
+  _age(){
+    return TextFormField(
+      controller: age,
+      keyboardType: TextInputType.number,
+      style: TextStyle(
+        color: Colors.black,
+        fontSize: 18,
+      ),
+      decoration: InputDecoration(
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(32),
         ),
-        GestureDetector(
-          onTap: () => _selectDate(context),
-          child: Text(
-            "${selectedDate.day.toString()}/${selectedDate.month.toString()}/${selectedDate.year.toString()}",
-            textAlign: TextAlign.left,
-            style: TextStyle(
-              fontSize: 18,
-            ),
-          ),
-        ),
-        IconButton(
-          icon: Icon(Icons.date_range),
-          onPressed: () => _selectDate(context),
-        ),
-      ],
+        hintText: "Idade do paciente.",
+      ),
     );
   }
 
@@ -134,7 +96,7 @@ class _PatientState extends State<Patient> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Sexo do Patient:',
+          'Sexo do Paciente:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
@@ -163,11 +125,16 @@ class _PatientState extends State<Patient> {
           this.widget.notification.setPatient("Não informado");
         else
           this.widget.notification.setPatient(patient.text);
+        
         if (_radioValue == null)
           this.widget.notification.setSex("Não informado");
         else
           this.widget.notification.setSex(_radioValue);
-        this.widget.notification.setBirth(selectedDate);
+        
+        if(age.text.isEmpty)
+          this.widget.notification.setAge("Não informado");
+        else
+          this.widget.notification.setAge(age.text);
 
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) => Occurrence(widget.notification)));
