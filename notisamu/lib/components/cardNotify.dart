@@ -3,9 +3,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
 class CardNotify extends StatelessWidget {
-  final DocumentSnapshot notificacao;
+  final DocumentSnapshot notification;
 
-  CardNotify(this.notificacao);
+  CardNotify(this.notification);
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CardNotify extends StatelessWidget {
             height: 110,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                color: notificacao.data['incident'].isNotEmpty ? Colors.green : null),
+                color: notification.data['incident'].isNotEmpty ? Colors.green : null),
           ),
         ],
       ),
@@ -34,20 +34,20 @@ class CardNotify extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: <Widget>[
           Row(
-            children: _rowText("Relator:", notificacao.data['notifying']),
+            children: _rowText("Relator:", notification.data['notifying']),
           ),
           Row(
             children: _rowText(
-                "Nº da Ocorrência:", notificacao.data['occurrenceNumber']),
+                "Nº da Ocorrência:", notification.data['occurrenceNumber']),
           ),
           Row(
             children: _rowText(
                 "Data:",
                 DateFormat("dd/MM/yyyy")
-                    .format(notificacao.data['occurrenceDate'].toDate())),
+                    .format(notification.data['occurrenceDate'].toDate())),
           ),
           Row(
-            children: _rowText("Local:", notificacao.data['local']),
+            children: _rowText("Local:", notification.data['local']),
           ),
         ],
       ),
