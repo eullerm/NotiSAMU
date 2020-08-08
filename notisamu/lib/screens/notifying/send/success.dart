@@ -114,6 +114,7 @@ class _SuccessState extends State<Success> {
           'category': this.widget.notification.category,
           'infoExtra': this.widget.notification.infoExtra,
           'createdAt': timestamp,
+          'base': this.widget.notification.base,
         })
         .timeout(Duration(seconds: 10))
         .whenComplete(

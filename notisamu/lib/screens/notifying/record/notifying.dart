@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/components/user.dart';
 import 'package:noti_samu/login.dart';
 import 'package:noti_samu/screens/notifying/record/patient.dart';
 
 class Notifying extends StatefulWidget {
+
+  //final User user;
+
+  //Notifying(this.user);
+
   @override
   _NotifyingState createState() => _NotifyingState();
 }
 
 class _NotifyingState extends State<Notifying> {
   Notify notification = Notify();
+  //Notify notification = Notify(base: user.base);
   String _radioValue;
   final notifying = TextEditingController();
 
