@@ -7,6 +7,7 @@ import 'package:noti_samu/login.dart';
 import 'package:appcenter/appcenter.dart';
 import 'package:appcenter_analytics/appcenter_analytics.dart';
 import 'package:appcenter_crashes/appcenter_crashes.dart';
+import 'package:noti_samu/services/baseAuth.dart';
 
 
 void main()  {
@@ -25,7 +26,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Login(),
+      home: Login(auth: Auth(),),
       localizationsDelegates: [
       GlobalMaterialLocalizations.delegate,
       GlobalWidgetsLocalizations.delegate,
