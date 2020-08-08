@@ -1,7 +1,6 @@
 import 'package:scoped_model/scoped_model.dart';
 
 class Notify extends Model {
-
   String _notifying;
   String _profission;
   String _patient;
@@ -14,9 +13,7 @@ class Notify extends Model {
   List<String> _category = List();
   List<String> _answer = List();
   String _infoExtra;
-  final String _base;
 
-  Notify({String base}) : _base = base;
   
   String get notifying{
     return _notifying;
@@ -66,9 +63,7 @@ class Notify extends Model {
     return _infoExtra;
   }
 
-  String get base{
-    return _base;
-  }  
+  
 
   setNotifying(String string){
     this._notifying = string;
@@ -132,7 +127,5 @@ class Notify extends Model {
   answerClear(){
     _answer = List();
   }
-
-
   
 }
