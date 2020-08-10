@@ -16,7 +16,7 @@ class Notify extends Model {
   String _infoExtra;
   final String _base;
 
-  Notify({String base}) : _base = base;
+  Notify(String base) : _base = base;
   
   String get notifying{
     return _notifying;

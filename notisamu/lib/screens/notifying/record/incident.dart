@@ -56,6 +56,8 @@ class _CategoryState extends State<Category> {
         """Qualquer desvio no preparo e administração de medicamentos mediante prescrição médica, não observância das recomendações ou guias do hospital ou das instruções técnicas do fabricante do produto. Considera ainda que não houve erro se o medicamento foi administrado de forma correta mesmo se a técnica utilizada contrarie a prescrição médica ou os procedimentos do hospital""",
   };
 
+  String message;
+
   @override
   void initState() {
     super.initState();
@@ -64,14 +66,15 @@ class _CategoryState extends State<Category> {
         _category[incident] = true;
       }
       _mapCategoryQuestions.values.forEach((key) {
-          for(var question in key.keys){
-            for (var answer in this.widget.notification.answer) {
-              if(question.compareTo(answer) == 0){
-                key[answer] = true;
-                break;
-                }
-            }}
-        });
+        for (var question in key.keys) {
+          for (var answer in this.widget.notification.answer) {
+            if (question.compareTo(answer) == 0) {
+              key[answer] = true;
+              break;
+            }
+          }
+        }
+      });
     }
   }
 
@@ -94,7 +97,10 @@ class _CategoryState extends State<Category> {
         child: ListView(
           padding: EdgeInsets.all(8),
           children: <Widget>[
+            SizedBox(height: 8),
+            _errorMessage(),
             _text("Categoria de incidente: "),
+            SizedBox(height: 16,),
             _checkboxMapCategoryQuestions(_category, _mapCategoryQuestions),
           ],
         ),
@@ -222,12 +228,29 @@ class _CategoryState extends State<Category> {
     );
   }
 
-  _text(perguntas) {
+  _text(perguntas, {bool error}) {
+
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
-        fontSize: 18,
+        fontSize: 16,
+        color: (error != null && error) ?  Colors.red: Colors.black,
+      ),
+    );
+
+  }
+
+  _errorMessage() {
+    return message == null ? Container() : Container(
+      child: Column(
+        children: <Widget>[
+          SizedBox(height: 8),
+          Center(
+            child: _text(message, error: true),
+          ),
+          SizedBox(height: 16),
+        ],
       ),
     );
   }
@@ -235,7 +258,10 @@ class _CategoryState extends State<Category> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notification.incidentClear();
+        this
+            .widget
+            .notification
+            .incidentClear(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.answerClear();
         _category.forEach((k, v) {
           if (v == true) {
@@ -251,9 +277,13 @@ class _CategoryState extends State<Category> {
             });
           }
         });
-        if (this.widget.notification.answer != null)
+        if (this.widget.notification.answer.isNotEmpty)
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => InfoExtra(widget.notification)));
+        else
+          setState(() {
+            message = "Selecione um incidente.";
+          });
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/login.dart';
+import 'package:noti_samu/services/baseAuth.dart';
 
 class Advice extends StatefulWidget {
+  Advice(this.base, this.auth);
+
+  final BaseAuth auth;
+  final String base;
+
   @override
   _AdviceState createState() => _AdviceState();
 }
@@ -20,8 +26,9 @@ class _AdviceState extends State<Advice> {
             color: Colors.white,
           ),
           onPressed: () {
+            this.widget.auth.signOut();
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
+                MaterialPageRoute(builder: (context) => Login(auth: this.widget.auth,)));
           },
         ),
       ),
@@ -77,8 +84,8 @@ class _AdviceState extends State<Advice> {
           ),
         ),
         onPressed: () {
-          Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (context) => Notifying()));
+          Navigator.of(context).push(
+              MaterialPageRoute(builder: (context) => Notifying(this.widget.base)));
         },
       ),
     );

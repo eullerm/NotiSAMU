@@ -3,8 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/cardNotify.dart';
 import 'package:noti_samu/screens/Admin/detailsNotice.dart';
 import 'package:noti_samu/login.dart';
+import 'package:noti_samu/services/baseAuth.dart';
 
 class Feed extends StatefulWidget {
+  
+  Feed(this.base, this.auth);
+
+  final String base;
+  final BaseAuth auth;
+
   @override
   _FeedState createState() => _FeedState();
 }
@@ -39,8 +46,11 @@ class _FeedState extends State<Feed> {
             color: Colors.white,
           ),
           onPressed: () {
+            this.widget.auth.signOut();
             Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login()));
+                MaterialPageRoute(builder: (context) => Login(auth: this.widget.auth)));
+                
+
           },
         ),
         actions: <Widget>[
@@ -237,29 +247,34 @@ class _FeedState extends State<Feed> {
   }
 
   _order(String type, {String specif}) {
+    print("base order: " + this.widget.base);
     switch (type) {
       case "Data da ocorrencia":
         return Firestore.instance
             .collection('notification')
             .orderBy("occurrenceDate", descending: true)
+            .where("base", isEqualTo: this.widget.base)
             .snapshots();
         break;
       case "Idade":
         return Firestore.instance
             .collection('notification')
             .orderBy("age")
+            .where("base", isEqualTo: this.widget.base)
             .snapshots();
         break;
       case "Categoria":
         return Firestore.instance
             .collection('notification')
             .where("incident", isEqualTo: specif)
+            .where("base", isEqualTo: this.widget.base)
             .snapshots();
         break;
       default: //Ordena por data de criação
         return Firestore.instance
             .collection('notification')
             .orderBy("createdAt", descending: true)
+            .where("base", isEqualTo: this.widget.base)
             .snapshots();
         break;
     }

@@ -1,4 +1,6 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:noti_samu/components/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 import 'package:noti_samu/screens/notifying/advice.dart';
 import 'package:noti_samu/screens/admin/feed.dart';
@@ -41,21 +43,26 @@ class _LoginState extends State<Login> {
 
     if (validateAndSave()) {
       String userId = "";
+      print("1");
       try {
+        print("2");
         userId = await widget.auth.signIn(_user, _password);
         print('Signed in: $userId');
+
+        User user = await _controlLogin(userId);
+        print('admin and base: ${user.admin}, ${user.base}');
 
         setState(() {
           _loading = false;
         });
 
         if (userId.length > 0 && userId != null) {
-          if(_user.compareTo("niteroi@base.com") == 0)
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Advice()));
-          else if(_user.compareTo("admin@base.com") == 0)
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Feed()));
+          if (!user.admin)
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Advice(user.base, this.widget.auth)));
+          else if (user.admin)
+            Navigator.of(context).push(
+                MaterialPageRoute(builder: (context) => Feed(user.base, this.widget.auth)));
         }
       } catch (e) {
         print('Error: $e');
@@ -66,7 +73,6 @@ class _LoginState extends State<Login> {
         });
       }
     }
-    
   }
 
   @override
@@ -189,12 +195,6 @@ class _LoginState extends State<Login> {
         splashColor: Colors.blue,
         onPressed: () {
           validateAndSubmit();
-          /*if (_user.compareTo("notificante@base.com") == 0)
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Advice()));
-          else if (_user.compareTo("admin@base.com") == 0)
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Feed()));*/
         },
       ),
     );
@@ -217,4 +217,13 @@ class _LoginState extends State<Login> {
     }
   }
 
+  Future<User> _controlLogin(String userID) async {
+    DocumentSnapshot doc;
+
+    doc = await Firestore.instance.collection("user").document(userID).get();
+
+    User user = User(userID, doc.data['base'], doc.data['admin']);
+
+    return user;
+  }
 }

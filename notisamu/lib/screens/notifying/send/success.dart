@@ -3,9 +3,11 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/notification.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
+import 'package:noti_samu/services/baseAuth.dart';
 
 class Success extends StatefulWidget {
   Notify notification;
+  BaseAuth auth;
   Success(this.notification);
 
   @override
@@ -123,7 +125,7 @@ class _SuccessState extends State<Success> {
             Timer(
               Duration(seconds: 2),
               () => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Notifying()),
+                MaterialPageRoute(builder: (context) => Notifying(this.widget.notification.base,)),
                 ModalRoute.withName('/'),
               ),
             );
