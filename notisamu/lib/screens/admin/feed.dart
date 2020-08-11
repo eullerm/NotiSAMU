@@ -2,11 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/cardNotify.dart';
 import 'package:noti_samu/screens/Admin/detailsNotice.dart';
-import 'package:noti_samu/login.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 
 class Feed extends StatefulWidget {
-  
   Feed(this.base, this.auth);
 
   final String base;
@@ -26,7 +24,7 @@ class _FeedState extends State<Feed> {
 
   Map<String, bool> _orderBy = {
     "Data de ocorrencia": false,
-    "Data de nascimento": false,
+    "Idade": false,
   };
 
   String _choiceFilter;
@@ -47,10 +45,7 @@ class _FeedState extends State<Feed> {
           ),
           onPressed: () {
             this.widget.auth.signOut();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login(auth: this.widget.auth)));
-                
-
+            Navigator.pop(context);
           },
         ),
         actions: <Widget>[
@@ -65,9 +60,6 @@ class _FeedState extends State<Feed> {
   _body(BuildContext context) {
     String type =
         showCheckboxFilter ? "Filtro" : (showCheckboxOrder ? "Ordem" : "");
-    /*if (showCheckboxFilter)
-      type = "Filtro";
-    else if (showCheckboxOrder) type = "Ordem";*/
 
     return Stack(
       children: <Widget>[
@@ -85,9 +77,13 @@ class _FeedState extends State<Feed> {
     return Container(
       padding: EdgeInsets.only(top: 5, left: 5, right: 5),
       child: StreamBuilder(
-        stream: _order(_choiceFilter, specif: _choiceIncident),
+        stream: _order(
+          _choiceFilter,
+          this.widget.base,
+          specif: _choiceIncident,
+        ),
         builder: (BuildContext context, AsyncSnapshot snapshot) {
-          if (snapshot.hasError) return Text('Error: ${snapshot.error}');
+          if (snapshot.hasError) _snapshotError(snapshot);
 
           switch (snapshot.connectionState) {
             case ConnectionState.waiting:
@@ -101,6 +97,7 @@ class _FeedState extends State<Feed> {
                   children: _listNotify(snapshot),
                 ),
               );
+              break;
           }
         },
       ),
@@ -151,13 +148,14 @@ class _FeedState extends State<Feed> {
                   onChanged: (bool change) {
                     setState(() {
                       _filter.forEach((k, v) {
-                        _filter[k] = false;
+                        _filter[k] = false; //reseta todo filtro
                       });
                       _orderBy.forEach((k, v) {
-                        _orderBy[k] = false;
+                        _orderBy[k] = false; //reseta toda ordem
                       });
                       _filter[key] = change;
                       if (change) {
+                        //se change for true filtra por categoria e o tipo de incidente
                         _choiceFilter = "Categoria";
                         _choiceIncident = key;
                       } else if (_filter[_choiceIncident] == false) {
@@ -190,13 +188,13 @@ class _FeedState extends State<Feed> {
                   onChanged: (bool change) {
                     setState(() {
                       _filter.forEach((k, v) {
-                        _filter[k] = false;
+                        _filter[k] = false; //reseta todo filtro
                       });
                       _orderBy.forEach((k, v) {
-                        _orderBy[k] = false;
+                        _orderBy[k] = false; // reseta toda ordem
                       });
                       _orderBy[key] = change;
-                      if (change)
+                      if (change) // se change for true filtra pela ordem escolhida
                         _choiceFilter = key;
                       else if (_orderBy[_choiceFilter] == false)
                         _choiceFilter = null;
@@ -246,36 +244,26 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  _order(String type, {String specif}) {
-    print("base order: " + this.widget.base);
+  _order(String type, String base, {String specif}) {
+    var dbBase = Firestore.instance
+        .collection('notification')
+        .where("base", isEqualTo: base);
+
     switch (type) {
       case "Data da ocorrencia":
-        return Firestore.instance
-            .collection('notification')
-            .orderBy("occurrenceDate", descending: true)
-            .where("base", isEqualTo: this.widget.base)
-            .snapshots();
+        return dbBase.orderBy("occurrenceDate", descending: true).snapshots();
         break;
       case "Idade":
-        return Firestore.instance
-            .collection('notification')
-            .orderBy("age")
-            .where("base", isEqualTo: this.widget.base)
-            .snapshots();
+        return dbBase.orderBy("age").snapshots();
         break;
       case "Categoria":
-        return Firestore.instance
-            .collection('notification')
+        return dbBase
+            .orderBy("createdAt", descending: true)
             .where("incident", isEqualTo: specif)
-            .where("base", isEqualTo: this.widget.base)
             .snapshots();
         break;
       default: //Ordena por data de criação
-        return Firestore.instance
-            .collection('notification')
-            .orderBy("createdAt", descending: true)
-            .where("base", isEqualTo: this.widget.base)
-            .snapshots();
+        return dbBase.orderBy("createdAt", descending: true).snapshots();
         break;
     }
   }
@@ -290,5 +278,13 @@ class _FeedState extends State<Feed> {
         child: CardNotify(doc),
       );
     }).toList();
+  }
+
+  _snapshotError(AsyncSnapshot snapshot) {
+    return Container(
+      child: Center(
+        child: _text('Erro: ${snapshot.error}'),
+      ),
+    );
   }
 }

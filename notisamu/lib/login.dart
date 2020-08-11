@@ -18,23 +18,26 @@ class _LoginState extends State<Login> {
   final _formKey = new GlobalKey<FormState>();
 
   String _user;
-  String _errorUser;
   String _password;
-  String _errorPassword;
   String _errorMessage;
   bool _loading;
 
-  // Check if form is valid before perform login
+  // Checa se o form é valido antes do login
   bool validateAndSave() {
     final form = _formKey.currentState;
     if (form.validate()) {
       form.save();
       return true;
+    } else {
+      setState(() {
+        _loading = false;
+      });
+
+      return false;
     }
-    return false;
   }
 
-  // Perform login
+  // Realiza o login
   void validateAndSubmit() async {
     setState(() {
       _errorMessage = "";
@@ -43,33 +46,30 @@ class _LoginState extends State<Login> {
 
     if (validateAndSave()) {
       String userId = "";
-      print("1");
       try {
-        print("2");
         userId = await widget.auth.signIn(_user, _password);
         print('Signed in: $userId');
-
-        User user = await _controlLogin(userId);
-        print('admin and base: ${user.admin}, ${user.base}');
 
         setState(() {
           _loading = false;
         });
 
         if (userId.length > 0 && userId != null) {
+          User user = await _controlLogin(userId);
+          print('admin and base: ${user.admin}, ${user.base}');
+
           if (!user.admin)
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Advice(user.base, this.widget.auth)));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Advice(user.base, this.widget.auth)));
           else if (user.admin)
-            Navigator.of(context).push(
-                MaterialPageRoute(builder: (context) => Feed(user.base, this.widget.auth)));
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Feed(user.base, this.widget.auth)));
         }
       } catch (e) {
         print('Error: $e');
         setState(() {
           _loading = false;
-          _errorMessage = e.toString();
-          _formKey.currentState.reset();
+          _errorMessage = "Login ou senha invalido.";
         });
       }
     }
@@ -106,10 +106,7 @@ class _LoginState extends State<Login> {
     if (_loading) {
       return Center(child: CircularProgressIndicator());
     }
-    return Container(
-      height: 0.0,
-      width: 0.0,
-    );
+    return Container();
   }
 
   _showInputs() {
@@ -136,7 +133,7 @@ class _LoginState extends State<Login> {
   _inputUser() {
     return TextFormField(
       onSaved: (value) => _user = value.trim().toLowerCase() + '@base.com',
-      validator: (value) => _errorUser == null ? null : _errorUser,
+      validator: (value) => _validateUser(value),
       maxLines: 1,
       autofocus: false,
       style: TextStyle(
@@ -160,7 +157,7 @@ class _LoginState extends State<Login> {
     return TextFormField(
       obscureText: true,
       onSaved: (value) => _password = value.trim(),
-      validator: (value) => _errorPassword == null ? null : _errorPassword,
+      validator: (value) => _errorPassword(value),
       maxLines: 1,
       autofocus: false,
       style: TextStyle(
@@ -178,6 +175,20 @@ class _LoginState extends State<Login> {
         ),
       ),
     );
+  }
+
+  _validateUser(String value) {
+    if (value.isEmpty)
+      return "Informe o login.";
+    else
+      return null;
+  }
+
+  _errorPassword(String value) {
+    if (value.isEmpty)
+      return "Informe a senha.";
+    else
+      return null;
   }
 
   _loginButton(size) {
@@ -202,18 +213,22 @@ class _LoginState extends State<Login> {
 
   _showErrorMessage() {
     if (_errorMessage.length > 0 && _errorMessage != null) {
-      return new Text(
-        _errorMessage,
-        style: TextStyle(
-            fontSize: 13.0,
-            color: Colors.red,
-            height: 1.0,
-            fontWeight: FontWeight.w300),
+      return Column(
+        children: <Widget>[
+          SizedBox(height: 5),
+          Text(
+            _errorMessage,
+            style: TextStyle(
+                fontSize: 16.0,
+                color: Colors.red,
+                height: 1.0,
+                fontWeight: FontWeight.w300),
+          ),
+          SizedBox(height: 10),
+        ],
       );
     } else {
-      return new Container(
-        height: 0.0,
-      );
+      return Container();
     }
   }
 

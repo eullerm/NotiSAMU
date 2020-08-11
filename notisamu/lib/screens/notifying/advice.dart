@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
-import 'package:noti_samu/login.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 
 class Advice extends StatefulWidget {
@@ -27,8 +26,7 @@ class _AdviceState extends State<Advice> {
           ),
           onPressed: () {
             this.widget.auth.signOut();
-            Navigator.of(context).pushReplacement(
-                MaterialPageRoute(builder: (context) => Login(auth: this.widget.auth,)));
+            Navigator.pop(context);
           },
         ),
       ),
