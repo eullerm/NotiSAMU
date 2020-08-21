@@ -5,7 +5,6 @@ class Occupations extends Model {
     'Enfermeira(o)',
     'Técnico de enfermagem',
     'Médica(o)',
-    'Não informar'
   ];
 
   List<String> get occupations {

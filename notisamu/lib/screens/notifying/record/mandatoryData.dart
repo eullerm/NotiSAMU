@@ -187,8 +187,12 @@ class _OccurrenceState extends State<Occurrence> {
   _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notification.setOccurrenceNumber(occurrenceNumber.text);
         this.widget.notification.setDate(selectedDate);
+
+        if (occurrenceNumber.text.isNotEmpty)
+          this.widget.notification.setOccurrenceNumber(occurrenceNumber.text);
+        else
+          this.widget.notification.setOccurrenceNumber("Não informado");
 
         if (_radioValuePeriod != null)
           this.widget.notification.setPeriod(_radioValuePeriod);

@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:noti_samu/components/textChangeFormField.dart';
+import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/send/success.dart';
 
@@ -11,6 +13,22 @@ class InfoExtraPreview extends StatefulWidget {
 }
 
 class _InfoExtraPreviewState extends State<InfoExtraPreview> {
+  TextEditingController information = TextEditingController();
+
+  bool _changeInfoExtra;
+
+  @override
+  void initState() {
+    _changeInfoExtra = false;
+
+    if (this.widget.notification.infoExtra != null)
+      information =
+          TextEditingController(text: this.widget.notification.infoExtra);
+
+    print(information.text);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -19,7 +37,9 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
         title: Text("Informação Extra."),
       ),
       body: _body(context),
-      floatingActionButton: _envianotification(),
+      floatingActionButton: _changeInfoExtra
+          ? Builder(builder: (context) => _buttonChange(context))
+          : _sendNotification(),
     );
   }
 
@@ -27,28 +47,41 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
     return Container(
       padding: EdgeInsets.all(16),
       child: SingleChildScrollView(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 20,
-            ),
-            _texto(widget.notification.infoExtra),
-          ],
+        child: Center(
+          child: Column(
+            children: _changeInfoExtra
+                ? <Widget>[
+                    SizedBox(height: 20),
+                    TextChangeFormField(
+                      ("Informações extra:"),
+                      information,
+                      maxLength: 300,
+                      maxLines: null,
+                      minLines: null,
+                      widget: Container(),
+                    )
+                  ]
+                : <Widget>[
+                    SizedBox(height: 20),
+                    TextPreview(
+                      ("Informações extra:"),
+                      string2: information.text,
+                      function: () => _change(),
+                    ),
+                  ],
+          ),
         ),
       ),
     );
   }
 
-  _texto(string) {
-    return Text(
-      string,
-      style: TextStyle(
-        fontSize: 20,
-      ),
-    );
+  _change() {
+    setState(() {
+      _changeInfoExtra = !_changeInfoExtra;
+    });
   }
 
-  _envianotification() {
+  _sendNotification() {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
@@ -57,6 +90,27 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
       label: Text('Enviar'),
       icon: Icon(Icons.send),
       backgroundColor: Colors.redAccent,
+    );
+  }
+
+  _buttonChange(context) {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        setState(() {
+          if (information.text.isEmpty)
+            this.widget.notification.setInfoExtra("Nada informado.");
+          else
+            this.widget.notification.setInfoExtra(information.text);
+
+          information =
+              TextEditingController(text: this.widget.notification.infoExtra);
+        });
+
+        _change();
+      },
+      label: Text('Confirmar'),
+      icon: Icon(Icons.check),
+      backgroundColor: Colors.green,
     );
   }
 }

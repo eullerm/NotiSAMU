@@ -7,6 +7,9 @@ class TextChangeFormField extends StatelessWidget {
     this.number = false,
     this.widget,
     this.functionToCancel,
+    this.maxLength = 50,
+    this.maxLines = 1,
+    this.minLines = 1,
   });
 
   final String field;
@@ -14,6 +17,9 @@ class TextChangeFormField extends StatelessWidget {
   final bool number;
   final Widget widget;
   final Function functionToCancel;
+  final int maxLength;
+  final int maxLines;
+  final int minLines;
 
   @override
   Widget build(BuildContext context) {
@@ -31,6 +37,9 @@ class TextChangeFormField extends StatelessWidget {
             Expanded(
               child: TextFormField(
                 controller: controller,
+                maxLength: maxLength,
+                maxLines: maxLines,
+                minLines: minLines,
                 keyboardType:
                     number ? TextInputType.number : TextInputType.name,
                 style: TextStyle(
