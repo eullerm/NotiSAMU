@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:noti_samu/components/radioButtonList.dart';
+import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/record/mandatoryData.dart';
-import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/objects/notification.dart';
 
 class Patient extends StatefulWidget {
   Notify notification;
@@ -11,6 +13,7 @@ class Patient extends StatefulWidget {
 
 class _PatientState extends State<Patient> {
   String _radioValue;
+  final List<String> listSex = Sex().sex;
   final patient = TextEditingController();
   final age = TextEditingController();
 
@@ -69,12 +72,12 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Paciente(opcional)",
+        hintText: "Iniciais do paciente(opcional)",
       ),
     );
   }
 
-  _age(){
+  _age() {
     return TextFormField(
       controller: age,
       keyboardType: TextInputType.number,
@@ -102,19 +105,12 @@ class _PatientState extends State<Patient> {
             fontSize: 18,
           ),
         ),
-        _radioButton('M'),
-        _radioButton('F'),
-        _radioButton('Não informar'),
+        RadioButtonList(
+          listSex,
+          radioValue: _radioValue,
+          radioButtonChanges: (String value) => radioButtonChanges(value),
+        )
       ],
-    );
-  }
-
-  _radioButton(String string) {
-    return RadioListTile(
-      title: Text(string),
-      value: string,
-      groupValue: _radioValue,
-      onChanged: radioButtonChanges,
     );
   }
 
@@ -125,13 +121,13 @@ class _PatientState extends State<Patient> {
           this.widget.notification.setPatient("Não informado");
         else
           this.widget.notification.setPatient(patient.text);
-        
+
         if (_radioValue == null)
           this.widget.notification.setSex("Não informado");
         else
           this.widget.notification.setSex(_radioValue);
-        
-        if(age.text.isEmpty)
+
+        if (age.text.isEmpty)
           this.widget.notification.setAge("Não informado");
         else
           this.widget.notification.setAge(age.text);

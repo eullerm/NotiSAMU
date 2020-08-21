@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notification.dart';
-import 'package:noti_samu/login.dart';
-import 'package:noti_samu/screens/notifying/advice.dart';
+import 'package:noti_samu/objects/notification.dart';
+import 'package:noti_samu/objects/occupation.dart';
+import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/screens/notifying/record/patient.dart';
 
 class Notifying extends StatefulWidget {
-
   Notifying(this.base);
 
   final String base;
@@ -15,22 +14,23 @@ class Notifying extends StatefulWidget {
 }
 
 class _NotifyingState extends State<Notifying> {
-  Notify notification = Notify("niteroi");
-  String _radioValue;
+  List<String> listOccupations = Occupations().occupations;
+  Notify notification;
+  String _radioValueOccupation;
   final notifying = TextEditingController();
 
   @override
   void initState() {
+    notification = Notify(widget.base);
     setState(() {
-      _radioValue = null;
+      _radioValueOccupation = null;
     });
     super.initState();
   }
 
-  void radioButtonChanges(String value) {
+  void radioButtonChangeOccupation(String value) {
     setState(() {
-      _radioValue = value;
-      debugPrint(_radioValue);
+      _radioValueOccupation = value;
     });
   }
 
@@ -51,7 +51,7 @@ class _NotifyingState extends State<Notifying> {
         ),
       ),
       body: _body(context),
-      floatingActionButton: _buttonNext(),
+      floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
     );
   }
 
@@ -64,7 +64,7 @@ class _NotifyingState extends State<Notifying> {
             SizedBox(height: 20),
             _notifyingName(),
             SizedBox(height: 40),
-            _radioButtonProfission(),
+            _radioButtonOccupation(),
           ],
         ),
       ),
@@ -87,7 +87,7 @@ class _NotifyingState extends State<Notifying> {
     );
   }
 
-  _radioButtonProfission() {
+  _radioButtonOccupation() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
@@ -98,38 +98,44 @@ class _NotifyingState extends State<Notifying> {
             fontSize: 18,
           ),
         ),
-        _radioButton('Enfermeira(o)'),
-        _radioButton('Técnico de enfermagem'),
-        _radioButton('Médica(o)'),
+        RadioButtonList(
+          listOccupations,
+          radioValue: _radioValueOccupation,
+          radioButtonChanges: (String value) =>
+              radioButtonChangeOccupation(value),
+        ),
       ],
     );
   }
 
-  _radioButton(String string) {
-    return RadioListTile(
-      title: Text(string),
-      value: string,
-      groupValue: _radioValue,
-      onChanged: radioButtonChanges,
-    );
-  }
-
-  _buttonNext() {
+  _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
         if (notifying.text.isEmpty)
           this.notification.setNotifying("Não informado");
         else
           this.notification.setNotifying(notifying.text);
-        if (_radioValue != null) {
-          this.notification.setProfission(_radioValue);
+        if (_radioValueOccupation != null) {
+          this.notification.setOccupation(_radioValueOccupation);
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => Patient(notification)));
-        }
+        } else
+          _missingElement(context);
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
       backgroundColor: Colors.redAccent,
+    );
+  }
+
+  _missingElement(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Está faltando um elemento obrigatório",
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
     );
   }
 }

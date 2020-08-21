@@ -42,20 +42,22 @@ class _AdviceState extends State<Advice> {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
-          _advice(size),
+          _advice(),
           _button(size),
         ],
       ),
     );
   }
 
-  _advice(size) {
+  _advice() {
     return Column(
       children: <Widget>[
         _text(
-            "A notificação não apresenta caráter punitivo. Ela visa a segurança do paciente e uma melhor qualidade no atendimento ao usuário da unidade de saúde.",
+            "A notificação não apresenta caráter punitivo. " +
+                "Notificando um incidente, você colabora para a " +
+                "segurança do paciente e a qualidade do atendimento ao usuário do serviço.",
             25.0),
-        _text("Você não será identificado.", 26.0)
+        _text("VOCÊ NÃO SERÁ IDENTIFICADO!", 22.0)
       ],
     );
   }
@@ -82,8 +84,8 @@ class _AdviceState extends State<Advice> {
           ),
         ),
         onPressed: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Notifying(this.widget.base)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => Notifying(this.widget.base)));
         },
       ),
     );

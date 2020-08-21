@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/send/success.dart';
 
 class InfoExtraPreview extends StatefulWidget {
-
   Notify notification;
   InfoExtraPreview(this.notification);
 
@@ -52,8 +51,8 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
   _envianotification() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => Success(this.widget.notification)));
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => Success(this.widget.notification)));
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),

@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notification.dart';
-import 'package:noti_samu/screens/notifying/dataPreview/opcionalDataPreview.dart';
+import 'package:noti_samu/objects/notification.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/optionalDataPreview.dart';
 
 class InfoExtra extends StatefulWidget {
   Notify notification;
   InfoExtra(this.notification);
-  
+
   @override
   _InfoExtraState createState() => _InfoExtraState();
 }
 
 class _InfoExtraState extends State<InfoExtra> {
-
-  TextEditingController  information =  TextEditingController();
+  TextEditingController information = TextEditingController();
 
   @override
   void initState() {
     super.initState();
-    if(this.widget.notification.infoExtra != null)
-      information = TextEditingController(text: this.widget.notification.infoExtra);
+    if (this.widget.notification.infoExtra != null)
+      information =
+          TextEditingController(text: this.widget.notification.infoExtra);
   }
 
   @override
@@ -43,10 +43,10 @@ class _InfoExtraState extends State<InfoExtra> {
               height: 20,
             ),
             Text(
-              ("""Caixa para informações adicionais."""),
-              textAlign: TextAlign.center,
+              ("Você considera que algum fator ou agente tenha contribuído" +
+                  " para este incidente? Se sim, especifique."),
               style: TextStyle(
-                fontSize: 18,
+                fontSize: 16,
               ),
             ),
             SizedBox(
@@ -80,10 +80,12 @@ class _InfoExtraState extends State<InfoExtra> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if(information.text.isEmpty) this.widget.notification.setInfoExtra("Nada informado.");
-        else this.widget.notification.setInfoExtra(information.text);
-        Navigator.of(context)
-            .push(MaterialPageRoute(builder: (context) => OptionalData(this.widget.notification)));
+        if (information.text.isEmpty)
+          this.widget.notification.setInfoExtra("Nada informado.");
+        else
+          this.widget.notification.setInfoExtra(information.text);
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => OptionalData(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

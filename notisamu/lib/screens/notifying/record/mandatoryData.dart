@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notification.dart';
-import 'package:noti_samu/screens/notifying/record/incident.dart';
+import 'package:noti_samu/components/datePicker.dart';
+import 'package:noti_samu/objects/locals.dart';
+import 'package:noti_samu/objects/notification.dart';
+import 'package:noti_samu/components/radioButtonList.dart';
+import 'package:noti_samu/objects/period.dart';
+import 'package:noti_samu/screens/notifying/record/category.dart';
 
 class Occurrence extends StatefulWidget {
   Notify notification;
@@ -11,8 +15,12 @@ class Occurrence extends StatefulWidget {
 }
 
 class _OccurrenceState extends State<Occurrence> {
+  final int maxRangeDatePicker = 7;
+
   final occurrenceNumber = TextEditingController();
   final local = TextEditingController();
+  final List<String> listlocals = Locals().locals;
+  final List<String> listPeriods = Periods().periods;
 
   DateTime selectedDate = DateTime.now();
   String _radioValuePeriod;
@@ -39,6 +47,15 @@ class _OccurrenceState extends State<Occurrence> {
     });
   }
 
+  _datePicker(int range) async {
+    final DateTime picked = await selectDate(context, range, selectedDate);
+    setState(
+      () {
+        selectedDate = picked;
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +64,7 @@ class _OccurrenceState extends State<Occurrence> {
         title: Text("Registro de dados da ocorrência"),
       ),
       body: _body(context),
-      floatingActionButton: _buttonNext(),
+      floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
     );
   }
 
@@ -60,41 +77,14 @@ class _OccurrenceState extends State<Occurrence> {
         SizedBox(height: 40),
         _occurrenceLocal(),
         SizedBox(height: 40),
-        _occurrenceData(selectedDate),
+        _occurrenceData(),
         SizedBox(height: 40),
         _occurrencePeriod(),
       ],
     );
   }
 
-  _selectDate(BuildContext context, int tempo) async {
-    final DateTime picked = await showDatePicker(
-      context: context,
-      initialDate: selectedDate,
-      firstDate: new DateTime.now().subtract(Duration(days: tempo)),
-      lastDate: new DateTime.now().add(Duration(days: 367)),
-      builder: (context, child) {
-        return Theme(
-          data: Theme.of(context).copyWith(
-            primaryColor: Colors.red,
-            accentColor: Colors.red,
-            buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
-          ),
-          child: child,
-        );
-      },
-    );
-    if (picked != null &&
-        picked != selectedDate &&
-        picked.compareTo(DateTime.now()) <= 0)
-      setState(
-        () {
-          selectedDate = picked;
-        },
-      );
-  }
-
-  _occurrenceData(selectedDate) {
+  _occurrenceData() {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
@@ -105,7 +95,7 @@ class _OccurrenceState extends State<Occurrence> {
           ),
         ),
         GestureDetector(
-          onTap: () => _selectDate(context, 7),
+          onTap: () => _datePicker(maxRangeDatePicker),
           child: Text(
             "${selectedDate.day.toString()}/${selectedDate.month.toString()}/${selectedDate.year.toString()}",
             textAlign: TextAlign.left,
@@ -116,7 +106,7 @@ class _OccurrenceState extends State<Occurrence> {
         ),
         IconButton(
           icon: Icon(Icons.date_range),
-          onPressed: () => _selectDate(context, 7),
+          onPressed: () => _datePicker(maxRangeDatePicker),
         ),
       ],
     );
@@ -133,9 +123,11 @@ class _OccurrenceState extends State<Occurrence> {
             fontSize: 18,
           ),
         ),
-        _radioButton('Manhã', _radioValuePeriod, radioButtonChangesPeriod),
-        _radioButton('Tarde', _radioValuePeriod, radioButtonChangesPeriod),
-        _radioButton('Noite', _radioValuePeriod, radioButtonChangesPeriod),
+        RadioButtonList(
+          listPeriods,
+          radioValue: _radioValuePeriod,
+          radioButtonChanges: (String value) => radioButtonChangesPeriod(value),
+        ),
       ],
     );
   }
@@ -145,17 +137,17 @@ class _OccurrenceState extends State<Occurrence> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          'Periodo da ocorrência:',
+          '*Local da ocorrência:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        _radioButton('Residência', _radioValueLocal, radioButtonChangesLocal),
-        _radioButton('Via pública', _radioValueLocal, radioButtonChangesLocal),
-        _radioButton(
-            'Unidade de saúde', _radioValueLocal, radioButtonChangesLocal),
-        _radioButton('Outros', _radioValueLocal, radioButtonChangesLocal),
+        RadioButtonList(
+          listlocals,
+          radioValue: _radioValueLocal,
+          radioButtonChanges: (String value) => radioButtonChangesLocal(value),
+        ),
         _radioValueLocal.compareTo("Outros") == 0
             ? TextFormField(
                 controller: local,
@@ -187,21 +179,12 @@ class _OccurrenceState extends State<Occurrence> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Número da ocorrência",
+        hintText: "Número da ocorrência(opcional)",
       ),
     );
   }
 
-  _radioButton(String string, String radioValue, Function radioButtonChange) {
-    return RadioListTile(
-      title: Text(string),
-      value: string,
-      groupValue: radioValue,
-      onChanged: radioButtonChange,
-    );
-  }
-
-  _buttonNext() {
+  _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
         this.widget.notification.setOccurrenceNumber(occurrenceNumber.text);
@@ -217,13 +200,26 @@ class _OccurrenceState extends State<Occurrence> {
           this.widget.notification.setLocal(local.text);
 
         if (_radioValuePeriod != null &&
-            (_radioValueLocal != null || local.text.isNotEmpty))
+            (_radioValueLocal.length > 0 || local.text.isNotEmpty))
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Category(this.widget.notification)));
+        else
+          _missingElement(context);
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
       backgroundColor: Colors.redAccent,
+    );
+  }
+
+  _missingElement(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Está faltando um elemento obrigatório",
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
     );
   }
 }

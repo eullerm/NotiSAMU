@@ -1,6 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/user.dart';
+import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 import 'package:noti_samu/screens/notifying/advice.dart';
 import 'package:noti_samu/screens/admin/feed.dart';

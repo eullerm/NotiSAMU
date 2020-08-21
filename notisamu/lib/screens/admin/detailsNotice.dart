@@ -87,7 +87,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _textColumn("Relator:", widget.notice.data['notifying']),
-            _textColumn("Profissão:", widget.notice.data['profission']),
+            _textColumn("Profissão:", widget.notice.data['occupation']),
             _textColumn("Paciente:", widget.notice.data['patient']),
             _textColumn("Idade:", widget.notice.data['age']),
             _textColumn("Sexo:", widget.notice.data['sex']),
@@ -132,7 +132,9 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           ),
           textAlign: TextAlign.left,
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         Text(
           string2,
           style: TextStyle(fontSize: 20),
@@ -153,7 +155,9 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             fontSize: 25,
           ),
         ),
-        SizedBox(height: 5,),
+        SizedBox(
+          height: 5,
+        ),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: list

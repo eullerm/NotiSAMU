@@ -1,7 +1,7 @@
 import 'dart:async';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:noti_samu/components/notification.dart';
+import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 
@@ -103,7 +103,7 @@ class _SuccessState extends State<Success> {
         .document()
         .setData({
           'notifying': this.widget.notification.notifying,
-          'profission': this.widget.notification.profission,
+          'occupation': this.widget.notification.occupation,
           'patient': this.widget.notification.patient,
           'age': this.widget.notification.age,
           'sex': this.widget.notification.sex,
@@ -125,7 +125,9 @@ class _SuccessState extends State<Success> {
             Timer(
               Duration(seconds: 2),
               () => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(builder: (context) => Notifying(this.widget.notification.base,)),
+                MaterialPageRoute(
+                    builder: (context) =>
+                        Notifying(this.widget.notification.base)),
                 ModalRoute.withName('/'),
               ),
             );
