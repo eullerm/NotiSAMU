@@ -156,7 +156,7 @@ class _FeedState extends State<Feed> {
                       _filter[key] = change;
                       if (change) {
                         //se change for true filtra por categoria e o tipo de incidente
-                        _choiceFilter = "Categoria";
+                        _choiceFilter = "Classificação";
                         _choiceIncident = key;
                       } else if (_filter[_choiceIncident] == false) {
                         _choiceFilter = null;
@@ -256,10 +256,10 @@ class _FeedState extends State<Feed> {
       case "Idade":
         return dbBase.orderBy("age").snapshots();
         break;
-      case "Categoria":
+      case "Classificação":
         return dbBase
             .orderBy("createdAt", descending: true)
-            .where("incident", isEqualTo: specif)
+            .where("classification", isEqualTo: specif)
             .snapshots();
         break;
       default: //Ordena por data de criação

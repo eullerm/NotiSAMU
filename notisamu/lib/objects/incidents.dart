@@ -59,11 +59,22 @@ class Incidents extends Model {
     return _mapCategoryExplanation;
   }
 
+  bool isIncidentSelected(String string) {
+    bool booleana = false;
+    this._mapCategoryQuestions[string].forEach((key, value) {
+      if (value) booleana = true;
+    });
+    return booleana;
+  }
+
   selectedCategory(String string, {bool booleana = true}) {
     this._category[string] = booleana;
   }
 
   selectedIncident(String string, String string2, bool booleana) {
-    this._mapCategoryQuestions[string][string2] = booleana;
+    this._mapCategoryQuestions[string].forEach((key, value) {
+      if (key.compareTo(string2) == 0)
+        this._mapCategoryQuestions[string][string2] = booleana;
+    });
   }
 }

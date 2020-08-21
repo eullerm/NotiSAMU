@@ -11,7 +11,7 @@ class Notify extends Model {
   DateTime _occurrenceDate;
   String _period;
   List<String> _category = List();
-  List<String> _answer = List();
+  List<String> _incidents = List();
   String _infoExtra;
   final String _base;
 
@@ -57,8 +57,8 @@ class Notify extends Model {
     return _category;
   }
 
-  List<String> get answer {
-    return _answer;
+  List<String> get incidents {
+    return _incidents;
   }
 
   String get infoExtra {
@@ -105,29 +105,29 @@ class Notify extends Model {
     this._period = string;
   }
 
-  setIncident(String string) {
+  setCategory(String string) {
     if (this._category == null)
       this._category = [string];
     else
       this._category.add(string);
   }
 
-  setAnswer(String string) {
-    if (this._answer == null)
-      this._answer = [string];
+  setIncident(String string) {
+    if (this._incidents == null)
+      this._incidents = [string];
     else
-      this._answer.add(string);
+      this._incidents.add(string);
   }
 
   setInfoExtra(String info) {
     _infoExtra = info;
   }
 
-  incidentClear() {
+  clearCategorys() {
     _category = List();
   }
 
-  answerClear() {
-    _answer = List();
+  clearIncidents() {
+    _incidents = List();
   }
 }

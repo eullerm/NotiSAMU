@@ -29,7 +29,7 @@ class _SpecificDataState extends State<SpecificData> {
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {
         incidents.selectedCategory(exist);
-        for (var exist2 in this.widget.notification.answer) {
+        for (var exist2 in this.widget.notification.incidents) {
           incidents.selectedIncident(exist, exist2, true);
         }
       }
@@ -114,7 +114,7 @@ class _SpecificDataState extends State<SpecificData> {
   _incidents() {
     return TextPreview(
       data[1],
-      list: this.widget.notification.answer,
+      list: this.widget.notification.incidents,
       itsList: true,
       function: () => _change(data[1]),
     );
@@ -160,23 +160,23 @@ class _SpecificDataState extends State<SpecificData> {
         this
             .widget
             .notification
-            .incidentClear(); //Garante que a lista de incidentes vai estar limpa
-        this.widget.notification.answerClear();
+            .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
+        this.widget.notification.clearIncidents();
         incidents.category.forEach((k, v) {
-          if (v == true) {
-            this.widget.notification.setIncident(k);
+          if (v && incidents.isIncidentSelected(k)) {
+            this.widget.notification.setCategory(k);
             incidents.mapCategoryQuestions.forEach((key, listQuestions) {
               if (key == k) {
                 for (var question in listQuestions.keys.toList()) {
                   if (listQuestions[
                       question]) //Se a boleana da resposta for true coloca a resposta na notificação
-                    this.widget.notification.setAnswer(question);
+                    this.widget.notification.setIncident(question);
                 }
               }
             });
           }
         });
-        if (this.widget.notification.answer.isNotEmpty) {
+        if (this.widget.notification.incidents.isNotEmpty) {
           setState(() {
             _changeCategory = false;
             _changeIncidents = false;
