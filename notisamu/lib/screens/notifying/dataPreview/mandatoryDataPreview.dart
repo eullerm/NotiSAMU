@@ -24,7 +24,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     "Número da ocorrência:",
     "Local da ocorrência:",
     "Data da ocorrência:",
-    "Periodo da ocorrência:",
+    "Período da ocorrência:",
   ];
 
   List<String> listLocals = Locals().locals;

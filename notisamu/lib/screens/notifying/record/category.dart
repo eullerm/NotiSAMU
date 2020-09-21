@@ -3,6 +3,7 @@ import 'package:noti_samu/components/checkboxChangeField.dart';
 import 'package:noti_samu/objects/incidents.dart';
 import 'package:noti_samu/screens/notifying/record/infoExtra.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:noti_samu/screens/notifying/record/routes.dart';
 
 class Category extends StatefulWidget {
   Notify notification;
@@ -13,6 +14,7 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   Incidents incidents = Incidents();
+  bool isWrongRoute = false;
 
   String message;
 
@@ -35,7 +37,7 @@ class _CategoryState extends State<Category> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Registro de dados da ocorrência"),
+        title: Text("Registro da ocorrência"),
       ),
       body: _body(context),
       floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
@@ -132,11 +134,23 @@ class _CategoryState extends State<Category> {
             });
           }
         });
-        if (this.widget.notification.incidents.isNotEmpty)
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => InfoExtra(widget.notification)));
-        else
+
+        if (this.widget.notification.incidents.isNotEmpty) {
+          this.widget.notification.incidents.forEach((element) {
+            if (element.compareTo("Via errada") == 0) {
+              isWrongRoute = true;
+            }
+          });
+          if (isWrongRoute) {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => Routes(this.widget.notification)));
+          } else {
+            Navigator.of(context).push(MaterialPageRoute(
+                builder: (context) => InfoExtra(this.widget.notification)));
+          }
+        } else {
           _missingElement(context);
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

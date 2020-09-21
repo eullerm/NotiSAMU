@@ -72,7 +72,7 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Iniciais do paciente(opcional)",
+        hintText: "Iniciais do paciente (opcional)",
       ),
     );
   }
@@ -89,7 +89,7 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Idade do paciente.",
+        hintText: "Idade do paciente",
       ),
     );
   }

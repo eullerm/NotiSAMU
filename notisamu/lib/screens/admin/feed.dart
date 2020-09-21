@@ -18,12 +18,12 @@ class _FeedState extends State<Feed> {
   Map<String, bool> _filter = {
     "Incidente com dano": false,
     "Incidente sem dano": false,
-    "Circunstância notificavel": false,
+    "Circunstância notificável": false,
     "Quase erro": false,
   };
 
   Map<String, bool> _orderBy = {
-    "Data de ocorrencia": false,
+    "Data de ocorrência": false,
     "Idade": false,
   };
 
@@ -37,7 +37,7 @@ class _FeedState extends State<Feed> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Noti SAMU"),
+        title: Text("NotiSAMU"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -76,13 +76,14 @@ class _FeedState extends State<Feed> {
   _listIncidents() {
     return Container(
       padding: EdgeInsets.only(top: 5, left: 5, right: 5),
-      child: StreamBuilder(
+      child: StreamBuilder<QuerySnapshot>(
         stream: _order(
           _choiceFilter,
           this.widget.base,
           specif: _choiceIncident,
         ),
-        builder: (BuildContext context, AsyncSnapshot snapshot) {
+        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+          print("Snapshot ${snapshot.data}");
           if (snapshot.hasError) _snapshotError(snapshot);
 
           switch (snapshot.connectionState) {
@@ -91,12 +92,21 @@ class _FeedState extends State<Feed> {
                 child: CircularProgressIndicator(),
               );
               break;
-            default:
+
+            case ConnectionState.none:
+              _snapshotEmpty();
+              break;
+
+            case ConnectionState.active:
               return Center(
                 child: ListView(
                   children: _listNotify(snapshot),
                 ),
               );
+              break;
+
+            default:
+              _snapshotEmpty();
               break;
           }
         },
@@ -250,7 +260,7 @@ class _FeedState extends State<Feed> {
         .where("base", isEqualTo: base);
 
     switch (type) {
-      case "Data da ocorrencia":
+      case "Data da ocorrência":
         return dbBase.orderBy("occurrenceDate", descending: true).snapshots();
         break;
       case "Idade":
@@ -284,6 +294,18 @@ class _FeedState extends State<Feed> {
     return Container(
       child: Center(
         child: _text('Erro: ${snapshot.error}'),
+      ),
+    );
+  }
+
+  _snapshotEmpty() {
+    return Center(
+      child: Text(
+        "Nenhuma notificação foi encontrada.",
+        textAlign: TextAlign.center,
+        style: TextStyle(
+          fontSize: 18,
+        ),
       ),
     );
   }

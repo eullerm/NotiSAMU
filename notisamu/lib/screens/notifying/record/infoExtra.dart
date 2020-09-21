@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:noti_samu/advice/advice2.dart';
 import 'package:noti_samu/objects/notification.dart';
-import 'package:noti_samu/screens/notifying/dataPreview/optionalDataPreview.dart';
 
 class InfoExtra extends StatefulWidget {
   Notify notification;
@@ -26,7 +26,7 @@ class _InfoExtraState extends State<InfoExtra> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Informações extras."),
+        title: Text("Informações extras"),
       ),
       body: _body(context),
       floatingActionButton: _buttonNext(),
@@ -85,7 +85,7 @@ class _InfoExtraState extends State<InfoExtra> {
         else
           this.widget.notification.setInfoExtra(information.text);
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => OptionalData(this.widget.notification)));
+            builder: (context) => Advice2(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

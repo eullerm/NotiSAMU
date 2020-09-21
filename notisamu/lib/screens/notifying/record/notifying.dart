@@ -39,7 +39,7 @@ class _NotifyingState extends State<Notifying> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Registro de dados opcionais"),
+        title: Text("Registro do notificante"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,
@@ -82,7 +82,7 @@ class _NotifyingState extends State<Notifying> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Notificante(opcional)",
+        hintText: "Nome do Notificante (opcional)",
       ),
     );
   }

@@ -18,7 +18,7 @@ class _AdviceState extends State<Advice> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Noti SAMU"),
+        title: Text("NotiSAMU"),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back,

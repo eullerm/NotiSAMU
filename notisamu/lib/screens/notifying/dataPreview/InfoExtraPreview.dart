@@ -34,7 +34,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Informação Extra."),
+        title: Text("Informações extras"),
       ),
       body: _body(context),
       floatingActionButton: _changeInfoExtra

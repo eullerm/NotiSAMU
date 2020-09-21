@@ -10,6 +10,8 @@ class Notify extends Model {
   String _local;
   DateTime _occurrenceDate;
   String _period;
+  String _route;
+  List<String> _medicines = List();
   List<String> _category = List();
   List<String> _incidents = List();
   String _infoExtra;
@@ -51,6 +53,14 @@ class Notify extends Model {
 
   String get period {
     return _period;
+  }
+
+  String get route {
+    return _route;
+  }
+
+  List<String> get medicines {
+    return _medicines;
   }
 
   List<String> get category {
@@ -105,6 +115,17 @@ class Notify extends Model {
     this._period = string;
   }
 
+  setRoute(String string) {
+    this._route = string;
+  }
+
+  setMedicines(String string) {
+    if (this._medicines == null)
+      this._medicines = [string];
+    else
+      this._medicines.add(string);
+  }
+
   setCategory(String string) {
     if (this._category == null)
       this._category = [string];
@@ -121,6 +142,10 @@ class Notify extends Model {
 
   setInfoExtra(String info) {
     _infoExtra = info;
+  }
+
+  clearMedicines() {
+    _medicines = List();
   }
 
   clearCategorys() {

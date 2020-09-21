@@ -12,10 +12,10 @@ class DetailsNotice extends StatefulWidget {
 }
 
 class _DetailsNoticeState extends State<DetailsNotice> {
-  Map<String, bool> _incidents = {
+  Map<String, bool> _classifications = {
     "Incidente com dano": false,
     "Incidente sem dano": false,
-    "Circunstancia notificavel": false,
+    "Circunstância notificável": false,
     "Quase erro": false,
   };
 
@@ -33,8 +33,8 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   @override
   void initState() {
     super.initState();
-    _incidents.forEach((key, value) {
-      if (key.compareTo(widget.notice.data['incident']) == 0) {
+    _classifications.forEach((key, value) {
+      if (key.compareTo(widget.notice.data['classification']) == 0) {
         value = true;
         buttonState = 1;
         colorButton = Colors.orange;
@@ -48,7 +48,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Noti SAMU"),
+        title: Text("NotiSAMU"),
       ),
       body: _body(context),
       floatingActionButton: _buttonFAB(buttonIcon, colorButton, buttonState),
@@ -69,7 +69,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
               return ScaleTransition(child: child, scale: animation);
             },
             child: showCheckBox
-                ? _checkboxIncidents(context)
+                ? _checkboxClassifications(context)
                 : Container(
                     key: ValueKey<bool>(showCheckBox),
                   ),
@@ -99,9 +99,13 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 DateFormat("dd/MM/yyyy")
                     .format(widget.notice.data['occurrenceDate'].toDate())),
             _textColumn("Periodo:", widget.notice.data['period']),
+            _textList("Medicamentos:", widget.notice.data['medicines']),
             _textList("Categorias:", widget.notice.data['category']),
-            _textList("Respostas:", widget.notice.data['answer']),
-            _textColumn("Incidentes:", widget.notice.data['incident']),
+            _textList("Incidentes:", widget.notice.data['incident']),
+            widget.notice.data['routes'] != []
+                ? _textList("Via:", widget.notice.data['route'])
+                : Container(),
+            _textColumn("Classificação:", widget.notice.data['classification']),
             _textColumn("Info extra:", widget.notice.data['infoExtra']),
             SizedBox(height: 50),
           ],
@@ -174,25 +178,6 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     );
   }
 
-  _textRow(String string, String string2) {
-    return Row(
-      children: <Widget>[
-        Text(
-          string,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 20,
-          ),
-        ),
-        SizedBox(width: 5),
-        Text(
-          string2,
-          style: TextStyle(fontSize: 20),
-        ),
-      ],
-    );
-  }
-
   _buttonFAB(IconData icon, Color color, int integer) {
     return AnimatedSwitcher(
       duration: Duration(milliseconds: 400),
@@ -224,11 +209,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
 
             case 3: //Confirma
               setState(() {
-                _incidents.forEach((key, value) {
-                  if (value) _addIncident(key);
+                _classifications.forEach((key, value) {
+                  if (value) _addClassification(key);
                 });
 
-                if (widget.notice.data['incident'].isEmpty) {
+                if (widget.notice.data['classification'].isEmpty) {
                   buttonState = 1;
                   buttonIcon = Icons.assignment;
                   colorButton = Colors.blue;
@@ -252,7 +237,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     );
   }
 
-  _checkboxIncidents(BuildContext context) {
+  _checkboxClassifications(BuildContext context) {
     return Container(
       key: ValueKey<bool>(showCheckBox),
       width: MediaQuery.of(this.context).size.width - 48,
@@ -263,17 +248,17 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           color: Colors.grey[200]),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _incidents.keys
+        children: _classifications.keys
             .map<Widget>(
               (String key) => CheckboxListTile(
                 title: _text(key),
-                value: _incidents[key],
+                value: _classifications[key],
                 onChanged: (bool value) {
                   setState(() {
-                    _incidents.forEach((k, v) {
-                      _incidents[k] = false;
+                    _classifications.forEach((k, v) {
+                      _classifications[k] = false;
                     });
-                    _incidents[key] = value;
+                    _classifications[key] = value;
                   });
                 },
               ),
@@ -283,13 +268,13 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     );
   }
 
-  _addIncident(String incident) async {
+  _addClassification(String classification) async {
     await database
         .collection("notification")
         .document(widget.notice.documentID)
         .setData(
           {
-            'incident': incident,
+            'classification': classification,
           },
           merge: true,
         )

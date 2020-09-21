@@ -19,7 +19,7 @@ class Incidents extends Model {
       'Armazenamento em local inadequado': false,
       'Armazenamento em temperatura inadequada': false,
       'Medicamento fora da validade': false,
-      'Quantidade  inadequada': false,
+      'Quantidade inadequada': false,
     },
     'Erro de preparo/administração': {
       'Paciente errado': false,
@@ -37,14 +37,14 @@ class Incidents extends Model {
 
   Map<String, String> _mapCategoryExplanation = {
     'Erro de prescrição':
-        "Erro de prescrição com significado clínico é definido como um erro de decisão ou de redação, não intencional, que pode reduzir a probabilidade do tratamento ser efetivo ou aumentaro risco de lesão no paciente, quando comparado com as praticas clínicas estabelecidas e aceitas",
+        "Erro de prescrição com significado clínico é definido como um erro de decisão ou de redação, não intencional, que pode reduzir a probabilidade do tratamento ser efetivo ou aumentar o risco de lesão no paciente, quando comparado com as práticas clínicas estabelecidas e aceitas.",
     'Erro de dispensação/armazenamento':
         """São apresentadas três definições. Entretanto, é preciso ressaltar que estas definições não abordam a possibilidade da prescrição médica estar errada e o atendimento de uma prescrição incorreta é também considerado erro de dispensação.
-        - Definido como a discrepância entre a ordem escrita na prescrição médica e o atendimento dessa ordem28.
-        - São erros cometidos por funcionários da farmácia (farmacêuticos, inclusive) quando realizam a dispensação de medicamentos para as unidades de internação10.
-        - Erro de dispensação é definido como o desvio de uma prescrição médica escrita ou oral, incluindo modificações escritas feitas pelo farmacêutico após contato com o prescritor ou cumprindo normas ou protocolos preestabelecidos. E ainda considerado erro de dispensação qualquer desvio do que é estabelecido pelos órgãos regulatórios ou normas que afetam a dispensação """,
+        - Definido como a discrepância entre a ordem escrita na prescrição médica e o atendimento dessa ordem.
+        - São erros cometidos por funcionários da farmácia (farmacêuticos, inclusive) quando realizam a dispensação de medicamentos para as unidades de internação.
+        - Erro de dispensação é definido como o desvio de uma prescrição médica escrita ou oral, incluindo modificações escritas feitas pelo farmacêutico após contato com o prescritor ou cumprindo normas ou protocolos preestabelecidos. É ainda considerado erro de dispensação qualquer desvio do que é estabelecido pelos órgãos regulatórios ou normas que afetam a dispensação.""",
     'Erro de preparo/administração':
-        """Qualquer desvio no preparo e administração de medicamentos mediante prescrição médica, não observância das recomendações ou guias do hospital ou das instruções técnicas do fabricante do produto. Considera ainda que não houve erro se o medicamento foi administrado de forma correta mesmo se a técnica utilizada contrarie a prescrição médica ou os procedimentos do hospital""",
+        """Qualquer desvio no preparo e administração de medicamentos mediante prescrição médica, não observância das recomendações ou guias do hospital ou das instruções técnicas do fabricante do produto. Considera ainda que não houve erro se o medicamento foi administrado de forma correta mesmo se a técnica utilizada contrarie a prescrição médica ou os procedimentos do hospital.""",
   };
 
   Map<String, bool> get category {

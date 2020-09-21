@@ -64,7 +64,7 @@ class _SpecificDataState extends State<SpecificData> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Dados especificos."),
+        title: Text("Dados específicos"),
       ),
       body: _body(context),
       floatingActionButton: (_changeCategory || _changeIncidents)

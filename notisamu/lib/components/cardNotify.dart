@@ -20,7 +20,9 @@ class CardNotify extends StatelessWidget {
             height: 110,
             decoration: BoxDecoration(
                 borderRadius: BorderRadius.all(Radius.circular(20.0)),
-                color: notification.data['incident'].isNotEmpty ? Colors.green : null),
+                color: notification.data['classification'].isNotEmpty
+                    ? Colors.green
+                    : null),
           ),
         ],
       ),

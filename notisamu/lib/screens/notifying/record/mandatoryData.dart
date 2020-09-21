@@ -4,7 +4,7 @@ import 'package:noti_samu/objects/locals.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/period.dart';
-import 'package:noti_samu/screens/notifying/record/category.dart';
+import 'package:noti_samu/screens/notifying/record/medicines.dart';
 
 class Occurrence extends StatefulWidget {
   Notify notification;
@@ -61,7 +61,7 @@ class _OccurrenceState extends State<Occurrence> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Registro de dados da ocorrência"),
+        title: Text("Registro da ocorrência"),
       ),
       body: _body(context),
       floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
@@ -117,7 +117,7 @@ class _OccurrenceState extends State<Occurrence> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
         Text(
-          '*Periodo da ocorrência:',
+          '*Período da ocorrência:',
           textAlign: TextAlign.left,
           style: TextStyle(
             fontSize: 18,
@@ -179,7 +179,7 @@ class _OccurrenceState extends State<Occurrence> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Número da ocorrência(opcional)",
+        hintText: "Número da ocorrência (opcional)",
       ),
     );
   }
@@ -206,7 +206,7 @@ class _OccurrenceState extends State<Occurrence> {
         if (_radioValuePeriod != null &&
             (_radioValueLocal.length > 0 || local.text.isNotEmpty))
           Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Category(this.widget.notification)));
+              builder: (context) => Medicines(this.widget.notification)));
         else
           _missingElement(context);
       },

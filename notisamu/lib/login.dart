@@ -1,8 +1,8 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:noti_samu/advice/advice.dart';
 import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
-import 'package:noti_samu/screens/notifying/advice.dart';
 import 'package:noti_samu/screens/admin/feed.dart';
 
 class Login extends StatefulWidget {
@@ -69,7 +69,7 @@ class _LoginState extends State<Login> {
         print('Error: $e');
         setState(() {
           _loading = false;
-          _errorMessage = "Login ou senha invalido.";
+          _errorMessage = "Login ou senha inválido.";
         });
       }
     }
@@ -87,7 +87,7 @@ class _LoginState extends State<Login> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Noti SAMU"),
+        title: Text("NotiSAMU"),
       ),
       body: _body(context),
     );
@@ -144,7 +144,7 @@ class _LoginState extends State<Login> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Base.",
+        hintText: "Base",
         icon: Icon(
           Icons.email,
           color: Colors.grey,
@@ -168,7 +168,7 @@ class _LoginState extends State<Login> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Senha.",
+        hintText: "Senha",
         icon: Icon(
           Icons.lock,
           color: Colors.grey,
