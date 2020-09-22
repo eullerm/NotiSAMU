@@ -14,13 +14,14 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   Incidents incidents = Incidents();
-  bool isWrongRoute = false;
+  bool isWrongRoute;
 
   String message;
 
   @override
   void initState() {
     super.initState();
+    isWrongRoute = false;
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {

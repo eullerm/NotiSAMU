@@ -7,7 +7,7 @@ import 'package:noti_samu/objects/locals.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/period.dart';
-import 'package:noti_samu/screens/notifying/dataPreview/specificDataPreview.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/medicinesPreview.dart';
 
 class MandatoryData extends StatefulWidget {
   Notify notification;
@@ -114,7 +114,7 @@ class _MandatoryDataState extends State<MandatoryData> {
     return FloatingActionButton.extended(
       onPressed: () {
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SpecificData(widget.notification)));
+            builder: (context) => MedicinesPreview(widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

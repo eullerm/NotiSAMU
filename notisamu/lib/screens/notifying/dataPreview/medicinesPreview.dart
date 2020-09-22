@@ -1,28 +1,29 @@
 import 'package:flutter/material.dart';
+import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
-import 'package:noti_samu/screens/notifying/record/category.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/specificDataPreview.dart';
 
-class Medicines extends StatefulWidget {
+class MedicinesPreview extends StatefulWidget {
   Notify notification;
-  Medicines(this.notification);
+  MedicinesPreview(this.notification);
   @override
-  _MedicinesState createState() => _MedicinesState();
+  _MedicinesPreviewState createState() => _MedicinesPreviewState();
 }
 
-class _MedicinesState extends State<Medicines> {
+class _MedicinesPreviewState extends State<MedicinesPreview> {
+  bool _changeMedicines;
   Map<String, bool> listMedicines, filtredMecines;
 
   @override
   void initState() {
+    _changeMedicines = false;
     listMedicines = filtredMecines = Map.fromIterable(ListMedicines().medicines,
         key: (e) => e, value: (e) => false);
-    if (this.widget.notification.medicines.isNotEmpty) {
-      this.widget.notification.medicines.forEach((element) {
-        listMedicines[element] = true;
-        filtredMecines[element] = true;
-      });
-    }
+    this.widget.notification.medicines.forEach((element) {
+      listMedicines[element] = true;
+      filtredMecines[element] = true;
+    });
     super.initState();
   }
 
@@ -34,7 +35,9 @@ class _MedicinesState extends State<Medicines> {
         title: Text("Medicamentos"),
       ),
       body: _body(context),
-      floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
+      floatingActionButton: _changeMedicines
+          ? Builder(builder: (context) => _changeButton(context))
+          : _buttonNext(),
     );
   }
 
@@ -42,28 +45,45 @@ class _MedicinesState extends State<Medicines> {
     return Container(
       padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 40),
       child: Center(
-        child: Column(
-          children: <Widget>[
-            SizedBox(
-              height: 8,
-            ),
-            _text("*Selecione os medicamentos usados no atendimento"),
-            SizedBox(
-              height: 16,
-            ),
-            _searchBar(),
-            SizedBox(
-              height: 8,
-            ),
-            Divider(),
-            Expanded(child: _listViewMedicines()),
-            Divider(),
-            SizedBox(
-              height: 15,
-            ),
-          ],
-        ),
+        child: _changeMedicines
+            ? _changeListMedicines()
+            : TextPreview(
+                "Medicamentos selecionados",
+                list: this.widget.notification.medicines,
+                itsList: true,
+                function: () => _change(),
+              ),
       ),
+    );
+  }
+
+  _change() {
+    setState(() {
+      _changeMedicines = !_changeMedicines;
+    });
+  }
+
+  _changeListMedicines() {
+    return Column(
+      children: <Widget>[
+        SizedBox(
+          height: 8,
+        ),
+        _text("*Selecione os medicamentos usados no atendimento"),
+        SizedBox(
+          height: 16,
+        ),
+        _searchBar(),
+        SizedBox(
+          height: 8,
+        ),
+        Divider(),
+        Expanded(child: _listViewMedicines()),
+        Divider(),
+        SizedBox(
+          height: 15,
+        ),
+      ],
     );
   }
 
@@ -98,6 +118,16 @@ class _MedicinesState extends State<Medicines> {
     );
   }
 
+  _text(perguntas) {
+    return Text(
+      perguntas,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 18,
+      ),
+    );
+  }
+
   _filterMedicines(String value) {
     setState(() {
       List<String> list = listMedicines.keys.where((element) {
@@ -114,16 +144,6 @@ class _MedicinesState extends State<Medicines> {
     });
   }
 
-  _text(perguntas) {
-    return Text(
-      perguntas,
-      textAlign: TextAlign.left,
-      style: TextStyle(
-        fontSize: 18,
-      ),
-    );
-  }
-
   _missingElement(BuildContext context) {
     return Scaffold.of(context).showSnackBar(
       SnackBar(
@@ -135,7 +155,19 @@ class _MedicinesState extends State<Medicines> {
     );
   }
 
-  _buttonNext(BuildContext context) {
+  _buttonNext() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        Navigator.of(context).push(MaterialPageRoute(
+            builder: (context) => SpecificData(this.widget.notification)));
+      },
+      label: Text('Continuar'),
+      icon: Icon(Icons.skip_next),
+      backgroundColor: Colors.redAccent,
+    );
+  }
+
+  _changeButton(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
         this.widget.notification.clearMedicines();
@@ -145,17 +177,16 @@ class _MedicinesState extends State<Medicines> {
             this.widget.notification.setMedicines(key);
           }
         });
-
         if (this.widget.notification.medicines.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Category(this.widget.notification)));
-        } else {
+          setState(() {
+            _changeMedicines = false;
+          });
+        } else
           _missingElement(context);
-        }
       },
-      label: Text('Continuar'),
-      icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      label: Text('Confirmar'),
+      icon: Icon(Icons.check),
+      backgroundColor: Colors.green,
     );
   }
 }

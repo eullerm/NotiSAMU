@@ -4,6 +4,7 @@ import 'package:noti_samu/objects/incidents.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/routesPreview.dart';
 
 class SpecificData extends StatefulWidget {
   Notify notification;
@@ -22,6 +23,7 @@ class _SpecificDataState extends State<SpecificData> {
 
   bool _changeCategory;
   bool _changeIncidents;
+  bool _isWrongRoute;
 
   @override
   void initState() {
@@ -37,6 +39,7 @@ class _SpecificDataState extends State<SpecificData> {
 
     _changeCategory = false;
     _changeIncidents = false;
+    _isWrongRoute = false;
     super.initState();
   }
 
@@ -145,8 +148,19 @@ class _SpecificDataState extends State<SpecificData> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InfoExtraPreview(widget.notification)));
+        this.widget.notification.incidents.forEach((element) {
+          if (element.compareTo("Via errada") == 0) {
+            _isWrongRoute = true;
+          }
+        });
+        if (_isWrongRoute) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => RoutesPreview(this.widget.notification)));
+        } else {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) =>
+                  InfoExtraPreview(this.widget.notification)));
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

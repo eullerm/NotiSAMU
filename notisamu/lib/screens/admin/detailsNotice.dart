@@ -4,8 +4,9 @@ import 'package:intl/intl.dart';
 
 class DetailsNotice extends StatefulWidget {
   final DocumentSnapshot notice;
+  final bool admin;
 
-  DetailsNotice(this.notice);
+  DetailsNotice(this.notice, this.admin);
 
   @override
   _DetailsNoticeState createState() => _DetailsNoticeState();
@@ -51,7 +52,9 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
-      floatingActionButton: _buttonFAB(buttonIcon, colorButton, buttonState),
+      floatingActionButton: this.widget.admin
+          ? _buttonFAB(buttonIcon, colorButton, buttonState)
+          : Container(),
     );
   }
 
@@ -82,7 +85,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   _information() {
     return <Widget>[
       Container(
-        padding: EdgeInsets.all(10),
+        padding: EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
@@ -102,12 +105,12 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             _textList("Medicamentos:", widget.notice.data['medicines']),
             _textList("Categorias:", widget.notice.data['category']),
             _textList("Incidentes:", widget.notice.data['incident']),
-            widget.notice.data['routes'] != []
-                ? _textList("Via:", widget.notice.data['route'])
+            widget.notice.data['route'] != null
+                ? _textColumn("Via:", widget.notice.data['route'])
                 : Container(),
             _textColumn("Classificação:", widget.notice.data['classification']),
             _textColumn("Info extra:", widget.notice.data['infoExtra']),
-            SizedBox(height: 50),
+            this.widget.admin ? SizedBox(height: 50) : Container(),
           ],
         ),
       )
@@ -282,7 +285,8 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         .whenComplete(() => setState(() {
               Navigator.of(context).pop(
                 MaterialPageRoute(
-                    builder: (context) => DetailsNotice(widget.notice)),
+                    builder: (context) =>
+                        DetailsNotice(widget.notice, widget.admin)),
               );
             }))
         .catchError((error) => print("$error"));

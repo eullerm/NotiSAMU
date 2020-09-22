@@ -32,6 +32,8 @@ class _FeedState extends State<Feed> {
   bool showCheckboxFilter = false;
   bool showCheckboxOrder = false;
 
+  bool admin;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,25 +257,33 @@ class _FeedState extends State<Feed> {
   }
 
   _order(String type, String base, {String specif}) {
-    var dbBase = Firestore.instance
-        .collection('notification')
-        .where("base", isEqualTo: base);
+    var dataBase;
+
+    if (base.compareTo("geral") == 0) {
+      dataBase = Firestore.instance.collection('notification');
+      admin = true;
+    } else {
+      dataBase = Firestore.instance
+          .collection('notification')
+          .where("base", isEqualTo: base);
+      admin = false;
+    }
 
     switch (type) {
       case "Data da ocorrência":
-        return dbBase.orderBy("occurrenceDate", descending: true).snapshots();
+        return dataBase.orderBy("occurrenceDate", descending: true).snapshots();
         break;
       case "Idade":
-        return dbBase.orderBy("age").snapshots();
+        return dataBase.orderBy("age").snapshots();
         break;
       case "Classificação":
-        return dbBase
+        return dataBase
             .orderBy("createdAt", descending: true)
             .where("classification", isEqualTo: specif)
             .snapshots();
         break;
       default: //Ordena por data de criação
-        return dbBase.orderBy("createdAt", descending: true).snapshots();
+        return dataBase.orderBy("createdAt", descending: true).snapshots();
         break;
     }
   }
@@ -282,8 +292,8 @@ class _FeedState extends State<Feed> {
     return snapshot.data.documents.map<Widget>((DocumentSnapshot doc) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => DetailsNotice(doc)));
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => DetailsNotice(doc, admin)));
         },
         child: CardNotify(doc),
       );

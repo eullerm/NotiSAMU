@@ -37,6 +37,9 @@ class TextPreview extends StatelessWidget {
   _secundaryText(String string) {
     return Column(
       children: <Widget>[
+        SizedBox(
+          height: 8,
+        ),
         Text(
           string,
           style: TextStyle(

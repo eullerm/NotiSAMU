@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
-
 import 'infoExtra.dart';
 
 class Routes extends StatefulWidget {
@@ -17,7 +16,7 @@ class _RoutesState extends State<Routes> {
 
   String _radioValueRoute;
 
-  void radioButtonChangesRoute(String value) {
+  void radioButtonChangeRoute(String value) {
     setState(() {
       _radioValueRoute = value;
     });
@@ -45,7 +44,7 @@ class _RoutesState extends State<Routes> {
             SizedBox(
               height: 8,
             ),
-            _text("Via em que a administração foi usada erroneamente: "),
+            _text("*Via em que a administração foi usada erroneamente: "),
             SizedBox(
               height: 16,
             ),
@@ -61,7 +60,7 @@ class _RoutesState extends State<Routes> {
     return RadioButtonList(
       listRoutes,
       radioValue: _radioValueRoute,
-      radioButtonChanges: (String value) => radioButtonChangesRoute(value),
+      radioButtonChanges: (String value) => radioButtonChangeRoute(value),
     );
   }
 
@@ -91,7 +90,7 @@ class _RoutesState extends State<Routes> {
       onPressed: () {
         this.widget.notification.setRoute(_radioValueRoute);
 
-        if (this.widget.notification.medicines.isNotEmpty) {
+        if (this.widget.notification.route != null) {
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => InfoExtra(this.widget.notification)));
         } else {
