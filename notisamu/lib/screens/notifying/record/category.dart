@@ -14,14 +14,14 @@ class Category extends StatefulWidget {
 
 class _CategoryState extends State<Category> {
   Incidents incidents = Incidents();
-  bool isWrongRoute;
+  bool _isWrongRoute;
 
   String message;
 
   @override
   void initState() {
     super.initState();
-    isWrongRoute = false;
+    _isWrongRoute = false;
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {
@@ -135,14 +135,21 @@ class _CategoryState extends State<Category> {
             });
           }
         });
+        setState(() {
+          _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
+                                //voltado para modificar algo nessa
+        });
 
         if (this.widget.notification.incidents.isNotEmpty) {
           this.widget.notification.incidents.forEach((element) {
+            print(element);
             if (element.compareTo("Via errada") == 0) {
-              isWrongRoute = true;
+              setState(() {
+                _isWrongRoute = true;
+              });
             }
           });
-          if (isWrongRoute) {
+          if (_isWrongRoute) {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => Routes(this.widget.notification)));
           } else {

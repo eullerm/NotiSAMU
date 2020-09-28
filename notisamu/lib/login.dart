@@ -47,6 +47,7 @@ class _LoginState extends State<Login> {
     if (validateAndSave()) {
       String userId = "";
       try {
+        print("$_user $_password");
         userId = await widget.auth.signIn(_user, _password);
         print('Signed in: $userId');
 

@@ -150,7 +150,9 @@ class _SpecificDataState extends State<SpecificData> {
       onPressed: () {
         this.widget.notification.incidents.forEach((element) {
           if (element.compareTo("Via errada") == 0) {
-            _isWrongRoute = true;
+            setState(() {
+              _isWrongRoute = true;
+            });
           }
         });
         if (_isWrongRoute) {
@@ -189,6 +191,10 @@ class _SpecificDataState extends State<SpecificData> {
               }
             });
           }
+        });
+        setState(() {
+          _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
+          //voltado para modificar algo nessa
         });
         if (this.widget.notification.incidents.isNotEmpty) {
           setState(() {
