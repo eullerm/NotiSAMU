@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:124805974437:android:27749cfe5c8bd90ca7004c",
         "android_client_info": {
-          "package_name": "com.example.notisamuapp"
+          "package_name": "com.notisamuapp"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "124805974437-5ippj9jai6ml55jv9gk75jfhg7r9ma8s.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.notisamuapp",
+            "package_name": "com.notisamuapp",
             "certificate_hash": "f76cf7217f467f5cbc4289217d3dd1dfbdcf3493"
           }
         },
@@ -47,7 +47,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:124805974437:android:6d7886f2ac39499da7004c",
         "android_client_info": {
-          "package_name": "com.example.notisamuapp"
+          "package_name": "com.notisamuapp"
         }
       },
       "oauth_client": [
@@ -55,7 +55,7 @@
           "client_id": "124805974437-5nrvm30vc3dpjtr5b0i08rrr058vs05f.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.example.notisamuapp",
+            "package_name": "com.notisamuapp",
             "certificate_hash": "f76cf7217f467f5cbc4289217d3dd1dfbdcf3493"
           }
         },

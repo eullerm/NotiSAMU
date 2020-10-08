@@ -31,6 +31,7 @@ class _SuccessState extends State<Success> {
       appBar: AppBar(
         backgroundColor: Colors.red,
         title: Text("Dados especificos."),
+        automaticallyImplyLeading: false,
       ),
       body: !send ? _progress(context) : _sended(context),
     );
