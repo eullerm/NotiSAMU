@@ -35,11 +35,11 @@ class _OptionalDataState extends State<OptionalData> {
   TextEditingController age;
   TextEditingController sex;
 
-  bool changeName;
-  bool changeOccupation;
-  bool changePatient;
-  bool changeAge;
-  bool changeSex;
+  bool _changeName;
+  bool _changeOccupation;
+  bool _changePatient;
+  bool _changeAge;
+  bool _changeSex;
 
   @override
   void initState() {
@@ -50,11 +50,11 @@ class _OptionalDataState extends State<OptionalData> {
     _radioValueOccupation = this.widget.notification.occupation;
     _radioValueSex = this.widget.notification.sex;
 
-    changeName = false;
-    changeOccupation = false;
-    changePatient = false;
-    changeAge = false;
-    changeSex = false;
+    _changeName = false;
+    _changeOccupation = false;
+    _changePatient = false;
+    _changeAge = false;
+    _changeSex = false;
 
     super.initState();
   }
@@ -79,7 +79,7 @@ class _OptionalDataState extends State<OptionalData> {
         title: Text("Revisão de dados"),
       ),
       body: _body(context),
-      floatingActionButton: _buttonNext(),
+      floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
     );
   }
 
@@ -103,23 +103,41 @@ class _OptionalDataState extends State<OptionalData> {
     );
   }
 
-  _buttonNext() {
+  _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MandatoryData(widget.notification)));
+        if (!_changeName &&
+            !_changeAge &&
+            !_changeOccupation &&
+            !_changePatient &&
+            !_changeSex) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MandatoryData(widget.notification)));
+        } else {
+          _changingElement(context);
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: (_changeName ||
+              _changeAge ||
+              _changeOccupation ||
+              _changePatient ||
+              _changeSex)
+          ? Colors.red[50]
+          : Colors.redAccent,
     );
   }
 
   _notifyName() {
-    return changeName
+    return _changeName
         ? TextChangeFormField(
             data[0],
             name,
+            functionToCancel: () => _saveNewData(
+              data[0],
+              this.widget.notification.notifying,
+            ),
             widget: CheckButton(
               function: () => _saveNewData(data[0], name.text),
             ),
@@ -132,7 +150,7 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _occupation() {
-    return changeOccupation
+    return _changeOccupation
         ? Column(children: <Widget>[
             Text(
               data[1],
@@ -158,10 +176,14 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _patientName() {
-    return changePatient
+    return _changePatient
         ? TextChangeFormField(
             data[2],
             patient,
+            functionToCancel: () => _saveNewData(
+              data[0],
+              this.widget.notification.patient,
+            ),
             widget: CheckButton(
               function: () => _saveNewData(data[2], patient.text),
             ),
@@ -174,13 +196,15 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _age() {
-    return changeAge
+    return _changeAge
         ? TextChangeFormField(
             data[3],
             age,
             number: true,
-            functionToCancel: () =>
-                _saveNewData(data[3], this.widget.notification.age),
+            functionToCancel: () => _saveNewData(
+              data[3],
+              this.widget.notification.age,
+            ),
             widget: CheckButton(
               function: () => _saveNewData(data[3], age.text),
             ),
@@ -193,7 +217,7 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _sex() {
-    return changeSex
+    return _changeSex
         ? Column(
             children: <Widget>[
               Text(
@@ -224,23 +248,23 @@ class _OptionalDataState extends State<OptionalData> {
   _change(String string) {
     if (string.compareTo(data[0]) == 0)
       setState(() {
-        changeName = !changeName;
+        _changeName = !_changeName;
       });
     else if (string.compareTo(data[1]) == 0)
       setState(() {
-        changeOccupation = !changeOccupation;
+        _changeOccupation = !_changeOccupation;
       });
     else if (string.compareTo(data[2]) == 0)
       setState(() {
-        changePatient = !changePatient;
+        _changePatient = !_changePatient;
       });
     else if (string.compareTo(data[3]) == 0)
       setState(() {
-        changeAge = !changeAge;
+        _changeAge = !_changeAge;
       });
     else if (string.compareTo(data[4]) == 0)
       setState(() {
-        changeSex = !changeSex;
+        _changeSex = !_changeSex;
       });
   }
 
@@ -276,5 +300,16 @@ class _OptionalDataState extends State<OptionalData> {
       });
 
     _change(field);
+  }
+
+  _changingElement(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Salve ou cancele as alterações antes de prosseguir.",
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
+    );
   }
 }

@@ -54,7 +54,7 @@ class TextChangeFormField extends StatelessWidget {
               ),
             ),
             widget,
-            number ? _cancelButton() : Container(),
+            _cancelButton(),
           ],
         ),
       ],

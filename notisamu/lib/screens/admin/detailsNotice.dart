@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:noti_samu/objects/bases.dart';
 
 class DetailsNotice extends StatefulWidget {
   final DocumentSnapshot notice;
@@ -26,10 +27,6 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   bool showCheckBox = false;
 
   final database = Firestore.instance;
-
-  final snackBar = SnackBar(
-    content: Text('Inserido com sucesso!'),
-  );
 
   @override
   void initState() {
@@ -90,6 +87,10 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _textColumn("Relator:", widget.notice.data['notifying']),
+            this.widget.admin
+                ? _textColumn("Base:",
+                    Bases().getSpecificBase(widget.notice.data['base']))
+                : Container(),
             _textColumn("Profissão:", widget.notice.data['occupation']),
             _textColumn("Paciente:", widget.notice.data['patient']),
             _textColumn("Idade:", widget.notice.data['age']),

@@ -21,7 +21,6 @@ class _SuccessState extends State<Success> {
   @override
   void initState() {
     super.initState();
-
     _addData();
   }
 

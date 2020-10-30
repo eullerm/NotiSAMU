@@ -84,7 +84,7 @@ class _MandatoryDataState extends State<MandatoryData> {
         title: Text("Revisão de dados"),
       ),
       body: _body(context),
-      floatingActionButton: _buttonNext(),
+      floatingActionButton: Builder(builder: (context) => _buttonNext(context)),
     );
   }
 
@@ -110,15 +110,21 @@ class _MandatoryDataState extends State<MandatoryData> {
     );
   }
 
-  _buttonNext() {
+  _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => MedicinesPreview(widget.notification)));
+        if (!_changeLocal && !_changeNumber && !_changePeriod) {
+          Navigator.of(context).push(MaterialPageRoute(
+              builder: (context) => MedicinesPreview(widget.notification)));
+        } else {
+          _changingElement(context);
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: (_changeLocal || _changeNumber || _changePeriod)
+          ? Colors.red[50]
+          : Colors.redAccent,
     );
   }
 
@@ -283,5 +289,16 @@ class _MandatoryDataState extends State<MandatoryData> {
       });
 
     _change(field);
+  }
+
+  _changingElement(BuildContext context) {
+    return Scaffold.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Salve ou cancele as alterações antes de prosseguir.",
+          style: TextStyle(color: Colors.red),
+        ),
+      ),
+    );
   }
 }
