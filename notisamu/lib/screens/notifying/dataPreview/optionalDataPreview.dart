@@ -181,7 +181,7 @@ class _OptionalDataState extends State<OptionalData> {
             data[2],
             patient,
             functionToCancel: () => _saveNewData(
-              data[0],
+              data[2],
               this.widget.notification.patient,
             ),
             widget: CheckButton(
