@@ -16,6 +16,14 @@ class _RoutesState extends State<Routes> {
 
   String _radioValueRoute;
 
+  bool _error;
+
+  @override
+  void initState() {
+    _error = false;
+    super.initState();
+  }
+
   void radioButtonChangeRoute(String value) {
     setState(() {
       _radioValueRoute = value;
@@ -44,7 +52,8 @@ class _RoutesState extends State<Routes> {
             SizedBox(
               height: 8,
             ),
-            _text("*Via em que a administração foi usada erroneamente: "),
+            _text("*Via em que a administração foi usada erroneamente: ",
+                error: _error),
             SizedBox(
               height: 16,
             ),
@@ -64,12 +73,13 @@ class _RoutesState extends State<Routes> {
     );
   }
 
-  _text(perguntas) {
+  _text(perguntas, {bool error}) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Colors.red : Colors.black,
       ),
     );
   }
@@ -95,6 +105,9 @@ class _RoutesState extends State<Routes> {
               builder: (context) => InfoExtra(this.widget.notification)));
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),

@@ -12,6 +12,7 @@ class Medicines extends StatefulWidget {
 
 class _MedicinesState extends State<Medicines> {
   Map<String, bool> listMedicines, filtredMecines;
+  bool _error;
 
   @override
   void initState() {
@@ -23,6 +24,7 @@ class _MedicinesState extends State<Medicines> {
         filtredMecines[element] = true;
       });
     }
+    _error = false;
     super.initState();
   }
 
@@ -47,7 +49,8 @@ class _MedicinesState extends State<Medicines> {
             SizedBox(
               height: 8,
             ),
-            _text("*Selecione os medicamentos usados no atendimento"),
+            _text("*Selecione os medicamentos usados no atendimento",
+                error: _error),
             SizedBox(
               height: 16,
             ),
@@ -103,7 +106,7 @@ class _MedicinesState extends State<Medicines> {
       List<String> list = listMedicines.keys.where((element) {
         value = value.toLowerCase();
         element = element.toLowerCase();
-        return element.startsWith(value);
+        return element.contains(value);
       }).toList();
       filtredMecines = {};
       filtredMecines = Map.fromIterable(
@@ -114,12 +117,13 @@ class _MedicinesState extends State<Medicines> {
     });
   }
 
-  _text(perguntas) {
+  _text(String string, {bool error}) {
     return Text(
-      perguntas,
+      string,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Colors.red : Colors.black,
       ),
     );
   }
@@ -151,6 +155,9 @@ class _MedicinesState extends State<Medicines> {
               builder: (context) => Category(this.widget.notification)));
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),

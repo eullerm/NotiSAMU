@@ -18,12 +18,14 @@ class _NotifyingState extends State<Notifying> {
   Notify notification;
   String _radioValueOccupation;
   final notifying = TextEditingController();
+  bool _error;
 
   @override
   void initState() {
     notification = Notify(widget.base);
     setState(() {
       _radioValueOccupation = null;
+      _error = false;
     });
     super.initState();
   }
@@ -82,7 +84,7 @@ class _NotifyingState extends State<Notifying> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Notificante (opcional)",
+        hintText: "Nome do notificante (opcional)",
       ),
     );
   }
@@ -91,13 +93,7 @@ class _NotifyingState extends State<Notifying> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          '*Profissão:',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
+        _text("*Profissão:", error: _error),
         RadioButtonList(
           listOccupations,
           radioValue: _radioValueOccupation,
@@ -105,6 +101,17 @@ class _NotifyingState extends State<Notifying> {
               radioButtonChangeOccupation(value),
         ),
       ],
+    );
+  }
+
+  _text(String string, {bool error}) {
+    return Text(
+      string,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 18,
+        color: (error != null && error) ? Colors.red : Colors.black,
+      ),
     );
   }
 
@@ -117,10 +124,17 @@ class _NotifyingState extends State<Notifying> {
           this.notification.setNotifying(notifying.text);
         if (_radioValueOccupation != null) {
           this.notification.setOccupation(_radioValueOccupation);
+          setState(() {
+            _error = false;
+          });
           Navigator.of(context).push(
               MaterialPageRoute(builder: (context) => Patient(notification)));
-        } else
+        } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
@@ -132,7 +146,7 @@ class _NotifyingState extends State<Notifying> {
     return Scaffold.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Está faltando um elemento obrigatório",
+          "Está faltando algum elemento obrigatório",
           style: TextStyle(color: Colors.red),
         ),
       ),

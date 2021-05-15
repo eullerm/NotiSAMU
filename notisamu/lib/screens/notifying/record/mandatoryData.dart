@@ -26,11 +26,16 @@ class _OccurrenceState extends State<Occurrence> {
   String _radioValuePeriod;
   String _radioValueLocal;
 
+  bool _localError;
+  bool _periodError;
+
   @override
   void initState() {
     setState(() {
       _radioValuePeriod = null;
-      _radioValueLocal = "";
+      _radioValueLocal = null;
+      _localError = false;
+      _periodError = false;
     });
     super.initState();
   }
@@ -116,13 +121,7 @@ class _OccurrenceState extends State<Occurrence> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          '*Período da ocorrência:',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
+        _text("*Período da ocorrência:", error: _periodError),
         RadioButtonList(
           listPeriods,
           radioValue: _radioValuePeriod,
@@ -136,19 +135,13 @@ class _OccurrenceState extends State<Occurrence> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          '*Local da ocorrência:',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
+        _text("*Local da ocorrência:", error: _localError),
         RadioButtonList(
           listlocals,
           radioValue: _radioValueLocal,
           radioButtonChanges: (String value) => radioButtonChangesLocal(value),
         ),
-        _radioValueLocal.compareTo("Outros") == 0
+        _radioValueLocal != null && _radioValueLocal.compareTo("Outros") == 0
             ? TextFormField(
                 controller: local,
                 style: TextStyle(
@@ -184,6 +177,17 @@ class _OccurrenceState extends State<Occurrence> {
     );
   }
 
+  _text(String string, {bool error}) {
+    return Text(
+      string,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 18,
+        color: (error != null && error) ? Colors.red : Colors.black,
+      ),
+    );
+  }
+
   _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
@@ -194,21 +198,51 @@ class _OccurrenceState extends State<Occurrence> {
         else
           this.widget.notification.setOccurrenceNumber("Não informado");
 
-        if (_radioValuePeriod != null)
+        if (_radioValuePeriod != null) {
           this.widget.notification.setPeriod(_radioValuePeriod);
+          setState(() {
+            _periodError = false;
+          });
+        } else {
+          setState(() {
+            _periodError = true;
+          });
+        }
 
-        if (_radioValueLocal != null &&
-            _radioValueLocal.compareTo("Outros") != 0)
-          this.widget.notification.setLocal(_radioValueLocal);
-        else if (local.text.isNotEmpty)
-          this.widget.notification.setLocal(local.text);
+        if (_radioValueLocal != null) {
+          print("_radioValueLocal: " + _radioValueLocal);
+          print("Outros: " + local.text);
+          if (_radioValueLocal.compareTo("Outros") != 0) {
+            this.widget.notification.setLocal(_radioValueLocal);
+            setState(() {
+              _localError = false;
+            });
+          } else if (local.text.isNotEmpty) {
+            this.widget.notification.setLocal(local.text);
+            setState(() {
+              _localError = false;
+            });
+          } else {
+            setState(() {
+              _localError = true;
+            });
+          }
+        } else {
+          setState(() {
+            _localError = true;
+          });
+        }
 
-        if (_radioValuePeriod != null &&
-            (_radioValueLocal.length > 0 || local.text.isNotEmpty))
+        if (!_localError && !_periodError) {
+          setState(() {
+            _localError = false;
+            _periodError = false;
+          });
           Navigator.of(context).push(MaterialPageRoute(
               builder: (context) => Medicines(this.widget.notification)));
-        else
+        } else {
           _missingElement(context);
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

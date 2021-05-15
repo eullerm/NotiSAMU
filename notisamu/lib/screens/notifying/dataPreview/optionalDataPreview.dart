@@ -111,8 +111,29 @@ class _OptionalDataState extends State<OptionalData> {
             !_changeOccupation &&
             !_changePatient &&
             !_changeSex) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MandatoryData(widget.notification)));
+          /*Navigator.of(context).push(PageRouteBuilder(
+              //transitionDuration: Duration(milliseconds: 500),
+              transitionsBuilder: (BuildContext context,
+                  Animation<double> animation,
+                  Animation<double> secAnimation,
+                  Widget child) {
+            var begin = Offset(1.0, 0.0);
+            var end = Offset.zero;
+            var curve = Curves.ease;
+
+            var tween =
+                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+            return SlideTransition(
+              position: animation.drive(tween),
+              child: child,
+            );
+          }, pageBuilder: (BuildContext context, Animation<double> animation,
+                  Animation<double> secAnimation) {
+            return MandatoryData(widget.notification);
+          }));*/
+          MaterialPageRoute(
+              builder: (context) => MandatoryData(widget.notification));
         } else {
           _changingElement(context);
         }

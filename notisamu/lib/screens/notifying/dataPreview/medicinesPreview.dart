@@ -13,11 +13,13 @@ class MedicinesPreview extends StatefulWidget {
 
 class _MedicinesPreviewState extends State<MedicinesPreview> {
   bool _changeMedicines;
+  bool _error;
   Map<String, bool> listMedicines, filtredMecines;
 
   @override
   void initState() {
     _changeMedicines = false;
+    _error = false;
     listMedicines = filtredMecines = Map.fromIterable(ListMedicines().medicines,
         key: (e) => e, value: (e) => false);
     this.widget.notification.medicines.forEach((element) {
@@ -44,16 +46,14 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
   _body(BuildContext context) {
     return Container(
       padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 40),
-      child: Center(
-        child: _changeMedicines
-            ? _changeListMedicines()
-            : TextPreview(
-                "Medicamentos selecionados",
-                list: this.widget.notification.medicines,
-                itsList: true,
-                function: () => _change(),
-              ),
-      ),
+      child: _changeMedicines
+          ? _changeListMedicines()
+          : TextPreview(
+              "Medicamentos selecionados",
+              list: this.widget.notification.medicines,
+              isList: true,
+              function: () => _change(),
+            ),
     );
   }
 
@@ -69,7 +69,8 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
         SizedBox(
           height: 8,
         ),
-        _text("*Selecione os medicamentos usados no atendimento"),
+        _text("*Selecione os medicamentos usados no atendimento",
+            error: _error),
         SizedBox(
           height: 16,
         ),
@@ -118,12 +119,13 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
     );
   }
 
-  _text(perguntas) {
+  _text(perguntas, {bool error}) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Colors.red : Colors.black,
       ),
     );
   }
@@ -133,7 +135,7 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
       List<String> list = listMedicines.keys.where((element) {
         value = value.toLowerCase();
         element = element.toLowerCase();
-        return element.startsWith(value);
+        return element.contains(value);
       }).toList();
       filtredMecines = {};
       filtredMecines = Map.fromIterable(
@@ -180,9 +182,14 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
         if (this.widget.notification.medicines.isNotEmpty) {
           setState(() {
             _changeMedicines = false;
+            _error = false;
           });
-        } else
+        } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        }
       },
       label: Text('Confirmar'),
       icon: Icon(Icons.check),

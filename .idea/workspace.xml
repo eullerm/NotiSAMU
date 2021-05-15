@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4d3658c9-0362-4863-9de2-188a81fb4baa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/notisamu/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/android/app/src/main/AndroidManifest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/android/app/src/main/AndroidManifest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/android/app/src/main/java/com/example/notisamuapp/MainActivity.java" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/android/app/src/main/java/com/example/notisamuapp/MainActivity.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/android/app/src/main/kotlin/com/example/notisamuapp/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/android/app/src/main/kotlin/com/example/notisamuapp/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/ios/Flutter/flutter_export_environment.sh" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/ios/Flutter/flutter_export_environment.sh" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/components/textPreview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/components/textPreview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/login.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/login.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/medicinesPreview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/medicinesPreview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/optionalDataPreview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/optionalDataPreview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/specificDataPreview.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/dataPreview/specificDataPreview.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/category.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/category.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/mandatoryData.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/mandatoryData.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/medicines.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/medicines.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/notifying.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/notifying.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/patient.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/patient.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/routes.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/notifying/record/routes.dart" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/pubspec.lock" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/pubspec.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/pubspec.yaml" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/pubspec.yaml" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1sa3pebCy2jnWovmfL5RbocPQ0P" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4d3658c9-0362-4863-9de2-188a81fb4baa" name="Default Changelist" comment="" />
+      <created>1621097056928</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1621097056928</updated>
+    </task>
+    <servers />
+  </component>
+</project>

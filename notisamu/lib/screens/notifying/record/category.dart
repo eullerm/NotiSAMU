@@ -16,12 +16,13 @@ class _CategoryState extends State<Category> {
   Incidents incidents = Incidents();
   bool _isWrongRoute;
 
-  String message;
+  bool _error;
 
   @override
   void initState() {
     super.initState();
     _isWrongRoute = false;
+    _error = false;
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {
@@ -53,7 +54,7 @@ class _CategoryState extends State<Category> {
           padding: EdgeInsets.all(8),
           children: <Widget>[
             SizedBox(height: 8),
-            _text("Categoria de incidente: "),
+            _text("*Categoria de incidente: ", error: _error),
             SizedBox(
               height: 16,
             ),
@@ -137,7 +138,7 @@ class _CategoryState extends State<Category> {
         });
         setState(() {
           _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
-                                //voltado para modificar algo nessa
+          _error = false; //voltado para modificar algo nessa
         });
 
         if (this.widget.notification.incidents.isNotEmpty) {
@@ -156,8 +157,14 @@ class _CategoryState extends State<Category> {
             Navigator.of(context).push(MaterialPageRoute(
                 builder: (context) => InfoExtra(this.widget.notification)));
           }
+          setState(() {
+            _error = false;
+          });
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),

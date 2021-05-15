@@ -109,7 +109,7 @@ class _SpecificDataState extends State<SpecificData> {
     return TextPreview(
       data[0],
       list: this.widget.notification.category,
-      itsList: true,
+      isList: true,
       function: () => _change(data[0]),
     );
   }
@@ -118,7 +118,7 @@ class _SpecificDataState extends State<SpecificData> {
     return TextPreview(
       data[1],
       list: this.widget.notification.incidents,
-      itsList: true,
+      isList: true,
       function: () => _change(data[1]),
     );
   }

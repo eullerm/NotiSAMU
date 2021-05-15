@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 class TextPreview extends StatelessWidget {
   TextPreview(this.string,
-      {this.string2, this.list, this.itsList = false, this.function});
+      {this.string2, this.list, this.isList = false, this.function});
 
   final String string;
   final String string2;
   final List<String> list;
-  final bool itsList;
+  final bool isList;
   final Function function;
 
   @override
@@ -16,14 +16,20 @@ class TextPreview extends StatelessWidget {
       onTap: function,
       child: Column(
         children: <Widget>[
-          Text(
-            string,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                string,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              Icon(Icons.edit_outlined),
+            ],
           ),
-          itsList
+          isList
               ? Column(
                   children: list
                       .map<Widget>((String i) => _secundaryText(i))
@@ -35,20 +41,21 @@ class TextPreview extends StatelessWidget {
   }
 
   _secundaryText(String string) {
-    return Column(
+    return Row(
       children: <Widget>[
+        Padding(padding: EdgeInsets.only(left: 8)),
         SizedBox(
           height: 8,
         ),
         Text(
           string,
           style: TextStyle(
-            fontSize: 20,
+            fontSize: 18,
           ),
-          textAlign: TextAlign.center,
+          textAlign: TextAlign.start,
         ),
         SizedBox(
-          height: 20,
+          height: 42,
         ),
       ],
     );

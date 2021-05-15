@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/record/mandatoryData.dart';
@@ -16,11 +17,13 @@ class _PatientState extends State<Patient> {
   final List<String> listSex = Sex().sex;
   final patient = TextEditingController();
   final age = TextEditingController();
+  bool _error;
 
   @override
   void initState() {
     setState(() {
       _radioValue = null;
+      _error = false;
     });
     super.initState();
   }
@@ -64,6 +67,10 @@ class _PatientState extends State<Patient> {
   _patientName() {
     return TextFormField(
       controller: patient,
+      keyboardType: TextInputType.text,
+      inputFormatters: [
+        new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+      ],
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -81,6 +88,10 @@ class _PatientState extends State<Patient> {
     return TextFormField(
       controller: age,
       keyboardType: TextInputType.number,
+      maxLength: 3,
+      inputFormatters: [
+        new FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+      ],
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -89,7 +100,8 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Idade do paciente",
+        hintText: "Idade do paciente (opcional)",
+        hoverColor: (_error != null && _error) ? Colors.red : Colors.black,
       ),
     );
   }
