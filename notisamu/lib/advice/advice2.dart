@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/optionalDataPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Advice2 extends StatefulWidget {
   Advice2(this.notification);
@@ -44,7 +45,8 @@ class _Advice2State extends State<Advice2> {
         _text(
             "Modificações na notificação poderão ser feitas durante a revisão. " +
                 "Clicando no campo desejado será possível alterá-lo.",
-            25)
+            25),
+        SizedBox(height: 100),
       ],
     );
   }
@@ -62,8 +64,10 @@ class _Advice2State extends State<Advice2> {
   _buttonNext(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => OptionalData(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: OptionalData(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

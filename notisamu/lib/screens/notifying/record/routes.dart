@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:page_transition/page_transition.dart';
 import 'infoExtra.dart';
 
 class Routes extends StatefulWidget {
@@ -85,7 +86,7 @@ class _RoutesState extends State<Routes> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Selecione uma via de administração.",
@@ -101,8 +102,10 @@ class _RoutesState extends State<Routes> {
         this.widget.notification.setRoute(_radioValueRoute);
 
         if (this.widget.notification.route != null) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => InfoExtra(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: InfoExtra(this.widget.notification)));
         } else {
           _missingElement(context);
           setState(() {

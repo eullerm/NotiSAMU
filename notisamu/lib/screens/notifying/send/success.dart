@@ -5,6 +5,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 
+// ignore: must_be_immutable
 class Success extends StatefulWidget {
   Notify notification;
   BaseAuth auth;
@@ -29,7 +30,7 @@ class _SuccessState extends State<Success> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.red,
-        title: Text("Dados especificos."),
+        title: Text("Enviando a notificação."),
         automaticallyImplyLeading: false,
       ),
       body: !send ? _progress(context) : _sended(context),

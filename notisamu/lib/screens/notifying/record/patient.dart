@@ -4,6 +4,7 @@ import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/record/mandatoryData.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Patient extends StatefulWidget {
   Notify notification;
@@ -101,6 +102,7 @@ class _PatientState extends State<Patient> {
           borderRadius: BorderRadius.circular(32),
         ),
         hintText: "Idade do paciente (opcional)",
+        counterText: "",
         hoverColor: (_error != null && _error) ? Colors.red : Colors.black,
       ),
     );
@@ -143,9 +145,12 @@ class _PatientState extends State<Patient> {
           this.widget.notification.setAge("Não informado");
         else
           this.widget.notification.setAge(age.text);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Occurrence(widget.notification)));
+        Navigator.push(
+            context,
+            PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: Occurrence(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

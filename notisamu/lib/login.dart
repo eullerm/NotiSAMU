@@ -4,6 +4,7 @@ import 'package:noti_samu/advice/advice.dart';
 import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 import 'package:noti_samu/screens/admin/feed.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Login extends StatefulWidget {
   Login({this.auth});
@@ -60,11 +61,19 @@ class _LoginState extends State<Login> {
           print('admin and base: ${user.admin}, ${user.base}');
 
           if (!user.admin)
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Advice(user.base, this.widget.auth)));
+            Navigator.push(
+                context,
+                PageTransition(
+                    duration: Duration(milliseconds: 200),
+                    type: PageTransitionType.rightToLeft,
+                    child: Advice(user.base, this.widget.auth)));
           else if (user.admin)
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Feed(user.base, this.widget.auth)));
+            Navigator.push(
+                context,
+                PageTransition(
+                    duration: Duration(milliseconds: 200),
+                    type: PageTransitionType.rightToLeft,
+                    child: Feed(user.base, this.widget.auth)));
         }
       } catch (e) {
         print('Error: $e');
@@ -203,7 +212,7 @@ class _LoginState extends State<Login> {
             fontSize: 18,
           ),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         splashColor: Colors.blue,
         onPressed: () {
           validateAndSubmit();

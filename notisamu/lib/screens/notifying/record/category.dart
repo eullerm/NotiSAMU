@@ -4,6 +4,7 @@ import 'package:noti_samu/objects/incidents.dart';
 import 'package:noti_samu/screens/notifying/record/infoExtra.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/routes.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Category extends StatefulWidget {
   Notify notification;
@@ -104,10 +105,10 @@ class _CategoryState extends State<Category> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um incidente.",
+          "Selecione ao menos um incidente.",
           style: TextStyle(color: Colors.red),
         ),
       ),
@@ -151,11 +152,15 @@ class _CategoryState extends State<Category> {
             }
           });
           if (_isWrongRoute) {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Routes(this.widget.notification)));
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: Routes(this.widget.notification)));
           } else {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => InfoExtra(this.widget.notification)));
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: InfoExtra(this.widget.notification)));
           }
           setState(() {
             _error = false;

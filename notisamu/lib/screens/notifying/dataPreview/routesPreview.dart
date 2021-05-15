@@ -4,6 +4,7 @@ import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RoutesPreview extends StatefulWidget {
   Notify notification;
@@ -105,10 +106,10 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione uma via de administração.",
+          "Selecione ao menos uma via de administração.",
           style: TextStyle(color: Colors.red),
         ),
       ),
@@ -118,8 +119,10 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InfoExtraPreview(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: InfoExtraPreview(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

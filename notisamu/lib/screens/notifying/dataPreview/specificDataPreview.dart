@@ -5,6 +5,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/routesPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SpecificData extends StatefulWidget {
   Notify notification;
@@ -156,12 +157,15 @@ class _SpecificDataState extends State<SpecificData> {
           }
         });
         if (_isWrongRoute) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => RoutesPreview(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: RoutesPreview(this.widget.notification)));
         } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  InfoExtraPreview(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: InfoExtraPreview(this.widget.notification)));
         }
       },
       label: Text('Continuar'),
@@ -211,10 +215,10 @@ class _SpecificDataState extends State<SpecificData> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um incidente.",
+          "Selecione ao menos um incidente.",
           style: TextStyle(color: Colors.red),
         ),
       ),

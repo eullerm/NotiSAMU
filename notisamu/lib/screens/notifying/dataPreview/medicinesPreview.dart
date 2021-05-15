@@ -3,6 +3,7 @@ import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/specificDataPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MedicinesPreview extends StatefulWidget {
   Notify notification;
@@ -147,10 +148,10 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um medicamento.",
+          "Selecione ao menos um medicamento.",
           style: TextStyle(color: Colors.red),
         ),
       ),
@@ -160,8 +161,10 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SpecificData(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: SpecificData(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

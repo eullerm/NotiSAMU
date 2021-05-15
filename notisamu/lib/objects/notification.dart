@@ -11,9 +11,9 @@ class Notify extends Model {
   DateTime _occurrenceDate;
   String _period;
   String _route;
-  List<String> _medicines = List();
-  List<String> _category = List();
-  List<String> _incidents = List();
+  List<String> _medicines = [];
+  List<String> _category = [];
+  List<String> _incidents = [];
   String _infoExtra;
   final String _base;
 

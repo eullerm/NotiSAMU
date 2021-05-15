@@ -5,6 +5,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/period.dart';
 import 'package:noti_samu/screens/notifying/record/medicines.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Occurrence extends StatefulWidget {
   Notify notification;
@@ -238,8 +239,10 @@ class _OccurrenceState extends State<Occurrence> {
             _localError = false;
             _periodError = false;
           });
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Medicines(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: Medicines(this.widget.notification)));
         } else {
           _missingElement(context);
         }
@@ -251,10 +254,10 @@ class _OccurrenceState extends State<Occurrence> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Está faltando um elemento obrigatório",
+          "Está faltando algum elemento obrigatório",
           style: TextStyle(color: Colors.red),
         ),
       ),

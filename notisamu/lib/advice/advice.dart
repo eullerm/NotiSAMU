@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/services/baseAuth.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Advice extends StatefulWidget {
   Advice(this.base, this.auth);
@@ -76,6 +77,7 @@ class _AdviceState extends State<Advice> {
     return ButtonTheme(
       minWidth: size.width,
       child: RaisedButton(
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         color: Colors.grey[350],
         child: Text(
           "Acessar",
@@ -84,8 +86,12 @@ class _AdviceState extends State<Advice> {
           ),
         ),
         onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Notifying(this.widget.base)));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: Notifying(this.widget.base)));
         },
       ),
     );

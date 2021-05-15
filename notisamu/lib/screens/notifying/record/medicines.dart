@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/category.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Medicines extends StatefulWidget {
   Notify notification;
@@ -129,10 +130,10 @@ class _MedicinesState extends State<Medicines> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um medicamento.",
+          "Selecione ao menos um medicamento.",
           style: TextStyle(color: Colors.red),
         ),
       ),
@@ -151,8 +152,10 @@ class _MedicinesState extends State<Medicines> {
         });
 
         if (this.widget.notification.medicines.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Category(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: Category(this.widget.notification)));
         } else {
           _missingElement(context);
           setState(() {

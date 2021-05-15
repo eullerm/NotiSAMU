@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/advice/advice2.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:page_transition/page_transition.dart';
 
 class InfoExtra extends StatefulWidget {
   Notify notification;
@@ -84,8 +85,10 @@ class _InfoExtraState extends State<InfoExtra> {
           this.widget.notification.setInfoExtra("Nada informado.");
         else
           this.widget.notification.setInfoExtra(information.text);
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Advice2(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: Advice2(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

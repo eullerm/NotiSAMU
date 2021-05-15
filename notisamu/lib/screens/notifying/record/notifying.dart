@@ -3,6 +3,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/objects/occupation.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/screens/notifying/record/patient.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Notifying extends StatefulWidget {
   Notifying(this.base);
@@ -127,8 +128,12 @@ class _NotifyingState extends State<Notifying> {
           setState(() {
             _error = false;
           });
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Patient(notification)));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: Patient(notification)));
         } else {
           _missingElement(context);
           setState(() {
@@ -143,7 +148,7 @@ class _NotifyingState extends State<Notifying> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Está faltando algum elemento obrigatório",

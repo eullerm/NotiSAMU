@@ -7,6 +7,7 @@ import 'package:noti_samu/components/textChangeFormField.dart';
 import 'package:noti_samu/objects/occupation.dart';
 import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/mandatoryDataPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class OptionalData extends StatefulWidget {
   Notify notification;
@@ -111,29 +112,12 @@ class _OptionalDataState extends State<OptionalData> {
             !_changeOccupation &&
             !_changePatient &&
             !_changeSex) {
-          /*Navigator.of(context).push(PageRouteBuilder(
-              //transitionDuration: Duration(milliseconds: 500),
-              transitionsBuilder: (BuildContext context,
-                  Animation<double> animation,
-                  Animation<double> secAnimation,
-                  Widget child) {
-            var begin = Offset(1.0, 0.0);
-            var end = Offset.zero;
-            var curve = Curves.ease;
-
-            var tween =
-                Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
-
-            return SlideTransition(
-              position: animation.drive(tween),
-              child: child,
-            );
-          }, pageBuilder: (BuildContext context, Animation<double> animation,
-                  Animation<double> secAnimation) {
-            return MandatoryData(widget.notification);
-          }));*/
-          MaterialPageRoute(
-              builder: (context) => MandatoryData(widget.notification));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: MandatoryData(widget.notification)));
         } else {
           _changingElement(context);
         }
@@ -324,7 +308,7 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _changingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Salve ou cancele as alterações antes de prosseguir.",
