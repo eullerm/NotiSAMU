@@ -132,7 +132,7 @@ class CheckboxChangeField extends StatelessWidget {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }

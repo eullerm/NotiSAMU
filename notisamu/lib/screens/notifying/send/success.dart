@@ -29,7 +29,7 @@ class _SuccessState extends State<Success> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Enviando a notificação."),
         automaticallyImplyLeading: false,
       ),

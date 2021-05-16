@@ -39,7 +39,7 @@ class _PatientState extends State<Patient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Registro de dados opcionais"),
       ),
       body: _body(context),
@@ -103,7 +103,8 @@ class _PatientState extends State<Patient> {
         ),
         hintText: "Idade do paciente (opcional)",
         counterText: "",
-        hoverColor: (_error != null && _error) ? Colors.red : Colors.black,
+        hoverColor:
+            (_error != null && _error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -154,7 +155,7 @@ class _PatientState extends State<Patient> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 }

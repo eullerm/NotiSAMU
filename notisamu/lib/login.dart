@@ -96,7 +96,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
@@ -204,19 +204,21 @@ class _LoginState extends State<Login> {
   _loginButton(size) {
     return ButtonTheme(
       minWidth: size.width,
-      child: RaisedButton(
-        color: Colors.grey[300],
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        ),
+        onPressed: () {
+          validateAndSubmit();
+        },
         child: Text(
           "Acessar",
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        splashColor: Colors.blue,
-        onPressed: () {
-          validateAndSubmit();
-        },
       ),
     );
   }
@@ -230,7 +232,7 @@ class _LoginState extends State<Login> {
             _errorMessage,
             style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.red,
+                color: Color(0xFFF7444E),
                 height: 1.0,
                 fontWeight: FontWeight.w300),
           ),

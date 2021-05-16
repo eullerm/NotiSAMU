@@ -11,9 +11,9 @@ Future<DateTime> selectDate(
       return Theme(
         data: ThemeData.light().copyWith(
           colorScheme: ColorScheme.light().copyWith(
-            primary: Colors.red,
+            primary: Color(0xFFF7444E),
           ),
-          accentColor: Colors.red,
+          accentColor: Color(0xFFF7444E),
           buttonTheme: ButtonThemeData(textTheme: ButtonTextTheme.accent),
         ),
         child: child,

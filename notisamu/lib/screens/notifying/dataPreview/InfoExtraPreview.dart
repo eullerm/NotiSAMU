@@ -34,7 +34,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Informações extras"),
       ),
       body: _body(context),
@@ -92,7 +92,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 

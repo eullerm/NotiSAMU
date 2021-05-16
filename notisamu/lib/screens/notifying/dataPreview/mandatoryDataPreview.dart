@@ -81,7 +81,7 @@ class _MandatoryDataState extends State<MandatoryData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Revisão de dados"),
       ),
       body: _body(context),
@@ -128,8 +128,8 @@ class _MandatoryDataState extends State<MandatoryData> {
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
       backgroundColor: (_changeLocal || _changeNumber || _changePeriod)
-          ? Colors.red[50]
-          : Colors.redAccent,
+          ? Color(0xFFF7444E)
+          : Color(0xAAF7444E),
     );
   }
 
@@ -301,7 +301,7 @@ class _MandatoryDataState extends State<MandatoryData> {
       SnackBar(
         content: Text(
           "Salve ou cancele as alterações antes de prosseguir.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

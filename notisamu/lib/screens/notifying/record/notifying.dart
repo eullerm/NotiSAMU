@@ -41,7 +41,7 @@ class _NotifyingState extends State<Notifying> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Registro do notificante"),
         leading: IconButton(
           icon: Icon(
@@ -111,7 +111,7 @@ class _NotifyingState extends State<Notifying> {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -143,7 +143,7 @@ class _NotifyingState extends State<Notifying> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 
@@ -152,7 +152,7 @@ class _NotifyingState extends State<Notifying> {
       SnackBar(
         content: Text(
           "Está faltando algum elemento obrigatório",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

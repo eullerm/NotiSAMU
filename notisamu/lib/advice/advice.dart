@@ -18,7 +18,7 @@ class _AdviceState extends State<Advice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
         leading: IconButton(
           icon: Icon(
@@ -76,14 +76,11 @@ class _AdviceState extends State<Advice> {
   _button(size) {
     return ButtonTheme(
       minWidth: size.width,
-      child: RaisedButton(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
-        color: Colors.grey[350],
-        child: Text(
-          "Acessar",
-          style: TextStyle(
-            fontSize: 18,
-          ),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         ),
         onPressed: () {
           Navigator.push(
@@ -93,6 +90,12 @@ class _AdviceState extends State<Advice> {
                   type: PageTransitionType.rightToLeft,
                   child: Notifying(this.widget.base)));
         },
+        child: Text(
+          "Acessar",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
       ),
     );
   }

@@ -37,7 +37,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Vias de administração"),
       ),
       body: _body(context),
@@ -110,7 +110,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
       SnackBar(
         content: Text(
           "Selecione ao menos uma via de administração.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
@@ -126,7 +126,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 

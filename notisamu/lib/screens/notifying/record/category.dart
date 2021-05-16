@@ -39,7 +39,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Registro da ocorrência"),
       ),
       body: _body(context),
@@ -99,7 +99,7 @@ class _CategoryState extends State<Category> {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -109,7 +109,7 @@ class _CategoryState extends State<Category> {
       SnackBar(
         content: Text(
           "Selecione ao menos um incidente.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
@@ -174,7 +174,7 @@ class _CategoryState extends State<Category> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 }

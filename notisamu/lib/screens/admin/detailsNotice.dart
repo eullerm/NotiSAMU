@@ -22,8 +22,8 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   };
 
   int buttonState = 2;
-  Color colorButton = Colors.blue;
-  IconData buttonIcon = Icons.assignment; //alterar
+  Color colorButton = Color(0xFF002C3E);
+  IconData buttonIcon = Icons.assignment;
   bool showCheckBox = false;
 
   final database = Firestore.instance;
@@ -33,10 +33,10 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     super.initState();
     _classifications.forEach((key, value) {
       if (key.compareTo(widget.notice.data['classification']) == 0) {
-        value = true;
+        _classifications[key] = true;
         buttonState = 1;
-        colorButton = Colors.orange;
-        buttonIcon = Icons.update; //alterar
+        colorButton = Color(0xFF78BCC4); //talvez trocar para 0xFF777D71);
+        buttonIcon = Icons.assignment; //alterar
       }
     });
   }
@@ -45,7 +45,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
@@ -64,7 +64,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         Positioned(
           bottom: 40,
           child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 400),
+            duration: Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
               return ScaleTransition(child: child, scale: animation);
             },
@@ -184,11 +184,12 @@ class _DetailsNoticeState extends State<DetailsNotice> {
 
   _buttonFAB(IconData icon, Color color, int integer) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 200),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return ScaleTransition(child: child, scale: animation);
       },
       child: FloatingActionButton(
+        //label: Text('Confirmar'),
         key: ValueKey<IconData>(icon),
         onPressed: () {
           switch (integer) {
@@ -197,7 +198,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 buttonState = 3;
                 showCheckBox = true;
                 buttonIcon = Icons.check;
-                colorButton = Colors.green;
+                colorButton = Color(0xFF648D56);
               });
 
               break;
@@ -207,7 +208,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 buttonState = 3;
                 showCheckBox = true;
                 buttonIcon = Icons.check;
-                colorButton = Colors.green;
+                colorButton = Color(0xFF648D56);
               });
               break;
 
@@ -220,11 +221,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 if (widget.notice.data['classification'].isEmpty) {
                   buttonState = 1;
                   buttonIcon = Icons.assignment;
-                  colorButton = Colors.blue;
+                  colorButton = Color(0xFF002C3E);
                 } else {
                   buttonState = 2;
-                  buttonIcon = Icons.update;
-                  colorButton = Colors.orange;
+                  buttonIcon = Icons.assignment;
+                  colorButton = Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
                 }
                 showCheckBox = false;
               });
@@ -236,7 +237,6 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         },
         child: Icon(icon),
         backgroundColor: color,
-        shape: CircleBorder(),
       ),
     );
   }

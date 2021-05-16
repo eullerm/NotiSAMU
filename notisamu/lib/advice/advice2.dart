@@ -17,7 +17,7 @@ class _Advice2State extends State<Advice2> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
@@ -71,7 +71,7 @@ class _Advice2State extends State<Advice2> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 }

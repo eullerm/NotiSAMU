@@ -67,7 +67,7 @@ class _SpecificDataState extends State<SpecificData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Dados específicos"),
       ),
       body: _body(context),
@@ -141,7 +141,7 @@ class _SpecificDataState extends State<SpecificData> {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -170,7 +170,7 @@ class _SpecificDataState extends State<SpecificData> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xAAF7444E),
     );
   }
 
@@ -219,7 +219,7 @@ class _SpecificDataState extends State<SpecificData> {
       SnackBar(
         content: Text(
           "Selecione ao menos um incidente.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
