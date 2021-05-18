@@ -128,8 +128,8 @@ class _MandatoryDataState extends State<MandatoryData> {
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
       backgroundColor: (_changeLocal || _changeNumber || _changePeriod)
-          ? Color(0xFFF7444E)
-          : Color(0xAAF7444E),
+          ? Color(0xAAF7444E)
+          : Color(0xFFF7444E),
     );
   }
 

@@ -92,7 +92,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),
-      backgroundColor: Color(0xAAF7444E),
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 

@@ -129,8 +129,8 @@ class _OptionalDataState extends State<OptionalData> {
               _changeOccupation ||
               _changePatient ||
               _changeSex)
-          ? Color(0xFFF7444E)
-          : Color(0xAAF7444E),
+          ? Color(0xAAF7444E)
+          : Color(0xFFF7444E),
     );
   }
 

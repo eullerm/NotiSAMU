@@ -20,6 +20,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     "Circunstância notificável": false,
     "Quase erro": false,
   };
+  String _class = "";
 
   int buttonState = 2;
   Color colorButton = Color(0xFF002C3E);
@@ -34,6 +35,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     _classifications.forEach((key, value) {
       if (key.compareTo(widget.notice.data['classification']) == 0) {
         _classifications[key] = true;
+        _class = key;
         buttonState = 1;
         colorButton = Color(0xFF78BCC4); //talvez trocar para 0xFF777D71);
         buttonIcon = Icons.assignment; //alterar
@@ -188,9 +190,10 @@ class _DetailsNoticeState extends State<DetailsNotice> {
       transitionBuilder: (Widget child, Animation<double> animation) {
         return ScaleTransition(child: child, scale: animation);
       },
-      child: FloatingActionButton(
-        //label: Text('Confirmar'),
+      child: FloatingActionButton.extended(
+        label: showCheckBox ? Text('Confirmar') : Text("Adicionar"),
         key: ValueKey<IconData>(icon),
+        tooltip: "Adicionar uma classificação",
         onPressed: () {
           switch (integer) {
             case 1: //Insere
@@ -235,7 +238,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
               break;
           }
         },
-        child: Icon(icon),
+        icon: Icon(icon),
         backgroundColor: color,
       ),
     );
@@ -249,26 +252,54 @@ class _DetailsNoticeState extends State<DetailsNotice> {
       margin: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          color: Colors.grey[200]),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _classifications.keys
-            .map<Widget>(
-              (String key) => CheckboxListTile(
-                title: _text(key),
-                value: _classifications[key],
-                onChanged: (bool value) {
+          color: Color(0xFFFFF8DC)),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            CloseButton(
+              onPressed: () {
+                setState(() {
                   setState(() {
-                    _classifications.forEach((k, v) {
-                      _classifications[k] = false;
-                    });
-                    _classifications[key] = value;
+                    if (widget.notice.data['classification'].isEmpty) {
+                      buttonState = 1;
+                      buttonIcon = Icons.assignment;
+                      colorButton = Color(0xFF002C3E);
+                    } else {
+                      buttonState = 2;
+                      buttonIcon = Icons.assignment;
+                      colorButton =
+                          Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
+                    }
+                    showCheckBox = false;
                   });
-                },
-              ),
+                });
+              },
             )
-            .toList(),
-      ),
+          ],
+        ),
+        Column(
+          children: _classifications.keys
+              .map<Widget>(
+                (String key) => RadioListTile(
+                  title: _text(key),
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _class,
+                  onChanged: (value) {
+                    setState(() {
+                      _class = value;
+                      _classifications.forEach((k, v) {
+                        _classifications[k] = false;
+                      });
+                      _classifications[value] = true;
+                    });
+                  },
+                ),
+              )
+              .toList(),
+        ),
+      ]),
     );
   }
 

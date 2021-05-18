@@ -168,7 +168,7 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Color(0xAAF7444E),
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 
