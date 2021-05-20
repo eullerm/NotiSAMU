@@ -409,10 +409,10 @@ class _FeedState extends State<Feed> {
           ),
           Column(
             children: _menuFilter.keys
-                .map<Widget>((String key) => CheckboxListTile(
-                      title: _text(key),
-                      value: _menuFilter[key],
-                      onChanged: (bool change) {
+                .map<Widget>((String key) => ExpansionPanelList(
+                      //title: _text(key),
+                      children: [_checkboxFilter(context)],
+                      expansionCallback: (int index, bool change) {
                         print("Change: " + key + " " + change.toString());
                         setState(() {
                           _menuFilter.forEach((k, v) {

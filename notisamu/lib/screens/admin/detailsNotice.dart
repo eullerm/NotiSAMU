@@ -191,7 +191,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         return ScaleTransition(child: child, scale: animation);
       },
       child: FloatingActionButton.extended(
-        label: showCheckBox ? Text('Confirmar') : Text("Adicionar"),
+        label: showCheckBox ? Text('Confirmar') : Text("Classificar"),
         key: ValueKey<IconData>(icon),
         tooltip: "Adicionar uma classificação",
         onPressed: () {

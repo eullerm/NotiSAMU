@@ -104,9 +104,10 @@ class _LoginState extends State<Login> {
   }
 
   _body(context) {
+    Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
-        _showInputs(),
+        _showInputs(size),
         _showLoading(),
       ],
     );
@@ -119,25 +120,28 @@ class _LoginState extends State<Login> {
     return Container();
   }
 
-  _showInputs() {
-    Size size = MediaQuery.of(context).size;
+  _showInputs(Size size) {
     return Container(
-        padding: EdgeInsets.all(16.0),
-        width: size.width,
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              _showErrorMessage(),
-              _inputUser(),
-              Divider(),
-              _inputPassword(),
-              Divider(),
-              _loginButton(size),
-            ],
-          ),
-        ));
+      padding: EdgeInsets.all(16.0),
+      width: size.width,
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            _showErrorMessage(),
+            _inputUser(),
+            Divider(),
+            _inputPassword(),
+            Divider(),
+            SizedBox(
+              width: size.width,
+              child: _loginButton(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _inputUser() {
@@ -201,9 +205,8 @@ class _LoginState extends State<Login> {
       return null;
   }
 
-  _loginButton(size) {
+  _loginButton() {
     return ButtonTheme(
-      minWidth: size.width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Color(0xFF002C3E),

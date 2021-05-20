@@ -35,8 +35,9 @@ class _AdviceState extends State<Advice> {
     );
   }
 
-  _body(context) {
+  _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print("size: " + size.toString());
     return Container(
       padding: EdgeInsets.all(16),
       width: size.width,
@@ -44,7 +45,10 @@ class _AdviceState extends State<Advice> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           _advice(),
-          _button(size),
+          SizedBox(
+            width: size.width,
+            child: _button(),
+          ),
         ],
       ),
     );
@@ -73,9 +77,8 @@ class _AdviceState extends State<Advice> {
     );
   }
 
-  _button(size) {
+  _button() {
     return ButtonTheme(
-      minWidth: size.width,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Color(0xFF002C3E),
