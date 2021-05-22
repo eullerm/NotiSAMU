@@ -116,7 +116,9 @@ class Notify extends Model {
   }
 
   setRoute(String string) {
-    this._route = string;
+    if (string != "") {
+      this._route = string;
+    }
   }
 
   setMedicines(String string) {
@@ -145,14 +147,19 @@ class Notify extends Model {
   }
 
   clearMedicines() {
-    _medicines = List();
+    _medicines = [];
   }
 
   clearCategorys() {
-    _category = List();
+    _category = [];
   }
 
   clearIncidents() {
-    _incidents = List();
+    _incidents = [];
+  }
+
+  clearRoute() {
+    String reset;
+    this._route = reset;
   }
 }

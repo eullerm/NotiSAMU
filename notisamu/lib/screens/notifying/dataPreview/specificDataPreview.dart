@@ -20,20 +20,31 @@ class _SpecificDataState extends State<SpecificData> {
     "Incidentes:",
   ];
 
+  final scrollIncidents = ScrollController();
+  final scrollCategories = ScrollController();
+
   Incidents incidents = Incidents();
+
+  Map<String, List<String>> _selected = {};
 
   bool _changeCategory;
   bool _changeIncidents;
   bool _isWrongRoute;
+  bool _error;
 
   @override
   void initState() {
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {
-        incidents.selectedCategory(exist);
+        //incidents.selectedCategory(exist);
         for (var exist2 in this.widget.notification.incidents) {
           incidents.selectedIncident(exist, exist2, true);
+          if (_selected.containsKey(exist)) {
+            _selected[exist].add(exist2);
+          } else {
+            _selected[exist] = [exist2];
+          }
         }
       }
     }
@@ -44,7 +55,7 @@ class _SpecificDataState extends State<SpecificData> {
     super.initState();
   }
 
-  _selectedCategory(String key, {bool value}) {
+  /*_selectedCategory(String key, {bool value}) {
     setState(
       () {
         value == null
@@ -53,11 +64,23 @@ class _SpecificDataState extends State<SpecificData> {
             : incidents.selectedCategory(key, booleana: value);
       },
     );
-  }
+  }*/
 
   _selectedIncidents(String key1, String key2, bool value) {
     setState(
       () {
+        if (value) {
+          if (_selected.containsKey(key1)) {
+            _selected[key1].add(key2);
+          } else {
+            _selected[key1] = [key2];
+          }
+        } else {
+          _selected[key1].remove(key2);
+          if (_selected[key1].length == 0) {
+            _selected.remove(key1);
+          }
+        }
         incidents.selectedIncident(key1, key2, value);
       },
     );
@@ -78,32 +101,42 @@ class _SpecificDataState extends State<SpecificData> {
   }
 
   _body(context) {
-    return ListView(
-      padding: EdgeInsets.all(16),
-      children: (_changeCategory || _changeIncidents)
-          ? <Widget>[
+    return (_changeCategory || _changeIncidents)
+        ? ListView(
+            padding: EdgeInsets.all(16),
+            children: <Widget>[
               SizedBox(height: 8),
-              _text("Categoria de incidente: "),
+              _text("Categoria de incidente: *", error: _error),
               SizedBox(
                 height: 16,
               ),
               CheckboxChangeField(
                 incidents,
-                changeCategoryWithKey: (String key) => _selectedCategory(key),
-                changeCategoryWithValue: (String key, bool change) =>
-                    _selectedCategory(key, value: change),
+                /*changeCategoryWithKey: (String key) => _selectedCategory(key),
+              changeCategoryWithValue: (String key, bool change) =>
+                  _selectedCategory(key, value: change),*/
                 changeIncident: (String key1, String key2, bool change) =>
                     _selectedIncidents(key1, key2, change),
               ),
               SizedBox(height: 40),
-            ]
-          : <Widget>[
-              _category(),
-              SizedBox(height: 20),
-              _incidents(),
-              SizedBox(height: 20),
             ],
-    );
+          )
+        : Container(
+            padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 70),
+            child: Column(
+              children: <Widget>[
+                Flexible(
+                  flex: 3,
+                  child: _category(),
+                ),
+                SizedBox(height: 20),
+                Flexible(
+                  flex: 10,
+                  child: _incidents(),
+                ),
+              ],
+            ),
+          );
   }
 
   _category() {
@@ -111,6 +144,8 @@ class _SpecificDataState extends State<SpecificData> {
       data[0],
       list: this.widget.notification.category,
       isList: true,
+      isScrollable: true,
+      scroll: scrollCategories,
       function: () => _change(data[0]),
     );
   }
@@ -120,6 +155,8 @@ class _SpecificDataState extends State<SpecificData> {
       data[1],
       list: this.widget.notification.incidents,
       isList: true,
+      isScrollable: true,
+      scroll: scrollIncidents,
       function: () => _change(data[1]),
     );
   }
@@ -154,6 +191,11 @@ class _SpecificDataState extends State<SpecificData> {
             setState(() {
               _isWrongRoute = true;
             });
+          } else {
+            setState(() {
+              _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
+              //voltado para modificar algo nessa
+            });
           }
         });
         if (_isWrongRoute) {
@@ -162,10 +204,19 @@ class _SpecificDataState extends State<SpecificData> {
               type: PageTransitionType.rightToLeft,
               child: RoutesPreview(this.widget.notification)));
         } else {
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: InfoExtraPreview(this.widget.notification)));
+          //Garante que não vai ter nada relacionado a via errada
+          this.widget.notification.clearRoute();
+          if (this.widget.notification.incidents.isNotEmpty) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: InfoExtraPreview(this.widget.notification)));
+          } else {
+            _missingElement(context);
+            setState(() {
+              _error = true;
+            });
+          }
         }
       },
       label: Text('Continuar'),
@@ -182,31 +233,27 @@ class _SpecificDataState extends State<SpecificData> {
             .notification
             .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.clearIncidents();
-        incidents.category.forEach((k, v) {
-          if (v && incidents.isIncidentSelected(k)) {
+
+        _selected.forEach(
+          (k, v) {
             this.widget.notification.setCategory(k);
-            incidents.mapCategoryQuestions.forEach((key, listQuestions) {
-              if (key == k) {
-                for (var question in listQuestions.keys.toList()) {
-                  if (listQuestions[
-                      question]) //Se a boleana da resposta for true coloca a resposta na notificação
-                    this.widget.notification.setIncident(question);
-                }
-              }
+            v.forEach((question) {
+              this.widget.notification.setIncident(question);
             });
-          }
-        });
-        setState(() {
-          _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
-          //voltado para modificar algo nessa
-        });
+          },
+        );
+
         if (this.widget.notification.incidents.isNotEmpty) {
           setState(() {
             _changeCategory = false;
             _changeIncidents = false;
           });
-        } else
+        } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        }
       },
       label: Text('Confirmar'),
       icon: Icon(Icons.check),

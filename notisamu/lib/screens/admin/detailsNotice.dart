@@ -68,7 +68,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           child: AnimatedSwitcher(
             duration: Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
-              return ScaleTransition(child: child, scale: animation);
+              return SlideTransition(
+                position: Tween(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                    .animate(animation),
+                child: child,
+              );
             },
             child: showCheckBox
                 ? _checkboxClassifications(context)

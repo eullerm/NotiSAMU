@@ -46,13 +46,14 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
 
   _body(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 40),
+      padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 70),
       child: _changeMedicines
           ? _changeListMedicines()
           : TextPreview(
               "Medicamentos selecionados",
               list: this.widget.notification.medicines,
               isList: true,
+              isScrollable: true,
               function: () => _change(),
             ),
     );
@@ -70,7 +71,7 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
         SizedBox(
           height: 8,
         ),
-        _text("*Selecione os medicamentos usados no atendimento",
+        _text("Selecione os medicamentos usados no atendimento*:",
             error: _error),
         SizedBox(
           height: 16,
@@ -79,31 +80,37 @@ class _MedicinesPreviewState extends State<MedicinesPreview> {
         SizedBox(
           height: 8,
         ),
-        Divider(),
+        Divider(
+          color: Colors.black,
+          height: 0,
+        ),
         Expanded(child: _listViewMedicines()),
-        Divider(),
-        SizedBox(
-          height: 15,
+        Divider(
+          color: Colors.black,
+          height: 0,
         ),
       ],
     );
   }
 
   _listViewMedicines() {
-    return ListView.builder(
-      itemCount: filtredMecines.length,
-      itemBuilder: (BuildContext context, int index) {
-        String key = filtredMecines.keys.elementAt(index);
-        return CheckboxListTile(
-            title: _text(key),
-            value: filtredMecines[key],
-            onChanged: (bool change) {
-              setState(() {
-                filtredMecines[key] = change;
-                listMedicines[key] = change;
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: ListView.builder(
+        itemCount: filtredMecines.length,
+        itemBuilder: (BuildContext context, int index) {
+          String key = filtredMecines.keys.elementAt(index);
+          return CheckboxListTile(
+              title: _text(key),
+              value: filtredMecines[key],
+              onChanged: (bool change) {
+                setState(() {
+                  filtredMecines[key] = change;
+                  listMedicines[key] = change;
+                });
               });
-            });
-      },
+        },
+      ),
     );
   }
 

@@ -47,11 +47,7 @@ class Incidents extends Model {
         """Qualquer desvio no preparo e administração de medicamentos mediante prescrição médica, não observância das recomendações ou guias do hospital ou das instruções técnicas do fabricante do produto. Considera ainda que não houve erro se o medicamento foi administrado de forma correta mesmo se a técnica utilizada contrarie a prescrição médica ou os procedimentos do hospital.""",
   };
 
-  Map<String, bool> get category {
-    return _category;
-  }
-
-  Map<String, Map<String, bool>> get mapCategoryQuestions {
+  Map<String, Map<String, bool>> get category {
     return _mapCategoryQuestions;
   }
 

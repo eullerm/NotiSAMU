@@ -94,7 +94,7 @@ class _NotifyingState extends State<Notifying> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _text("*Profissão:", error: _error),
+        _text("Profissão*:", error: _error),
         RadioButtonList(
           listOccupations,
           radioValue: _radioValueOccupation,

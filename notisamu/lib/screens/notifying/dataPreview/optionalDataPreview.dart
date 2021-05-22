@@ -157,12 +157,16 @@ class _OptionalDataState extends State<OptionalData> {
   _occupation() {
     return _changeOccupation
         ? Column(children: <Widget>[
-            Text(
-              data[1],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
+            Row(
+              children: [
+                Text(
+                  data[1],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
             RadioButtonListChangeField(
               listOccupations,
@@ -225,12 +229,16 @@ class _OptionalDataState extends State<OptionalData> {
     return _changeSex
         ? Column(
             children: <Widget>[
-              Text(
-                data[4],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[4],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listSex,

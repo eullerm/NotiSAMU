@@ -16,29 +16,25 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  Map<String, bool> _filter = {
-    "Incidente com dano": false,
-    "Incidente sem dano": false,
-    "Circunstância notificável": false,
-    "Quase erro": false,
-    "Sem classificação": false,
+  Map<String, List<String>> _menuFilter = {
+    "Filtrar incidentes": [
+      "Incidente com dano",
+      "Incidente sem dano",
+      "Circunstância notificável",
+      "Quase erro",
+      "Sem classificação",
+    ],
+    "Ordenar por": [
+      "Data de ocorrência",
+      "Idade",
+    ],
   };
 
-  Map<String, bool> _orderBy = {
-    "Data de ocorrência": false,
-    "Idade": false,
-  };
+  List<String> _filters = [];
 
-  Map<String, bool> _menuFilter = {
-    "Filtrar incidentes": false,
-    "Ordenar por": false,
-  };
-
-  String _choiceFilter;
-  String _choiceIncident;
+  String _radioFilter;
+  String _radioOrder;
   bool showMenu = false;
-  bool showCheckboxFilter = false;
-  bool showCheckboxOrder = false;
 
   bool admin;
 
@@ -68,8 +64,6 @@ class _FeedState extends State<Feed> {
 
   _body(BuildContext context) {
     String type = showMenu ? "Menu" : "MenuOFF";
-    String type2 =
-        showCheckboxFilter ? "Filtro" : (showCheckboxOrder ? "Ordem" : "");
 
     return Container(
       child: Column(
@@ -84,12 +78,6 @@ class _FeedState extends State<Feed> {
             children: [
               _listIncidents(),
               Positioned(
-                top: 158,
-                right: 0,
-                left: 0,
-                child: _checkboxAnimated(context, type2),
-              ),
-              Positioned(
                 top: 0,
                 right: 0,
                 left: 0,
@@ -103,38 +91,37 @@ class _FeedState extends State<Feed> {
   }
 
   _filtersOn() {
-    String s1;
-    String s2;
-    if (_choiceFilter != null) {
-      if (_choiceFilter.compareTo("Classificação") == 0) {
-        s1 = _choiceFilter + ": ";
-        s2 = _choiceIncident;
-      } else {
-        s1 = "Ordenado por: ";
-        s2 = _choiceFilter;
-      }
-    }
-
     return Container(
       padding: EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0),
       child: Column(
         children: [
-          _choiceFilter != null
+          _radioFilter != null
               ? Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    _text(s1),
-                    _text(s2),
+                    _text("Classificação: "),
+                    _text(_radioFilter),
+                  ],
+                )
+              : Container(),
+          _radioOrder != null
+              ? Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    _text("Ordenado por: "),
+                    _text(_radioOrder),
                   ],
                 )
               : Container(),
           Row(
-            mainAxisAlignment: _choiceFilter != null
+            mainAxisAlignment: _radioFilter != null || _radioOrder != null
                 ? MainAxisAlignment.spaceAround
                 : MainAxisAlignment.end,
             children: [
               _showFilterButton(),
-              _choiceFilter != null ? _removeFilterButton() : Container(),
+              _radioFilter != null || _radioOrder != null
+                  ? _removeFilterButton()
+                  : Container(),
             ],
           ),
         ],
@@ -153,16 +140,6 @@ class _FeedState extends State<Feed> {
         onPressed: () {
           setState(() {
             showMenu = !showMenu;
-            if (showMenu) {
-              if (_menuFilter.values.elementAt(0)) {
-                _filterButton();
-              } else if (_menuFilter.values.elementAt(1)) {
-                _orderButton();
-              }
-            } else {
-              showCheckboxFilter = false;
-              showCheckboxOrder = false;
-            }
           });
         },
         child: Text(
@@ -185,20 +162,9 @@ class _FeedState extends State<Feed> {
         ),
         onPressed: () {
           setState(() {
-            _choiceFilter = null;
-            _choiceIncident = null;
-            _menuFilter.forEach((key, value) {
-              _menuFilter[key] = false;
-            });
-            _filter.forEach((key, value) {
-              _filter[key] = false;
-            });
-            _orderBy.forEach((key, value) {
-              _orderBy[key] = false;
-            });
-            showMenu = false;
-            showCheckboxFilter = false;
-            showCheckboxOrder = false;
+            _radioFilter = null;
+            _radioOrder = null;
+            _filters = [];
           });
         },
         child: Text(
@@ -217,9 +183,8 @@ class _FeedState extends State<Feed> {
       alignment: FractionalOffset.center,
       child: StreamBuilder<QuerySnapshot>(
         stream: _order(
-          _choiceFilter,
+          _filters,
           this.widget.base,
-          specif: _choiceIncident,
         ),
         builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
           print("Snapshot ${snapshot.data}");
@@ -253,126 +218,6 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  //Não está sendo usado
-  _menu() {
-    return IconButton(
-        icon: Icon(Icons.menu),
-        onPressed: () {
-          setState(() {
-            showMenu = !showMenu;
-            if (showMenu) {
-              if (_menuFilter.values.elementAt(0)) {
-                _filterButton();
-              } else if (_menuFilter.values.elementAt(1)) {
-                _orderButton();
-              }
-            } else {
-              showCheckboxFilter = false;
-              showCheckboxOrder = false;
-            }
-          });
-        });
-  }
-
-  _filterButton() {
-    return setState(() {
-      showCheckboxFilter = !showCheckboxFilter;
-      if (showCheckboxFilter) showCheckboxOrder = false;
-    });
-  }
-
-  _orderButton() {
-    return setState(() {
-      showCheckboxOrder = !showCheckboxOrder;
-      if (showCheckboxOrder) showCheckboxFilter = false;
-    });
-  }
-
-  _checkboxFilter(BuildContext context) {
-    return Container(
-      key: ValueKey<bool>(showCheckboxFilter),
-      width: MediaQuery.of(this.context).size.width,
-      padding: EdgeInsets.only(left: 16, right: 16),
-      margin: EdgeInsets.only(right: 8, left: 8),
-      decoration: BoxDecoration(
-          //borderRadius: BorderRadius.all(Radius.circular(16.0)),
-          color: Color(0xFFFFF8DC)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(children: [_text("Tipos de categorias:")]),
-          Column(
-            children: _filter.keys
-                .map<Widget>((String key) => CheckboxListTile(
-                      title: _text(key),
-                      value: _filter[key],
-                      onChanged: (bool change) {
-                        setState(() {
-                          _filter.forEach((k, v) {
-                            _filter[k] = false; //reseta todo filtro
-                          });
-                          _orderBy.forEach((k, v) {
-                            _orderBy[k] = false; //reseta toda ordem
-                          });
-                          _filter[key] = change;
-                          if (change) {
-                            //se change for true filtra por categoria e o tipo de incidente
-                            _choiceFilter = "Classificação";
-                            _choiceIncident = key;
-                          } else if (_filter[_choiceIncident] == false) {
-                            _choiceFilter = null;
-                            _choiceIncident = null;
-                          }
-                        });
-                      },
-                    ))
-                .toList(),
-          )
-        ],
-      ),
-    );
-  }
-
-  _checkboxOrder(BuildContext context) {
-    return Container(
-      key: ValueKey<bool>(showCheckboxOrder),
-      width: MediaQuery.of(this.context).size.width,
-      padding: EdgeInsets.only(left: 16, right: 16),
-      margin: EdgeInsets.only(right: 8, left: 8),
-      decoration: BoxDecoration(
-          //borderRadius: BorderRadius.all(Radius.circular(16.0)),
-          color: Color(0xFFFFF8DC)),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: <Widget>[
-          Row(children: [_text("Formas de ordenação:")]),
-          Column(
-              children: _orderBy.keys
-                  .map<Widget>((String key) => CheckboxListTile(
-                        title: _text(key),
-                        value: _orderBy[key],
-                        onChanged: (bool change) {
-                          setState(() {
-                            _filter.forEach((k, v) {
-                              _filter[k] = false; //reseta todo filtro
-                            });
-                            _orderBy.forEach((k, v) {
-                              _orderBy[k] = false; // reseta toda ordem
-                            });
-                            _orderBy[key] = change;
-                            if (change) // se change for true filtra pela ordem escolhida
-                              _choiceFilter = key;
-                            else if (_orderBy[_choiceFilter] == false)
-                              _choiceFilter = null;
-                          });
-                        },
-                      ))
-                  .toList()),
-        ],
-      ),
-    );
-  }
-
   _checkboxMenu(BuildContext context) {
     return Container(
       key: ValueKey<bool>(showMenu),
@@ -388,55 +233,71 @@ class _FeedState extends State<Feed> {
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              CloseButton(
-                onPressed: () {
-                  setState(() {
-                    showMenu = false;
-                    if (showMenu) {
-                      if (_menuFilter.values.elementAt(0)) {
-                        _filterButton();
-                      } else if (_menuFilter.values.elementAt(1)) {
-                        _orderButton();
-                      }
-                    } else {
-                      showCheckboxFilter = false;
-                      showCheckboxOrder = false;
-                    }
-                  });
-                },
-              )
+              _closedButton(),
             ],
           ),
           Column(
             children: _menuFilter.keys
-                .map<Widget>((String key) => CheckboxListTile(
+                .map<Widget>((String key) => ExpansionTile(
                       title: _text(key),
-                      value: _menuFilter[key],
-                      onChanged: (bool change) {
-                        print("Change: " + key + " " + change.toString());
-                        setState(() {
-                          _menuFilter.forEach((k, v) {
-                            _menuFilter[k] = false; //reseta todo filtro
-                          });
-                          _menuFilter[key] = change;
-                          if (change) {
-                            if (_menuFilter.values.elementAt(0)) {
-                              _filterButton();
-                            } else if (_menuFilter.values.elementAt(1)) {
-                              _orderButton();
-                            }
-                          } else {
-                            showCheckboxFilter = false;
-                            showCheckboxOrder = false;
-                          }
-                        });
-                      },
+                      children: <Widget>[
+                        _buildExpandableContent(key, _menuFilter[key]),
+                      ],
                     ))
                 .toList(),
           )
         ],
       ),
     );
+  }
+
+  _buildExpandableContent(String value, List<String> l) {
+    switch (value) {
+      case "Filtrar incidentes":
+        return Column(
+          children: l
+              .map<Widget>(
+                (String key) => RadioListTile(
+                  title: _text(key),
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _radioFilter,
+                  onChanged: (value) {
+                    setState(() {
+                      _radioFilter = value;
+                      if (!_filters.contains("Classificação")) {
+                        _filters.add("Classificação");
+                      }
+                    });
+                  },
+                  toggleable: true,
+                ),
+              )
+              .toList(),
+        );
+        break;
+      case "Ordenar por":
+        return Column(
+          children: l
+              .map<Widget>(
+                (String key) => RadioListTile(
+                  title: _text(key),
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _radioOrder,
+                  onChanged: (value) {
+                    setState(() {
+                      if (!_filters.contains(_radioOrder)) _radioOrder = value;
+                    });
+                  },
+                  toggleable: true,
+                ),
+              )
+              .toList(),
+        );
+        break;
+      default:
+    }
   }
 
   _checkboxAnimated(BuildContext context, String type) {
@@ -449,28 +310,6 @@ class _FeedState extends State<Feed> {
             ? _checkboxMenu(context)
             : Container(
                 key: ValueKey<bool>(showMenu),
-              );
-        break;
-
-      case "MenuOFF":
-        _menuFilter.forEach((k, v) {
-          _menuFilter[k] = false; //reseta todo filtro
-        });
-        checkbox = Container();
-        break;
-
-      case "Ordem":
-        checkbox = showCheckboxOrder
-            ? _checkboxOrder(context)
-            : Container(
-                key: ValueKey<bool>(showCheckboxOrder),
-              );
-        break;
-      case "Filtro":
-        checkbox = showCheckboxFilter
-            ? _checkboxFilter(context)
-            : Container(
-                key: ValueKey<bool>(showCheckboxFilter),
               );
         break;
       default:
@@ -498,11 +337,13 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  _order(String type, String base, {String specif}) {
+  _order(List<String> type, String base) {
     var dataBase;
-
-    if (specif == "Sem classificação") {
-      specif = "";
+    String f;
+    if (_radioFilter == "Sem classificação") {
+      f = "";
+    } else {
+      f = _radioFilter;
     }
 
     if (base.compareTo("geral") == 0) {
@@ -515,23 +356,24 @@ class _FeedState extends State<Feed> {
       admin = false;
     }
 
-    switch (type) {
-      case "Data da ocorrência":
-        return dataBase.orderBy("occurrenceDate", descending: true).snapshots();
-        break;
-      case "Idade":
-        return dataBase.orderBy("age").snapshots();
-        break;
-      case "Classificação":
-        return dataBase
+    if (type.isNotEmpty) {
+      if (type.contains("Ordenar por")) {
+        if (_radioOrder.compareTo("Data da ocorrência") == 0) {
+          dataBase = dataBase.orderBy("occurrenceDate", descending: true);
+        } else if (_radioOrder.compareTo("Idade") == 0) {
+          dataBase = dataBase.orderBy("age");
+        }
+      }
+
+      if (type.contains("Classificação")) {
+        dataBase = dataBase
             .orderBy("createdAt", descending: true)
-            .where("classification", isEqualTo: specif)
-            .snapshots();
-        break;
-      default: //Ordena por data de criação
-        return dataBase.orderBy("createdAt", descending: true).snapshots();
-        break;
+            .where("classification", isEqualTo: f);
+      }
+    } else {
+      dataBase = dataBase.orderBy("createdAt", descending: true);
     }
+    return dataBase.snapshots();
   }
 
   _listNotify(AsyncSnapshot snapshot) {
@@ -567,6 +409,16 @@ class _FeedState extends State<Feed> {
           fontSize: 18,
         ),
       ),
+    );
+  }
+
+  _closedButton() {
+    return CloseButton(
+      onPressed: () {
+        setState(() {
+          showMenu = false;
+        });
+      },
     );
   }
 }

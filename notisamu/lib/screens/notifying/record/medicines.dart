@@ -50,7 +50,7 @@ class _MedicinesState extends State<Medicines> {
             SizedBox(
               height: 8,
             ),
-            _text("*Selecione os medicamentos usados no atendimento",
+            _text("Selecione os medicamentos usados no atendimento*: ",
                 error: _error),
             SizedBox(
               height: 16,
@@ -72,20 +72,23 @@ class _MedicinesState extends State<Medicines> {
   }
 
   _listViewMedicines() {
-    return ListView.builder(
-      itemCount: filtredMecines.length,
-      itemBuilder: (BuildContext context, int index) {
-        String key = filtredMecines.keys.elementAt(index);
-        return CheckboxListTile(
-            title: _text(key),
-            value: filtredMecines[key],
-            onChanged: (bool change) {
-              setState(() {
-                filtredMecines[key] = change;
-                listMedicines[key] = change;
+    return Scrollbar(
+      isAlwaysShown: true,
+      child: ListView.builder(
+        itemCount: filtredMecines.length,
+        itemBuilder: (BuildContext context, int index) {
+          String key = filtredMecines.keys.elementAt(index);
+          return CheckboxListTile(
+              title: _text(key),
+              value: filtredMecines[key],
+              onChanged: (bool change) {
+                setState(() {
+                  filtredMecines[key] = change;
+                  listMedicines[key] = change;
+                });
               });
-            });
-      },
+        },
+      ),
     );
   }
 
@@ -95,7 +98,7 @@ class _MedicinesState extends State<Medicines> {
       child: TextField(
         onChanged: (value) => _filterMedicines(value),
         decoration: InputDecoration(
-          hintText: "Filtrar medicamentos:",
+          hintText: "Filtrar medicamentos: ",
           icon: Icon(Icons.search),
         ),
       ),

@@ -95,7 +95,7 @@ class _OccurrenceState extends State<Occurrence> {
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
         Text(
-          "Data da ocorrência:",
+          "Data da ocorrência: ",
           style: TextStyle(
             fontSize: 18,
           ),
@@ -122,7 +122,7 @@ class _OccurrenceState extends State<Occurrence> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _text("*Período da ocorrência:", error: _periodError),
+        _text("Período da ocorrência*: ", error: _periodError),
         RadioButtonList(
           listPeriods,
           radioValue: _radioValuePeriod,
@@ -136,7 +136,7 @@ class _OccurrenceState extends State<Occurrence> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        _text("*Local da ocorrência:", error: _localError),
+        _text("Local da ocorrência*: ", error: _localError),
         RadioButtonList(
           listlocals,
           radioValue: _radioValueLocal,

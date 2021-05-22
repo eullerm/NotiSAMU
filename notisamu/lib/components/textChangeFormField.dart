@@ -25,12 +25,19 @@ class TextChangeFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          field,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+        Row(
+          children: [
+            Text(
+              field,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
         ),
         Row(
           children: <Widget>[

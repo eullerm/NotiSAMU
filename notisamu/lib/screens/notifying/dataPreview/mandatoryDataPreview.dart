@@ -158,12 +158,16 @@ class _MandatoryDataState extends State<MandatoryData> {
     return _changeLocal
         ? Column(
             children: <Widget>[
-              Text(
-                data[1],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[1],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listLocals,
@@ -223,12 +227,16 @@ class _MandatoryDataState extends State<MandatoryData> {
     return _changePeriod
         ? Column(
             children: <Widget>[
-              Text(
-                data[3],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[3],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listPeriods,

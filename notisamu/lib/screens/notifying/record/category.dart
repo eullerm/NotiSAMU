@@ -19,6 +19,8 @@ class _CategoryState extends State<Category> {
 
   bool _error;
 
+  Map<String, List<String>> _selected = {};
+
   @override
   void initState() {
     super.initState();
@@ -51,19 +53,20 @@ class _CategoryState extends State<Category> {
     return Container(
       padding: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 40),
       child: Scrollbar(
+        isAlwaysShown: true,
         child: ListView(
           padding: EdgeInsets.all(8),
           children: <Widget>[
             SizedBox(height: 8),
-            _text("*Categoria de incidente: ", error: _error),
+            _text("Categoria de incidente*: ", error: _error),
             SizedBox(
               height: 16,
             ),
             CheckboxChangeField(
               incidents,
-              changeCategoryWithKey: (String key) => _selectedCategory(key),
+              /*changeCategoryWithKey: (String key) => _selectedCategory(key),
               changeCategoryWithValue: (String key, bool change) =>
-                  _selectedCategory(key, value: change),
+                  _selectedCategory(key, value: change),*/
               changeIncident: (String key1, String key2, bool change) =>
                   _selectedIncidents(key1, key2, change),
             ),
@@ -74,20 +77,32 @@ class _CategoryState extends State<Category> {
     );
   }
 
-  _selectedCategory(String key, {bool value}) {
+  /*_selectedCategory(String key, {bool value}) {
     setState(
       () {
         value == null
             ? incidents.selectedCategory(key,
-                booleana: !incidents.category[key])
+                booleana: [key])
             : incidents.selectedCategory(key, booleana: value);
       },
     );
-  }
+  }*/
 
   _selectedIncidents(String key1, String key2, bool value) {
     setState(
       () {
+        if (value) {
+          if (_selected.containsKey(key1)) {
+            _selected[key1].add(key2);
+          } else {
+            _selected[key1] = [key2];
+          }
+        } else {
+          _selected[key1].remove(key2);
+          if (_selected[key1].length == 0) {
+            _selected.remove(key1);
+          }
+        }
         incidents.selectedIncident(key1, key2, value);
       },
     );
@@ -123,24 +138,14 @@ class _CategoryState extends State<Category> {
             .notification
             .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.clearIncidents();
-        incidents.category.forEach((k, v) {
-          if (v && incidents.isIncidentSelected(k)) {
+        _selected.forEach(
+          (k, v) {
             this.widget.notification.setCategory(k);
-            incidents.mapCategoryQuestions.forEach((key, listQuestions) {
-              if (key == k) {
-                for (var question in listQuestions.keys.toList()) {
-                  if (listQuestions[
-                      question]) //Se a boleana da resposta for true coloca a resposta na notificação
-                    this.widget.notification.setIncident(question);
-                }
-              }
+            v.forEach((question) {
+              this.widget.notification.setIncident(question);
             });
-          }
-        });
-        setState(() {
-          _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
-          _error = false; //voltado para modificar algo nessa
-        });
+          },
+        );
 
         if (this.widget.notification.incidents.isNotEmpty) {
           this.widget.notification.incidents.forEach((element) {
@@ -149,27 +154,33 @@ class _CategoryState extends State<Category> {
               setState(() {
                 _isWrongRoute = true;
               });
+            } else {
+              setState(() {
+                //Caso ele tenha ido para a proxima tela e
+                //voltado para modificar algo nessa
+                _isWrongRoute = false;
+              });
             }
-          });
-          if (_isWrongRoute) {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200),
-                type: PageTransitionType.rightToLeft,
-                child: Routes(this.widget.notification)));
-          } else {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200),
-                type: PageTransitionType.rightToLeft,
-                child: InfoExtra(this.widget.notification)));
-          }
-          setState(() {
-            _error = false;
           });
         } else {
           _missingElement(context);
           setState(() {
             _error = true;
           });
+        }
+
+        if (_isWrongRoute) {
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: Routes(this.widget.notification)));
+        } else {
+          //Garante que não tera nada relacionado a via errada
+          this.widget.notification.clearRoute();
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: InfoExtra(this.widget.notification)));
         }
       },
       label: Text('Continuar'),
