@@ -112,9 +112,6 @@ class _SpecificDataState extends State<SpecificData> {
               ),
               CheckboxChangeField(
                 incidents,
-                /*changeCategoryWithKey: (String key) => _selectedCategory(key),
-              changeCategoryWithValue: (String key, bool change) =>
-                  _selectedCategory(key, value: change),*/
                 changeIncident: (String key1, String key2, bool change) =>
                     _selectedIncidents(key1, key2, change),
               ),
@@ -186,37 +183,39 @@ class _SpecificDataState extends State<SpecificData> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notification.incidents.forEach((element) {
-          if (element.compareTo("Via errada") == 0) {
-            setState(() {
-              _isWrongRoute = true;
-            });
+        if (this.widget.notification.incidents.isNotEmpty) {
+          this.widget.notification.incidents.forEach((element) {
+            if (element.compareTo("Via errada") == 0) {
+              setState(() {
+                _isWrongRoute = true;
+              });
+            } else {
+              setState(() {
+                //Caso ele tenha ido para a proxima tela e
+                //voltado para modificar algo nessa
+                _isWrongRoute = false;
+              });
+            }
+          });
+          if (_isWrongRoute) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: RoutesPreview(this.widget.notification)));
           } else {
-            setState(() {
-              _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
-              //voltado para modificar algo nessa
-            });
-          }
-        });
-        if (_isWrongRoute) {
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: RoutesPreview(this.widget.notification)));
-        } else {
-          //Garante que não vai ter nada relacionado a via errada
-          this.widget.notification.clearRoute();
-          if (this.widget.notification.incidents.isNotEmpty) {
+            //Garante que não vai ter nada relacionado a via errada
+            this.widget.notification.clearRoute();
+
             Navigator.of(context).push(PageTransition(
                 duration: Duration(milliseconds: 200),
                 type: PageTransitionType.rightToLeft,
                 child: InfoExtraPreview(this.widget.notification)));
-          } else {
-            _missingElement(context);
-            setState(() {
-              _error = true;
-            });
           }
+        } else {
+          _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),

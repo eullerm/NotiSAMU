@@ -32,6 +32,12 @@ class _CategoryState extends State<Category> {
         incidents.selectedCategory(exist);
         for (var exist2 in this.widget.notification.incidents) {
           incidents.selectedIncident(exist, exist2, true);
+
+          if (_selected.containsKey(exist)) {
+            _selected[exist].add(exist2);
+          } else {
+            _selected[exist] = [exist2];
+          }
         }
       }
     }
@@ -64,9 +70,6 @@ class _CategoryState extends State<Category> {
             ),
             CheckboxChangeField(
               incidents,
-              /*changeCategoryWithKey: (String key) => _selectedCategory(key),
-              changeCategoryWithValue: (String key, bool change) =>
-                  _selectedCategory(key, value: change),*/
               changeIncident: (String key1, String key2, bool change) =>
                   _selectedIncidents(key1, key2, change),
             ),
@@ -76,17 +79,6 @@ class _CategoryState extends State<Category> {
       ),
     );
   }
-
-  /*_selectedCategory(String key, {bool value}) {
-    setState(
-      () {
-        value == null
-            ? incidents.selectedCategory(key,
-                booleana: [key])
-            : incidents.selectedCategory(key, booleana: value);
-      },
-    );
-  }*/
 
   _selectedIncidents(String key1, String key2, bool value) {
     setState(
@@ -149,7 +141,6 @@ class _CategoryState extends State<Category> {
 
         if (this.widget.notification.incidents.isNotEmpty) {
           this.widget.notification.incidents.forEach((element) {
-            print(element);
             if (element.compareTo("Via errada") == 0) {
               setState(() {
                 _isWrongRoute = true;
@@ -162,25 +153,24 @@ class _CategoryState extends State<Category> {
               });
             }
           });
+          if (_isWrongRoute) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: Routes(this.widget.notification)));
+          } else {
+            //Garante que não tera nada relacionado a via errada
+            this.widget.notification.clearRoute();
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: InfoExtra(this.widget.notification)));
+          }
         } else {
           _missingElement(context);
           setState(() {
             _error = true;
           });
-        }
-
-        if (_isWrongRoute) {
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: Routes(this.widget.notification)));
-        } else {
-          //Garante que não tera nada relacionado a via errada
-          this.widget.notification.clearRoute();
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: InfoExtra(this.widget.notification)));
         }
       },
       label: Text('Continuar'),

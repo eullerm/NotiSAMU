@@ -49,7 +49,7 @@ class _NotifyingState extends State<Notifying> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
         ),
       ),

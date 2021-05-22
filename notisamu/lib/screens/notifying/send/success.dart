@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/services/baseAuth.dart';
+import 'package:page_transition/page_transition.dart';
 
 // ignore: must_be_immutable
 class Success extends StatefulWidget {
@@ -128,9 +129,10 @@ class _SuccessState extends State<Success> {
             Timer(
               Duration(seconds: 2),
               () => Navigator.of(context).pushAndRemoveUntil(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        Notifying(this.widget.notification.base)),
+                PageTransition(
+                    duration: Duration(milliseconds: 200),
+                    type: PageTransitionType.leftToRight,
+                    child: Notifying(this.widget.notification.base)),
                 ModalRoute.withName('/'),
               ),
             );

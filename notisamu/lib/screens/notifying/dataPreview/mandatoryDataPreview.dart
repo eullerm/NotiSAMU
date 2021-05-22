@@ -53,6 +53,10 @@ class _MandatoryDataState extends State<MandatoryData> {
     local = TextEditingController(text: this.widget.notification.local);
 
     _radioValueLocal = this.widget.notification.local;
+    if (!listLocals.contains(_radioValueLocal)) {
+      local = TextEditingController(text: _radioValueLocal);
+      _radioValueLocal = "Outros";
+    }
     _radioValuePeriods = this.widget.notification.period;
 
     selectedDate = this.widget.notification.occurrenceDate;
@@ -287,8 +291,12 @@ class _MandatoryDataState extends State<MandatoryData> {
       if (newData.length == 0) newData = "Não informado";
       setState(() {
         this.widget.notification.setLocal(newData);
-        _radioValueLocal = this.widget.notification.local;
-        local = TextEditingController(text: this.widget.notification.local);
+        if (listLocals.contains(newData)) {
+          _radioValueLocal = newData;
+        } else {
+          local = TextEditingController(text: newData);
+          _radioValueLocal = "Outros";
+        }
       });
     } else if (field.compareTo(data[2]) == 0)
       setState(() {

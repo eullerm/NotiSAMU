@@ -19,7 +19,16 @@ class CheckboxChangeField extends StatelessWidget {
     return Column(
       children: incidents.category.keys
           .map<Widget>((String key) => ExpansionTile(
-                title: _text(key),
+                title: Row(children: [
+                  _explanation(key, context),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: _text(key),
+                  ),
+                ]),
                 children: <Widget>[
                   _questionsToList(incidents, key),
                   SizedBox(height: 20),
@@ -65,7 +74,7 @@ class CheckboxChangeField extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text("Ok"),
             ),
