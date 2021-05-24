@@ -142,7 +142,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           string,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 18,
           ),
           textAlign: TextAlign.left,
         ),
@@ -151,7 +151,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         ),
         Text(
           string2,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 18),
         ),
         SizedBox(height: 30),
       ],
@@ -166,7 +166,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           string,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 18,
           ),
         ),
         SizedBox(
@@ -178,7 +178,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
               .map<Widget>(
                 (entry) => Text(
                   entry,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
               )
               .toList(),
