@@ -84,7 +84,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
       SizedBox(
         height: 8,
       ),
-      _text("Via em que a administração foi usada erroneamente: *",
+      _text("Via em que a administração foi usada erroneamente*: ",
           error: _error),
       SizedBox(
         height: 16,

@@ -20,9 +20,6 @@ class _SpecificDataState extends State<SpecificData> {
     "Incidentes:",
   ];
 
-  final scrollIncidents = ScrollController();
-  final scrollCategories = ScrollController();
-
   Incidents incidents = Incidents();
 
   Map<String, List<String>> _selected = {};
@@ -37,34 +34,30 @@ class _SpecificDataState extends State<SpecificData> {
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
       for (var exist in this.widget.notification.category) {
-        //incidents.selectedCategory(exist);
+        incidents.selectedCategory(exist);
         for (var exist2 in this.widget.notification.incidents) {
-          incidents.selectedIncident(exist, exist2, true);
-          if (_selected.containsKey(exist)) {
-            _selected[exist].add(exist2);
-          } else {
-            _selected[exist] = [exist2];
-          }
+          incidents.selectedIncident(exist, exist2);
         }
       }
+      incidents.category.forEach((key, value) {
+        value.forEach((key2, value2) {
+          if (value2) {
+            if (_selected.containsKey(key)) {
+              _selected[key].add(key2);
+            } else {
+              _selected[key] = [key2];
+            }
+          }
+        });
+      });
     }
 
     _changeCategory = false;
     _changeIncidents = false;
     _isWrongRoute = false;
+    _error = false;
     super.initState();
   }
-
-  /*_selectedCategory(String key, {bool value}) {
-    setState(
-      () {
-        value == null
-            ? incidents.selectedCategory(key,
-                booleana: !incidents.category[key])
-            : incidents.selectedCategory(key, booleana: value);
-      },
-    );
-  }*/
 
   _selectedIncidents(String key1, String key2, bool value) {
     setState(
@@ -77,11 +70,13 @@ class _SpecificDataState extends State<SpecificData> {
           }
         } else {
           _selected[key1].remove(key2);
+          print(_selected[key1]);
           if (_selected[key1].length == 0) {
             _selected.remove(key1);
+            print(key1);
           }
         }
-        incidents.selectedIncident(key1, key2, value);
+        incidents.selectedIncident(key1, key2, booleana: value);
       },
     );
   }
@@ -106,7 +101,7 @@ class _SpecificDataState extends State<SpecificData> {
             padding: EdgeInsets.all(16),
             children: <Widget>[
               SizedBox(height: 8),
-              _text("Categoria de incidente: *", error: _error),
+              _text("Categoria de incidente*: ", error: _error),
               SizedBox(
                 height: 16,
               ),
@@ -122,10 +117,7 @@ class _SpecificDataState extends State<SpecificData> {
             padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 70),
             child: Column(
               children: <Widget>[
-                Flexible(
-                  flex: 3,
-                  child: _category(),
-                ),
+                _category(),
                 SizedBox(height: 20),
                 Flexible(
                   flex: 10,
@@ -141,8 +133,6 @@ class _SpecificDataState extends State<SpecificData> {
       data[0],
       list: this.widget.notification.category,
       isList: true,
-      isScrollable: true,
-      scroll: scrollCategories,
       function: () => _change(data[0]),
     );
   }
@@ -153,7 +143,6 @@ class _SpecificDataState extends State<SpecificData> {
       list: this.widget.notification.incidents,
       isList: true,
       isScrollable: true,
-      scroll: scrollIncidents,
       function: () => _change(data[1]),
     );
   }
@@ -232,7 +221,6 @@ class _SpecificDataState extends State<SpecificData> {
             .notification
             .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.clearIncidents();
-
         _selected.forEach(
           (k, v) {
             this.widget.notification.setCategory(k);

@@ -67,7 +67,7 @@ class Incidents extends Model {
     this._category[string] = booleana;
   }
 
-  selectedIncident(String string, String string2, bool booleana) {
+  selectedIncident(String string, String string2, {bool booleana = true}) {
     this._mapCategoryQuestions[string].forEach((key, value) {
       if (key.compareTo(string2) == 0)
         this._mapCategoryQuestions[string][string2] = booleana;

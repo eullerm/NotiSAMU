@@ -74,6 +74,8 @@ class _MedicinesState extends State<Medicines> {
   _listViewMedicines() {
     return Scrollbar(
       isAlwaysShown: true,
+      thickness: 8.0,
+      radius: Radius.circular(50.0),
       child: ListView.builder(
         itemCount: filtredMecines.length,
         itemBuilder: (BuildContext context, int index) {

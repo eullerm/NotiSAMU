@@ -31,15 +31,21 @@ class _CategoryState extends State<Category> {
       for (var exist in this.widget.notification.category) {
         incidents.selectedCategory(exist);
         for (var exist2 in this.widget.notification.incidents) {
-          incidents.selectedIncident(exist, exist2, true);
-
-          if (_selected.containsKey(exist)) {
-            _selected[exist].add(exist2);
-          } else {
-            _selected[exist] = [exist2];
-          }
+          incidents.selectedIncident(exist, exist2);
         }
       }
+
+      incidents.category.forEach((key, value) {
+        value.forEach((key2, value2) {
+          if (value2) {
+            if (_selected.containsKey(key)) {
+              _selected[key].add(key2);
+            } else {
+              _selected[key] = [key2];
+            }
+          }
+        });
+      });
     }
   }
 
@@ -59,6 +65,8 @@ class _CategoryState extends State<Category> {
     return Container(
       padding: EdgeInsets.only(left: 8, top: 8, right: 8, bottom: 40),
       child: Scrollbar(
+        thickness: 8.0,
+        radius: Radius.circular(50.0),
         isAlwaysShown: true,
         child: ListView(
           padding: EdgeInsets.all(8),
@@ -89,13 +97,16 @@ class _CategoryState extends State<Category> {
           } else {
             _selected[key1] = [key2];
           }
+          print(key1 + " " + key2);
         } else {
           _selected[key1].remove(key2);
           if (_selected[key1].length == 0) {
             _selected.remove(key1);
           }
+          print(key1 + " " + key2);
         }
-        incidents.selectedIncident(key1, key2, value);
+        print(_selected);
+        incidents.selectedIncident(key1, key2, booleana: value);
       },
     );
   }

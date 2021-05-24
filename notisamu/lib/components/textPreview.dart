@@ -15,10 +15,11 @@ class TextPreview extends StatelessWidget {
   final bool isList;
   final Function function;
   final bool isScrollable;
-  final ScrollController scroll;
+  ScrollController scroll;
 
   @override
   Widget build(BuildContext context) {
+    scroll = ScrollController();
     return GestureDetector(
       onTap: function,
       child: Column(
@@ -27,7 +28,7 @@ class TextPreview extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Text(
-                string,
+                this.string,
                 style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 18,
@@ -41,19 +42,8 @@ class TextPreview extends StatelessWidget {
             color: Colors.black,
           ),
           isList
-              ? Flexible(
-                  child: Scrollbar(
-                    isAlwaysShown: isScrollable,
-                    controller: scroll,
-                    child: ListView(
-                      shrinkWrap: true,
-                      children: list
-                          .map<Widget>((String i) => _secundaryText(i))
-                          .toList(),
-                    ),
-                  ),
-                )
-              : _secundaryText(string2),
+              ? _listText(this.list, this.isScrollable)
+              : _secundaryText(this.string2),
         ],
       ),
     );
@@ -87,5 +77,25 @@ class TextPreview extends StatelessWidget {
         ),
       ],
     );
+  }
+
+  _listText(List<String> list, bool isScrollable) {
+    return isScrollable
+        ? Flexible(
+            child: Scrollbar(
+              thickness: 8.0,
+              radius: Radius.circular(50.0),
+              isAlwaysShown: isScrollable,
+              child: ListView(
+                shrinkWrap: true,
+                children:
+                    list.map<Widget>((String i) => _secundaryText(i)).toList(),
+              ),
+            ),
+          )
+        : Column(
+            children:
+                list.map<Widget>((String i) => _secundaryText(i)).toList(),
+          );
   }
 }
