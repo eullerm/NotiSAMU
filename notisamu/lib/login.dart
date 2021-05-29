@@ -1,5 +1,7 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:noti_samu/advice/advice.dart';
 import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
@@ -54,6 +56,7 @@ class _LoginState extends State<Login> {
 
         setState(() {
           _loading = false;
+          _errorMessage = "";
         });
 
         if (userId.length > 0 && userId != null) {
@@ -75,11 +78,46 @@ class _LoginState extends State<Login> {
                     type: PageTransitionType.rightToLeft,
                     child: Feed(user.base, this.widget.auth)));
         }
-      } catch (e) {
-        print('Error: $e');
+      } on PlatformException catch (e) {
+        print('Login error: $e');
+        String errorType;
+        if (Platform.isAndroid) {
+          switch (e.code) {
+            case 'ERROR_USER_NOT_FOUND':
+              errorType = "Login ou senha inválido";
+              break;
+            case 'ERROR_WRONG_PASSWORD':
+              errorType = "Senha inválida.";
+              break;
+            case 'ERROR_NETWORK_REQUEST_FAILED':
+              errorType = "Verifique sua conexão com a internet.";
+              break;
+            default:
+              errorType = "Erro desconhecido.";
+              print(e.code.toString());
+              break;
+          }
+        } else if (Platform.isIOS) {
+          switch (e.code) {
+            case 'Error 17011':
+              errorType = "Login ou senha inválido";
+              break;
+            case 'Error 17009':
+              errorType = "Senha inválida.";
+              break;
+            case 'Error 17020':
+              errorType = "Verifique sua conexão com a internet.";
+              break;
+            default:
+              errorType = "Erro desconhecido.";
+              print(e.code.toString());
+              break;
+          }
+        }
+
         setState(() {
           _loading = false;
-          _errorMessage = "Login ou senha inválido.";
+          _errorMessage = errorType;
         });
       }
     }

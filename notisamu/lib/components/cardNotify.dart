@@ -14,7 +14,10 @@ class CardNotify extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _columnInfo(),
+          SingleChildScrollView(
+            scrollDirection: Axis.horizontal,
+            child: _columnInfo(),
+          ),
           Container(
             width: 6,
             height: 110,

@@ -74,17 +74,14 @@ class _FeedState extends State<Feed> {
             height: 1,
           ),
           Flexible(
-              child: Stack(
-            children: [
-              _listIncidents(),
-              Positioned(
-                top: 0,
-                right: 0,
-                left: 0,
-                child: _checkboxAnimated(context, type),
-              ),
-            ],
-          ))
+            flex: 1,
+            child: Stack(
+              children: [
+                _listIncidents(),
+                _checkboxAnimated(context, type),
+              ],
+            ),
+          ),
         ],
       ),
     );
@@ -181,39 +178,44 @@ class _FeedState extends State<Feed> {
     return Container(
       padding: EdgeInsets.only(left: 5, right: 5),
       alignment: FractionalOffset.center,
-      child: StreamBuilder<QuerySnapshot>(
-        stream: _order(
-          _filters,
-          this.widget.base,
-        ),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print("Snapshot ${snapshot.data}");
-          if (snapshot.hasError) _snapshotError(snapshot);
+      child: Stack(
+        children: [
+          StreamBuilder<QuerySnapshot>(
+            stream: _order(
+              _filters,
+              this.widget.base,
+            ),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              print("Snapshot ${snapshot.data}");
+              if (snapshot.hasError) _snapshotError(snapshot);
 
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-              break;
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  break;
 
-            case ConnectionState.none:
-              return _snapshotEmpty();
-              break;
+                case ConnectionState.none:
+                  return _snapshotEmpty();
+                  break;
 
-            case ConnectionState.active:
-              return Center(
-                child: ListView(
-                  children: _listNotify(snapshot),
-                ),
-              );
-              break;
+                case ConnectionState.active:
+                  return Center(
+                    child: ListView(
+                      children: _listNotify(snapshot),
+                    ),
+                  );
+                  break;
 
-            default:
-              return _snapshotEmpty();
-              break;
-          }
-        },
+                default:
+                  return _snapshotEmpty();
+                  break;
+              }
+            },
+          ),
+        ],
       ),
     );
   }
@@ -245,7 +247,7 @@ class _FeedState extends State<Feed> {
                       ],
                     ))
                 .toList(),
-          )
+          ),
         ],
       ),
     );
@@ -331,9 +333,12 @@ class _FeedState extends State<Feed> {
   }
 
   _text(String string) {
-    return Text(
-      string,
-      style: TextStyle(fontSize: 18),
+    return Flexible(
+      flex: 1,
+      child: Text(
+        string,
+        style: TextStyle(fontSize: 18),
+      ),
     );
   }
 

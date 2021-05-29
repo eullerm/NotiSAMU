@@ -94,10 +94,13 @@ class _OccurrenceState extends State<Occurrence> {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: <Widget>[
-        Text(
-          "Data da ocorrência: ",
-          style: TextStyle(
-            fontSize: 18,
+        Expanded(
+          flex: 1,
+          child: Text(
+            "Data da ocorrência: ",
+            style: TextStyle(
+              fontSize: 18,
+            ),
           ),
         ),
         GestureDetector(

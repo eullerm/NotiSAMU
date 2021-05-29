@@ -23,8 +23,8 @@ class Auth implements BaseAuth {
           email: email, password: password);
       FirebaseUser user = result.user;
       return user.uid;
-    } catch (e) {
-      print("erro:  ${e.toString()}");
+    } on AuthException catch (e) {
+      print('Error inside Auth: $e');
       return null;
     }
   }
