@@ -38,8 +38,14 @@ class _FeedState extends State<Feed> {
 
   bool admin;
 
+  double _slideClassification = 1.0;
+  double _slideOrder = 1.0;
+  double _widthContainerButtonFilter;
+
   @override
   Widget build(BuildContext context) {
+    _widthContainerButtonFilter = MediaQuery.of(context).size.width - 32;
+    // -32, pois o cada lado tem um padding de 16px
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFF7444E),
@@ -78,7 +84,10 @@ class _FeedState extends State<Feed> {
             child: Stack(
               children: [
                 _listIncidents(),
-                _checkboxAnimated(context, type),
+                Positioned(
+                  top: 0,
+                  child: _checkboxAnimated(context, type),
+                ),
               ],
             ),
           ),
@@ -90,35 +99,18 @@ class _FeedState extends State<Feed> {
   _filtersOn() {
     return Container(
       padding: EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0),
+      width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          _radioFilter != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _text("Classificação: "),
-                    _text(_radioFilter),
-                  ],
-                )
-              : Container(),
-          _radioOrder != null
-              ? Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    _text("Ordenado por: "),
-                    _text(_radioOrder),
-                  ],
-                )
-              : Container(),
+          _animatedTypeOfFilter("Classificação: ", _radioFilter, _radioFilter,
+              _slideClassification),
+          _animatedTypeOfFilter(
+              "Ordenado por: ", _radioOrder, _radioOrder, _slideOrder),
           Row(
-            mainAxisAlignment: _radioFilter != null || _radioOrder != null
-                ? MainAxisAlignment.spaceAround
-                : MainAxisAlignment.end,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              _showFilterButton(),
-              _radioFilter != null || _radioOrder != null
-                  ? _removeFilterButton()
-                  : Container(),
+              _animatedShowFilterButton(context),
+              _animatedRemoveFilters(),
             ],
           ),
         ],
@@ -126,8 +118,66 @@ class _FeedState extends State<Feed> {
     );
   }
 
+  _animatedTypeOfFilter(
+      String widget, String widget2, String radio, double slide) {
+    return AnimatedSwitcher(
+        duration: Duration(milliseconds: 200),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            position: Tween(begin: Offset(slide, 0.0), end: Offset(0.0, 0.0))
+                .animate(animation),
+            child: child,
+          );
+        },
+        child: radio != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _text(widget),
+                  _text(widget2),
+                ],
+              )
+            : Container());
+  }
+
+  _animatedRemoveFilters() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      width: _radioFilter != null || _radioOrder != null
+          ? MediaQuery.of(context).size.width / 2 - 16
+          : 0,
+      child: Flexible(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _removeFilterButton(),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  _animatedShowFilterButton(BuildContext context) {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 200),
+      width: _radioFilter != null || _radioOrder != null
+          ? MediaQuery.of(context).size.width / 2 - 32
+          : MediaQuery.of(context).size.width - 32,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _showFilterButton(),
+        ],
+      ),
+    );
+  }
+
   _showFilterButton() {
     return ButtonTheme(
+      key: ValueKey<String>("Filtrar"),
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Color(0xFF002C3E),
@@ -151,6 +201,7 @@ class _FeedState extends State<Feed> {
 
   _removeFilterButton() {
     return ButtonTheme(
+      key: ValueKey<String>("Remover filtros"),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
           primary: Color(0xFF002C3E),
@@ -162,6 +213,8 @@ class _FeedState extends State<Feed> {
             _radioFilter = null;
             _radioOrder = null;
             _filters = [];
+            _slideClassification = 1.0;
+            _slideOrder = 1.0;
           });
         },
         child: Text(
@@ -240,12 +293,17 @@ class _FeedState extends State<Feed> {
           ),
           Column(
             children: _menuFilter.keys
-                .map<Widget>((String key) => ExpansionTile(
+                .map<Widget>(
+                  (String key) => Theme(
+                    data: ThemeData(accentColor: Color(0xFF78BCC4)),
+                    child: ExpansionTile(
                       title: _text(key),
                       children: <Widget>[
                         _buildExpandableContent(key, _menuFilter[key]),
                       ],
-                    ))
+                    ),
+                  ),
+                )
                 .toList(),
           ),
         ],
@@ -269,6 +327,12 @@ class _FeedState extends State<Feed> {
                       _radioFilter = value;
                       if (!_filters.contains("Classificação")) {
                         _filters.add("Classificação");
+
+                        _slideClassification = -1.0;
+                      }
+                      if (value == null) {
+                        _filters.remove("Classificação");
+                        _slideClassification = 1.0;
                       }
                     });
                   },
@@ -289,7 +353,16 @@ class _FeedState extends State<Feed> {
                   groupValue: _radioOrder,
                   onChanged: (value) {
                     setState(() {
-                      if (!_filters.contains(_radioOrder)) _radioOrder = value;
+                      if (!_filters.contains(_radioOrder)) {
+                        _radioOrder = value;
+
+                        _slideOrder = -1.0;
+                      }
+                      if (value == null) {
+                        _slideOrder = 1.0;
+                      }
+
+                      ;
                     });
                   },
                   toggleable: true,
@@ -304,8 +377,6 @@ class _FeedState extends State<Feed> {
 
   _checkboxAnimated(BuildContext context, String type) {
     Widget checkbox;
-    double x = 0.0;
-    double y = -1.0;
     switch (type) {
       case "Menu":
         checkbox = showMenu
@@ -323,7 +394,7 @@ class _FeedState extends State<Feed> {
       duration: Duration(milliseconds: 200),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return SlideTransition(
-          position: Tween(begin: Offset(x, y), end: Offset(0.0, 0.0))
+          position: Tween(begin: Offset(0.0, -2.0), end: Offset(0.0, 0.0))
               .animate(animation),
           child: child,
         );
@@ -333,12 +404,9 @@ class _FeedState extends State<Feed> {
   }
 
   _text(String string) {
-    return Flexible(
-      flex: 1,
-      child: Text(
-        string,
-        style: TextStyle(fontSize: 18),
-      ),
+    return Text(
+      string,
+      style: TextStyle(fontSize: 18),
     );
   }
 

@@ -18,7 +18,10 @@ class CheckboxChangeField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: incidents.category.keys
-          .map<Widget>((String key) => ExpansionTile(
+          .map<Widget>(
+            (String key) => Theme(
+              data: ThemeData(accentColor: Color(0xFF78BCC4)),
+              child: ExpansionTile(
                 title: Row(children: [
                   _explanation(key, context),
                   SizedBox(
@@ -33,7 +36,9 @@ class CheckboxChangeField extends StatelessWidget {
                   _questionsToList(incidents, key),
                   SizedBox(height: 20),
                 ],
-              ))
+              ),
+            ),
+          )
           .toList(),
     );
   }
