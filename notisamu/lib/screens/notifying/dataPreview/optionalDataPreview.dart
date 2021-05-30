@@ -210,6 +210,7 @@ class _OptionalDataState extends State<OptionalData> {
             data[3],
             age,
             number: true,
+            maxLength: 3,
             functionToCancel: () => _saveNewData(
               data[3],
               this.widget.notification.age,

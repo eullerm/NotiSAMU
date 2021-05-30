@@ -98,7 +98,7 @@ class _FeedState extends State<Feed> {
 
   _filtersOn() {
     return Container(
-      padding: EdgeInsets.only(top: 8.0, right: 16.0, left: 16.0),
+      padding: EdgeInsets.only(top: 8.0, left: 16.0),
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -107,7 +107,7 @@ class _FeedState extends State<Feed> {
           _animatedTypeOfFilter(
               "Ordenado por: ", _radioOrder, _radioOrder, _slideOrder),
           Row(
-            mainAxisAlignment: MainAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               _animatedShowFilterButton(context),
               _animatedRemoveFilters(),
@@ -143,9 +143,7 @@ class _FeedState extends State<Feed> {
   _animatedRemoveFilters() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
-      width: _radioFilter != null || _radioOrder != null
-          ? MediaQuery.of(context).size.width / 2 - 16
-          : 0,
+      width: _radioFilter != null || _radioOrder != null ? 170 : 0,
       child: Flexible(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -164,10 +162,10 @@ class _FeedState extends State<Feed> {
     return AnimatedContainer(
       duration: Duration(milliseconds: 200),
       width: _radioFilter != null || _radioOrder != null
-          ? MediaQuery.of(context).size.width / 2 - 32
+          ? 80
           : MediaQuery.of(context).size.width - 32,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.center,
+        mainAxisAlignment: MainAxisAlignment.end,
         children: [
           _showFilterButton(),
         ],
@@ -204,6 +202,7 @@ class _FeedState extends State<Feed> {
       key: ValueKey<String>("Remover filtros"),
       child: OutlinedButton(
         style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Color(0xFF002C3E)),
           primary: Color(0xFF002C3E),
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
