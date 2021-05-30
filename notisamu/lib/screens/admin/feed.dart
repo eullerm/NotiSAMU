@@ -170,9 +170,7 @@ class _FeedState extends State<Feed> {
   _animatedShowFilterButton() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
-      width: _radioFilter != null || _radioOrder != null
-          ? MediaQuery.of(context).size.width / 2
-          : MediaQuery.of(context).size.width / 2,
+      width: MediaQuery.of(context).size.width / 2,
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
