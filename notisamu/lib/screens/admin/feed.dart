@@ -40,12 +40,9 @@ class _FeedState extends State<Feed> {
 
   double _slideClassification = 1.0;
   double _slideOrder = 1.0;
-  double _widthContainerButtonFilter;
 
   @override
   Widget build(BuildContext context) {
-    _widthContainerButtonFilter = MediaQuery.of(context).size.width - 32;
-    // -32, pois o cada lado tem um padding de 16px
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFF7444E),
@@ -86,6 +83,8 @@ class _FeedState extends State<Feed> {
                 _listIncidents(),
                 Positioned(
                   top: 0,
+                  right: 0,
+                  left: 0,
                   child: _checkboxAnimated(context, type),
                 ),
               ],
@@ -98,7 +97,7 @@ class _FeedState extends State<Feed> {
 
   _filtersOn() {
     return Container(
-      padding: EdgeInsets.only(top: 8.0, left: 16.0),
+      padding: EdgeInsets.only(top: 8.0),
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
@@ -109,7 +108,15 @@ class _FeedState extends State<Feed> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _animatedShowFilterButton(context),
+              //Serve somente para deixar o botão filtrar mais no canto direito
+              AnimatedContainer(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                duration: Duration(milliseconds: 300),
+                width: _radioFilter != null || _radioOrder != null
+                    ? 0
+                    : MediaQuery.of(context).size.width / 2,
+              ),
+              _animatedShowFilterButton(),
               _animatedRemoveFilters(),
             ],
           ),
@@ -142,9 +149,11 @@ class _FeedState extends State<Feed> {
 
   _animatedRemoveFilters() {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
-      width: _radioFilter != null || _radioOrder != null ? 170 : 0,
-      child: Flexible(
+      duration: Duration(milliseconds: 300),
+      width: _radioFilter != null || _radioOrder != null
+          ? MediaQuery.of(context).size.width / 2
+          : 0,
+      child: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
           child: Row(
@@ -158,14 +167,14 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  _animatedShowFilterButton(BuildContext context) {
+  _animatedShowFilterButton() {
     return AnimatedContainer(
-      duration: Duration(milliseconds: 200),
+      duration: Duration(milliseconds: 300),
       width: _radioFilter != null || _radioOrder != null
-          ? 80
-          : MediaQuery.of(context).size.width - 32,
+          ? MediaQuery.of(context).size.width / 2
+          : MediaQuery.of(context).size.width / 2,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.end,
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           _showFilterButton(),
         ],
