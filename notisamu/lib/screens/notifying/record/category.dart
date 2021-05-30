@@ -150,17 +150,17 @@ class _CategoryState extends State<Category> {
           },
         );
 
+        setState(() {
+          //Caso ele tenha ido para a proxima tela e
+          //voltado para modificar algo nessa
+          _isWrongRoute = false;
+        });
+
         if (this.widget.notification.incidents.isNotEmpty) {
           this.widget.notification.incidents.forEach((element) {
             if (element.compareTo("Via errada") == 0) {
               setState(() {
                 _isWrongRoute = true;
-              });
-            } else {
-              setState(() {
-                //Caso ele tenha ido para a proxima tela e
-                //voltado para modificar algo nessa
-                _isWrongRoute = false;
               });
             }
           });
