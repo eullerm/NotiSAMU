@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ChangeListManager">
+    <list default="true" id="4d3658c9-0362-4863-9de2-188a81fb4baa" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/notisamu/.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/notisamu/lib/screens/admin/feed.dart" beforeDir="false" afterPath="$PROJECT_DIR$/notisamu/lib/screens/admin/feed.dart" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1sa3pebCy2jnWovmfL5RbocPQ0P" />
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="4d3658c9-0362-4863-9de2-188a81fb4baa" name="Default Changelist" comment="" />
+      <created>1621097056928</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1621097056928</updated>
+    </task>
+    <servers />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="1177" y="452" width="1200" height="800" key="AVDManager" timestamp="1621488871821">
+      <screen x="0" y="0" width="3072" height="1728" />
+    </state>
+    <state x="1177" y="452" width="1200" height="800" key="AVDManager/0.0.3072.1728@0.0.3072.1728" timestamp="1621488871821" />
+  </component>
+</project>

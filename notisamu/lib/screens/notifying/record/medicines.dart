@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/category.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Medicines extends StatefulWidget {
   Notify notification;
@@ -12,6 +13,7 @@ class Medicines extends StatefulWidget {
 
 class _MedicinesState extends State<Medicines> {
   Map<String, bool> listMedicines, filtredMecines;
+  bool _error;
 
   @override
   void initState() {
@@ -23,6 +25,7 @@ class _MedicinesState extends State<Medicines> {
         filtredMecines[element] = true;
       });
     }
+    _error = false;
     super.initState();
   }
 
@@ -30,7 +33,7 @@ class _MedicinesState extends State<Medicines> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Medicamentos"),
       ),
       body: _body(context),
@@ -47,7 +50,8 @@ class _MedicinesState extends State<Medicines> {
             SizedBox(
               height: 8,
             ),
-            _text("*Selecione os medicamentos usados no atendimento"),
+            _text("Selecione os medicamentos usados no atendimento*: ",
+                error: _error),
             SizedBox(
               height: 16,
             ),
@@ -68,20 +72,25 @@ class _MedicinesState extends State<Medicines> {
   }
 
   _listViewMedicines() {
-    return ListView.builder(
-      itemCount: filtredMecines.length,
-      itemBuilder: (BuildContext context, int index) {
-        String key = filtredMecines.keys.elementAt(index);
-        return CheckboxListTile(
-            title: _text(key),
-            value: filtredMecines[key],
-            onChanged: (bool change) {
-              setState(() {
-                filtredMecines[key] = change;
-                listMedicines[key] = change;
+    return Scrollbar(
+      isAlwaysShown: true,
+      thickness: 8.0,
+      radius: Radius.circular(50.0),
+      child: ListView.builder(
+        itemCount: filtredMecines.length,
+        itemBuilder: (BuildContext context, int index) {
+          String key = filtredMecines.keys.elementAt(index);
+          return CheckboxListTile(
+              title: _text(key),
+              value: filtredMecines[key],
+              onChanged: (bool change) {
+                setState(() {
+                  filtredMecines[key] = change;
+                  listMedicines[key] = change;
+                });
               });
-            });
-      },
+        },
+      ),
     );
   }
 
@@ -91,7 +100,7 @@ class _MedicinesState extends State<Medicines> {
       child: TextField(
         onChanged: (value) => _filterMedicines(value),
         decoration: InputDecoration(
-          hintText: "Filtrar medicamentos:",
+          hintText: "Filtrar medicamentos: ",
           icon: Icon(Icons.search),
         ),
       ),
@@ -103,7 +112,7 @@ class _MedicinesState extends State<Medicines> {
       List<String> list = listMedicines.keys.where((element) {
         value = value.toLowerCase();
         element = element.toLowerCase();
-        return element.startsWith(value);
+        return element.contains(value);
       }).toList();
       filtredMecines = {};
       filtredMecines = Map.fromIterable(
@@ -114,22 +123,23 @@ class _MedicinesState extends State<Medicines> {
     });
   }
 
-  _text(perguntas) {
+  _text(String string, {bool error}) {
     return Text(
-      perguntas,
+      string,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um medicamento.",
-          style: TextStyle(color: Colors.red),
+          "Selecione ao menos um medicamento.",
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
@@ -147,15 +157,20 @@ class _MedicinesState extends State<Medicines> {
         });
 
         if (this.widget.notification.medicines.isNotEmpty) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Category(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: Category(this.widget.notification)));
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 }

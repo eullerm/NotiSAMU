@@ -1,9 +1,12 @@
+import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:noti_samu/advice/advice.dart';
 import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
 import 'package:noti_samu/screens/admin/feed.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Login extends StatefulWidget {
   Login({this.auth});
@@ -53,6 +56,7 @@ class _LoginState extends State<Login> {
 
         setState(() {
           _loading = false;
+          _errorMessage = "";
         });
 
         if (userId.length > 0 && userId != null) {
@@ -60,17 +64,60 @@ class _LoginState extends State<Login> {
           print('admin and base: ${user.admin}, ${user.base}');
 
           if (!user.admin)
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Advice(user.base, this.widget.auth)));
+            Navigator.push(
+                context,
+                PageTransition(
+                    duration: Duration(milliseconds: 200),
+                    type: PageTransitionType.rightToLeft,
+                    child: Advice(user.base, this.widget.auth)));
           else if (user.admin)
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (context) => Feed(user.base, this.widget.auth)));
+            Navigator.push(
+                context,
+                PageTransition(
+                    duration: Duration(milliseconds: 200),
+                    type: PageTransitionType.rightToLeft,
+                    child: Feed(user.base, this.widget.auth)));
         }
-      } catch (e) {
-        print('Error: $e');
+      } on PlatformException catch (e) {
+        print('Login error: $e');
+        String errorType;
+        if (Platform.isAndroid) {
+          switch (e.code) {
+            case 'ERROR_USER_NOT_FOUND':
+              errorType = "Login ou senha inválido";
+              break;
+            case 'ERROR_WRONG_PASSWORD':
+              errorType = "Senha inválida.";
+              break;
+            case 'ERROR_NETWORK_REQUEST_FAILED':
+              errorType = "Verifique sua conexão com a internet.";
+              break;
+            default:
+              errorType = "Erro desconhecido.";
+              print(e.code.toString());
+              break;
+          }
+        } else if (Platform.isIOS) {
+          switch (e.code) {
+            case 'Error 17011':
+              errorType = "Login ou senha inválido";
+              break;
+            case 'Error 17009':
+              errorType = "Senha inválida.";
+              break;
+            case 'Error 17020':
+              errorType = "Verifique sua conexão com a internet.";
+              break;
+            default:
+              errorType = "Erro desconhecido.";
+              print(e.code.toString());
+              break;
+          }
+        }
+
         setState(() {
           _loading = false;
-          _errorMessage = "Login ou senha inválido.";
+          _errorMessage = errorType;
         });
       }
     }
@@ -87,7 +134,7 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
@@ -95,9 +142,10 @@ class _LoginState extends State<Login> {
   }
 
   _body(context) {
+    Size size = MediaQuery.of(context).size;
     return Stack(
       children: <Widget>[
-        _showInputs(),
+        _showInputs(size),
         _showLoading(),
       ],
     );
@@ -110,25 +158,28 @@ class _LoginState extends State<Login> {
     return Container();
   }
 
-  _showInputs() {
-    Size size = MediaQuery.of(context).size;
+  _showInputs(Size size) {
     return Container(
-        padding: EdgeInsets.all(16.0),
-        width: size.width,
-        child: Form(
-          key: _formKey,
-          child: ListView(
-            shrinkWrap: true,
-            children: <Widget>[
-              _showErrorMessage(),
-              _inputUser(),
-              Divider(),
-              _inputPassword(),
-              Divider(),
-              _loginButton(size),
-            ],
-          ),
-        ));
+      padding: EdgeInsets.all(16.0),
+      width: size.width,
+      child: Form(
+        key: _formKey,
+        child: ListView(
+          shrinkWrap: true,
+          children: <Widget>[
+            _showErrorMessage(),
+            _inputUser(),
+            Divider(),
+            _inputPassword(),
+            Divider(),
+            SizedBox(
+              width: size.width,
+              child: _loginButton(),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
   _inputUser() {
@@ -147,7 +198,7 @@ class _LoginState extends State<Login> {
         ),
         hintText: "Base",
         icon: Icon(
-          Icons.email,
+          Icons.location_city,
           color: Colors.grey,
         ),
       ),
@@ -192,22 +243,23 @@ class _LoginState extends State<Login> {
       return null;
   }
 
-  _loginButton(size) {
+  _loginButton() {
     return ButtonTheme(
-      minWidth: size.width,
-      child: RaisedButton(
-        color: Colors.grey[300],
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        ),
+        onPressed: () {
+          validateAndSubmit();
+        },
         child: Text(
           "Acessar",
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-        splashColor: Colors.blue,
-        onPressed: () {
-          validateAndSubmit();
-        },
       ),
     );
   }
@@ -221,7 +273,7 @@ class _LoginState extends State<Login> {
             _errorMessage,
             style: TextStyle(
                 fontSize: 16.0,
-                color: Colors.red,
+                color: Color(0xFFF7444E),
                 height: 1.0,
                 fontWeight: FontWeight.w300),
           ),

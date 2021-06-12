@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 class TextChangeFormField extends StatelessWidget {
   TextChangeFormField(
@@ -25,39 +26,73 @@ class TextChangeFormField extends StatelessWidget {
   Widget build(BuildContext context) {
     return Column(
       children: <Widget>[
-        Text(
-          field,
-          style: TextStyle(
-            fontWeight: FontWeight.bold,
-            fontSize: 25,
-          ),
+        Row(
+          children: [
+            Text(
+              field,
+              style: TextStyle(
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+          ],
+        ),
+        SizedBox(
+          height: 10,
         ),
         Row(
           children: <Widget>[
-            Expanded(
-              child: TextFormField(
-                controller: controller,
-                maxLength: maxLength,
-                maxLines: maxLines,
-                minLines: minLines,
-                keyboardType:
-                    number ? TextInputType.number : TextInputType.name,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 18,
-                ),
-                decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(32),
-                  ),
-                ),
-              ),
-            ),
+            number ? _keyboardNumber() : _keyboardName(),
             widget,
             _cancelButton(),
           ],
         ),
       ],
+    );
+  }
+
+  _keyboardNumber() {
+    return Expanded(
+      child: TextFormField(
+        controller: controller,
+        maxLength: maxLength,
+        maxLines: maxLines,
+        minLines: minLines,
+        keyboardType: TextInputType.number,
+        inputFormatters: [
+          new FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+        ],
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+        ),
+      ),
+    );
+  }
+
+  _keyboardName() {
+    return Expanded(
+      child: TextFormField(
+        controller: controller,
+        maxLength: maxLength,
+        maxLines: maxLines,
+        minLines: minLines,
+        keyboardType: TextInputType.name,
+        style: TextStyle(
+          color: Colors.black,
+          fontSize: 18,
+        ),
+        decoration: InputDecoration(
+          border: OutlineInputBorder(
+            borderRadius: BorderRadius.circular(32),
+          ),
+        ),
+      ),
     );
   }
 
@@ -71,7 +106,7 @@ class TextChangeFormField extends StatelessWidget {
           ),
           padding: EdgeInsets.all(5.0),
           shape: CircleBorder(),
-          color: Colors.red[500],
+          color: Color(0xFFF7444E),
         ));
   }
 }

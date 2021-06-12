@@ -3,6 +3,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/objects/occupation.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/screens/notifying/record/patient.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Notifying extends StatefulWidget {
   Notifying(this.base);
@@ -18,12 +19,14 @@ class _NotifyingState extends State<Notifying> {
   Notify notification;
   String _radioValueOccupation;
   final notifying = TextEditingController();
+  bool _error;
 
   @override
   void initState() {
     notification = Notify(widget.base);
     setState(() {
       _radioValueOccupation = null;
+      _error = false;
     });
     super.initState();
   }
@@ -38,7 +41,7 @@ class _NotifyingState extends State<Notifying> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Registro do notificante"),
         leading: IconButton(
           icon: Icon(
@@ -46,7 +49,7 @@ class _NotifyingState extends State<Notifying> {
             color: Colors.white,
           ),
           onPressed: () {
-            Navigator.pop(context);
+            Navigator.of(context).pop();
           },
         ),
       ),
@@ -82,7 +85,7 @@ class _NotifyingState extends State<Notifying> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Nome do Notificante (opcional)",
+        hintText: "Nome do notificante (opcional)",
       ),
     );
   }
@@ -91,13 +94,7 @@ class _NotifyingState extends State<Notifying> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        Text(
-          '*Profissão:',
-          textAlign: TextAlign.left,
-          style: TextStyle(
-            fontSize: 18,
-          ),
-        ),
+        _text("Profissão*:", error: _error),
         RadioButtonList(
           listOccupations,
           radioValue: _radioValueOccupation,
@@ -105,6 +102,17 @@ class _NotifyingState extends State<Notifying> {
               radioButtonChangeOccupation(value),
         ),
       ],
+    );
+  }
+
+  _text(String string, {bool error}) {
+    return Text(
+      string,
+      textAlign: TextAlign.left,
+      style: TextStyle(
+        fontSize: 18,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
+      ),
     );
   }
 
@@ -117,23 +125,34 @@ class _NotifyingState extends State<Notifying> {
           this.notification.setNotifying(notifying.text);
         if (_radioValueOccupation != null) {
           this.notification.setOccupation(_radioValueOccupation);
-          Navigator.of(context).push(
-              MaterialPageRoute(builder: (context) => Patient(notification)));
-        } else
+          setState(() {
+            _error = false;
+          });
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: Patient(notification)));
+        } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Está faltando um elemento obrigatório",
-          style: TextStyle(color: Colors.red),
+          "Está faltando algum elemento obrigatório",
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

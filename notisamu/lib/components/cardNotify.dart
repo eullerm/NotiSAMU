@@ -10,18 +10,24 @@ class CardNotify extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      color: Colors.grey[300],
+      color: Color(0xFFFFFFF0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          _columnInfo(),
+          Flexible(
+            flex: 1,
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: _columnInfo(),
+            ),
+          ),
           Container(
             width: 6,
             height: 110,
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.all(Radius.circular(20.0)),
+                borderRadius: BorderRadius.all(Radius.circular(16.0)),
                 color: notification.data['classification'].isNotEmpty
-                    ? Colors.green
+                    ? Color(0xFF648D56)
                     : null),
           ),
         ],
@@ -51,6 +57,10 @@ class CardNotify extends StatelessWidget {
           Row(
             children: _rowText("Local:", notification.data['local']),
           ),
+          Row(
+            children:
+                _rowText("Classificação:", notification.data['classification']),
+          ),
         ],
       ),
     );
@@ -60,14 +70,14 @@ class CardNotify extends StatelessWidget {
     return <Widget>[
       Text(
         title,
-        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
       ),
       SizedBox(
         width: 5,
       ),
       Text(
         info,
-        style: TextStyle(fontSize: 20),
+        style: TextStyle(fontSize: 18),
       )
     ];
   }

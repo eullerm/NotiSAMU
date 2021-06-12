@@ -3,6 +3,7 @@ import 'package:noti_samu/components/textChangeFormField.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/send/success.dart';
+import 'package:page_transition/page_transition.dart';
 
 class InfoExtraPreview extends StatefulWidget {
   Notify notification;
@@ -33,7 +34,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Informações extras"),
       ),
       body: _body(context),
@@ -84,12 +85,14 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
   _sendNotification() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Success(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: Success(this.widget.notification)));
       },
       label: Text('Enviar'),
       icon: Icon(Icons.send),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 

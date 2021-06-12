@@ -17,15 +17,26 @@ class CheckboxChangeField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
       children: incidents.category.keys
           .map<Widget>(
-            (string) => Column(
-              children: <Widget>[
-                _checkboxCategory(incidents, string, context),
-                _validateAnswer(incidents, string),
-                SizedBox(height: 20),
-              ],
+            (String key) => Theme(
+              data: ThemeData(accentColor: Color(0xFF78BCC4)),
+              child: ExpansionTile(
+                title: Row(children: [
+                  _explanation(key, context),
+                  SizedBox(
+                    width: 10,
+                  ),
+                  Flexible(
+                    flex: 1,
+                    child: _text(key),
+                  ),
+                ]),
+                children: <Widget>[
+                  _questionsToList(incidents, key),
+                  SizedBox(height: 20),
+                ],
+              ),
             ),
           )
           .toList(),
@@ -68,7 +79,7 @@ class CheckboxChangeField extends StatelessWidget {
             ),
           ),
           actions: <Widget>[
-            FlatButton(
+            TextButton(
               onPressed: () => Navigator.of(context).pop(),
               child: Text("Ok"),
             ),
@@ -78,35 +89,9 @@ class CheckboxChangeField extends StatelessWidget {
     );
   }
 
-  //Cria um checkbox para cada categoria
-  _checkboxCategory(Incidents incidents, String key, BuildContext context) {
-    return Row(
-      children: <Widget>[
-        _explanation(key, context),
-        SizedBox(width: 5.0),
-        Expanded(
-          child: GestureDetector(
-              child: _text(key), onTap: () => changeCategoryWithKey(key)),
-        ),
-        Checkbox(
-            value: incidents.category[key],
-            onChanged: (bool value) => changeCategoryWithValue(key, value)),
-      ],
-    );
-  }
-
-  //Se a categoria estiver marcada exibe os incidentes
-  _validateAnswer(Incidents incidents, String key) {
-    return incidents.category[key] == true
-        ? _questionsToList(incidents, key)
-        : SingleChildScrollView(
-            child: Container(),
-          );
-  }
-
   //Exibição dos incidentes
   _questionsToList(Incidents incidents, String string) {
-    Map map = incidents.mapCategoryQuestions[string];
+    Map map = incidents.category[string];
     return Container(
       padding: EdgeInsets.only(
         left: 8,
@@ -132,7 +117,7 @@ class CheckboxChangeField extends StatelessWidget {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }

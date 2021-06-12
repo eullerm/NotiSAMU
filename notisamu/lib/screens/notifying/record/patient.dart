@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/record/mandatoryData.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Patient extends StatefulWidget {
   Notify notification;
@@ -16,11 +18,13 @@ class _PatientState extends State<Patient> {
   final List<String> listSex = Sex().sex;
   final patient = TextEditingController();
   final age = TextEditingController();
+  bool _error;
 
   @override
   void initState() {
     setState(() {
       _radioValue = null;
+      _error = false;
     });
     super.initState();
   }
@@ -35,7 +39,7 @@ class _PatientState extends State<Patient> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Registro de dados opcionais"),
       ),
       body: _body(context),
@@ -64,6 +68,10 @@ class _PatientState extends State<Patient> {
   _patientName() {
     return TextFormField(
       controller: patient,
+      keyboardType: TextInputType.text,
+      inputFormatters: [
+        new FilteringTextInputFormatter.allow(RegExp("[a-zA-Z]")),
+      ],
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -81,6 +89,10 @@ class _PatientState extends State<Patient> {
     return TextFormField(
       controller: age,
       keyboardType: TextInputType.number,
+      maxLength: 3,
+      inputFormatters: [
+        new FilteringTextInputFormatter.allow(RegExp("[0-9]")),
+      ],
       style: TextStyle(
         color: Colors.black,
         fontSize: 18,
@@ -89,7 +101,10 @@ class _PatientState extends State<Patient> {
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(32),
         ),
-        hintText: "Idade do paciente",
+        hintText: "Idade do paciente (opcional)",
+        counterText: "",
+        hoverColor:
+            (_error != null && _error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -131,13 +146,16 @@ class _PatientState extends State<Patient> {
           this.widget.notification.setAge("Não informado");
         else
           this.widget.notification.setAge(age.text);
-
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => Occurrence(widget.notification)));
+        Navigator.push(
+            context,
+            PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: Occurrence(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 }

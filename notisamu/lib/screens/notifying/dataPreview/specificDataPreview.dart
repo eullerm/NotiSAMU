@@ -5,6 +5,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/routesPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class SpecificData extends StatefulWidget {
   Notify notification;
@@ -21,9 +22,12 @@ class _SpecificDataState extends State<SpecificData> {
 
   Incidents incidents = Incidents();
 
+  Map<String, List<String>> _selected = {};
+
   bool _changeCategory;
   bool _changeIncidents;
   bool _isWrongRoute;
+  bool _error;
 
   @override
   void initState() {
@@ -32,32 +36,47 @@ class _SpecificDataState extends State<SpecificData> {
       for (var exist in this.widget.notification.category) {
         incidents.selectedCategory(exist);
         for (var exist2 in this.widget.notification.incidents) {
-          incidents.selectedIncident(exist, exist2, true);
+          incidents.selectedIncident(exist, exist2);
         }
       }
+      incidents.category.forEach((key, value) {
+        value.forEach((key2, value2) {
+          if (value2) {
+            if (_selected.containsKey(key)) {
+              _selected[key].add(key2);
+            } else {
+              _selected[key] = [key2];
+            }
+          }
+        });
+      });
     }
 
     _changeCategory = false;
     _changeIncidents = false;
     _isWrongRoute = false;
+    _error = false;
     super.initState();
-  }
-
-  _selectedCategory(String key, {bool value}) {
-    setState(
-      () {
-        value == null
-            ? incidents.selectedCategory(key,
-                booleana: !incidents.category[key])
-            : incidents.selectedCategory(key, booleana: value);
-      },
-    );
   }
 
   _selectedIncidents(String key1, String key2, bool value) {
     setState(
       () {
-        incidents.selectedIncident(key1, key2, value);
+        if (value) {
+          if (_selected.containsKey(key1)) {
+            _selected[key1].add(key2);
+          } else {
+            _selected[key1] = [key2];
+          }
+        } else {
+          _selected[key1].remove(key2);
+          print(_selected[key1]);
+          if (_selected[key1].length == 0) {
+            _selected.remove(key1);
+            print(key1);
+          }
+        }
+        incidents.selectedIncident(key1, key2, booleana: value);
       },
     );
   }
@@ -66,7 +85,7 @@ class _SpecificDataState extends State<SpecificData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Dados específicos"),
       ),
       body: _body(context),
@@ -77,39 +96,43 @@ class _SpecificDataState extends State<SpecificData> {
   }
 
   _body(context) {
-    return ListView(
-      padding: EdgeInsets.all(16),
-      children: (_changeCategory || _changeIncidents)
-          ? <Widget>[
+    return (_changeCategory || _changeIncidents)
+        ? ListView(
+            padding: EdgeInsets.all(16),
+            children: <Widget>[
               SizedBox(height: 8),
-              _text("Categoria de incidente: "),
+              _text("Categoria de incidente*: ", error: _error),
               SizedBox(
                 height: 16,
               ),
               CheckboxChangeField(
                 incidents,
-                changeCategoryWithKey: (String key) => _selectedCategory(key),
-                changeCategoryWithValue: (String key, bool change) =>
-                    _selectedCategory(key, value: change),
                 changeIncident: (String key1, String key2, bool change) =>
                     _selectedIncidents(key1, key2, change),
               ),
               SizedBox(height: 40),
-            ]
-          : <Widget>[
-              _category(),
-              SizedBox(height: 20),
-              _incidents(),
-              SizedBox(height: 20),
             ],
-    );
+          )
+        : Container(
+            padding: EdgeInsets.only(left: 16, top: 16, right: 16, bottom: 70),
+            child: Column(
+              children: <Widget>[
+                _category(),
+                SizedBox(height: 20),
+                Flexible(
+                  flex: 10,
+                  child: _incidents(),
+                ),
+              ],
+            ),
+          );
   }
 
   _category() {
     return TextPreview(
       data[0],
       list: this.widget.notification.category,
-      itsList: true,
+      isList: true,
       function: () => _change(data[0]),
     );
   }
@@ -118,7 +141,8 @@ class _SpecificDataState extends State<SpecificData> {
     return TextPreview(
       data[1],
       list: this.widget.notification.incidents,
-      itsList: true,
+      isList: true,
+      isScrollable: true,
       function: () => _change(data[1]),
     );
   }
@@ -140,7 +164,7 @@ class _SpecificDataState extends State<SpecificData> {
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
-        color: (error != null && error) ? Colors.red : Colors.black,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
@@ -148,25 +172,43 @@ class _SpecificDataState extends State<SpecificData> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        this.widget.notification.incidents.forEach((element) {
-          if (element.compareTo("Via errada") == 0) {
-            setState(() {
-              _isWrongRoute = true;
-            });
-          }
+        setState(() {
+          //Caso ele tenha ido para a proxima tela e
+          //voltado para modificar algo nessa
+          _isWrongRoute = false;
         });
-        if (_isWrongRoute) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => RoutesPreview(this.widget.notification)));
+        if (this.widget.notification.incidents.isNotEmpty) {
+          this.widget.notification.incidents.forEach((element) {
+            if (element.compareTo("Via errada") == 0) {
+              setState(() {
+                _isWrongRoute = true;
+              });
+            }
+          });
+          if (_isWrongRoute) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: RoutesPreview(this.widget.notification)));
+          } else {
+            //Garante que não vai ter nada relacionado a via errada
+            this.widget.notification.clearRoute();
+
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: InfoExtraPreview(this.widget.notification)));
+          }
         } else {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) =>
-                  InfoExtraPreview(this.widget.notification)));
+          _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 
@@ -178,31 +220,26 @@ class _SpecificDataState extends State<SpecificData> {
             .notification
             .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.clearIncidents();
-        incidents.category.forEach((k, v) {
-          if (v && incidents.isIncidentSelected(k)) {
+        _selected.forEach(
+          (k, v) {
             this.widget.notification.setCategory(k);
-            incidents.mapCategoryQuestions.forEach((key, listQuestions) {
-              if (key == k) {
-                for (var question in listQuestions.keys.toList()) {
-                  if (listQuestions[
-                      question]) //Se a boleana da resposta for true coloca a resposta na notificação
-                    this.widget.notification.setIncident(question);
-                }
-              }
+            v.forEach((question) {
+              this.widget.notification.setIncident(question);
             });
-          }
-        });
-        setState(() {
-          _isWrongRoute = false; //Caso ele tenha ido para a proxima tela e
-          //voltado para modificar algo nessa
-        });
+          },
+        );
+
         if (this.widget.notification.incidents.isNotEmpty) {
           setState(() {
             _changeCategory = false;
             _changeIncidents = false;
           });
-        } else
+        } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        }
       },
       label: Text('Confirmar'),
       icon: Icon(Icons.check),
@@ -211,11 +248,11 @@ class _SpecificDataState extends State<SpecificData> {
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione um incidente.",
-          style: TextStyle(color: Colors.red),
+          "Selecione ao menos um incidente.",
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

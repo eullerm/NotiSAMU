@@ -8,6 +8,7 @@ import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/period.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/medicinesPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class MandatoryData extends StatefulWidget {
   Notify notification;
@@ -52,6 +53,10 @@ class _MandatoryDataState extends State<MandatoryData> {
     local = TextEditingController(text: this.widget.notification.local);
 
     _radioValueLocal = this.widget.notification.local;
+    if (!listLocals.contains(_radioValueLocal)) {
+      local = TextEditingController(text: _radioValueLocal);
+      _radioValueLocal = "Outros";
+    }
     _radioValuePeriods = this.widget.notification.period;
 
     selectedDate = this.widget.notification.occurrenceDate;
@@ -80,7 +85,7 @@ class _MandatoryDataState extends State<MandatoryData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Revisão de dados"),
       ),
       body: _body(context),
@@ -114,8 +119,12 @@ class _MandatoryDataState extends State<MandatoryData> {
     return FloatingActionButton.extended(
       onPressed: () {
         if (!_changeLocal && !_changeNumber && !_changePeriod) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MedicinesPreview(widget.notification)));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: MedicinesPreview(widget.notification)));
         } else {
           _changingElement(context);
         }
@@ -123,8 +132,8 @@ class _MandatoryDataState extends State<MandatoryData> {
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
       backgroundColor: (_changeLocal || _changeNumber || _changePeriod)
-          ? Colors.red[50]
-          : Colors.redAccent,
+          ? Color(0xAAF7444E)
+          : Color(0xFFF7444E),
     );
   }
 
@@ -153,12 +162,16 @@ class _MandatoryDataState extends State<MandatoryData> {
     return _changeLocal
         ? Column(
             children: <Widget>[
-              Text(
-                data[1],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[1],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listLocals,
@@ -218,12 +231,16 @@ class _MandatoryDataState extends State<MandatoryData> {
     return _changePeriod
         ? Column(
             children: <Widget>[
-              Text(
-                data[3],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[3],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listPeriods,
@@ -274,8 +291,12 @@ class _MandatoryDataState extends State<MandatoryData> {
       if (newData.length == 0) newData = "Não informado";
       setState(() {
         this.widget.notification.setLocal(newData);
-        _radioValueLocal = this.widget.notification.local;
-        local = TextEditingController(text: this.widget.notification.local);
+        if (listLocals.contains(newData)) {
+          _radioValueLocal = newData;
+        } else {
+          local = TextEditingController(text: newData);
+          _radioValueLocal = "Outros";
+        }
       });
     } else if (field.compareTo(data[2]) == 0)
       setState(() {
@@ -292,11 +313,11 @@ class _MandatoryDataState extends State<MandatoryData> {
   }
 
   _changingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Salve ou cancele as alterações antes de prosseguir.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

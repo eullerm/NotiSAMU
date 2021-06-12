@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/screens/notifying/record/notifying.dart';
 import 'package:noti_samu/services/baseAuth.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Advice extends StatefulWidget {
   Advice(this.base, this.auth);
@@ -17,7 +18,7 @@ class _AdviceState extends State<Advice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
         leading: IconButton(
           icon: Icon(
@@ -34,8 +35,9 @@ class _AdviceState extends State<Advice> {
     );
   }
 
-  _body(context) {
+  _body(BuildContext context) {
     Size size = MediaQuery.of(context).size;
+    print("size: " + size.toString());
     return Container(
       padding: EdgeInsets.all(16),
       width: size.width,
@@ -43,7 +45,10 @@ class _AdviceState extends State<Advice> {
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: <Widget>[
           _advice(),
-          _button(size),
+          SizedBox(
+            width: size.width,
+            child: _button(),
+          ),
         ],
       ),
     );
@@ -72,21 +77,28 @@ class _AdviceState extends State<Advice> {
     );
   }
 
-  _button(size) {
+  _button() {
     return ButtonTheme(
-      minWidth: size.width,
-      child: RaisedButton(
-        color: Colors.grey[350],
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        ),
+        onPressed: () {
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: Notifying(this.widget.base)));
+        },
         child: Text(
           "Acessar",
           style: TextStyle(
             fontSize: 18,
           ),
         ),
-        onPressed: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => Notifying(this.widget.base)));
-        },
       ),
     );
   }

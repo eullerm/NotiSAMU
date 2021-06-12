@@ -7,6 +7,7 @@ import 'package:noti_samu/components/textChangeFormField.dart';
 import 'package:noti_samu/objects/occupation.dart';
 import 'package:noti_samu/objects/sex.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/mandatoryDataPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class OptionalData extends StatefulWidget {
   Notify notification;
@@ -75,7 +76,7 @@ class _OptionalDataState extends State<OptionalData> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Revisão de dados"),
       ),
       body: _body(context),
@@ -111,8 +112,12 @@ class _OptionalDataState extends State<OptionalData> {
             !_changeOccupation &&
             !_changePatient &&
             !_changeSex) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => MandatoryData(widget.notification)));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: MandatoryData(widget.notification)));
         } else {
           _changingElement(context);
         }
@@ -124,8 +129,8 @@ class _OptionalDataState extends State<OptionalData> {
               _changeOccupation ||
               _changePatient ||
               _changeSex)
-          ? Colors.red[50]
-          : Colors.redAccent,
+          ? Color(0xAAF7444E)
+          : Color(0xFFF7444E),
     );
   }
 
@@ -152,12 +157,16 @@ class _OptionalDataState extends State<OptionalData> {
   _occupation() {
     return _changeOccupation
         ? Column(children: <Widget>[
-            Text(
-              data[1],
-              style: TextStyle(
-                fontWeight: FontWeight.bold,
-                fontSize: 25,
-              ),
+            Row(
+              children: [
+                Text(
+                  data[1],
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18,
+                  ),
+                ),
+              ],
             ),
             RadioButtonListChangeField(
               listOccupations,
@@ -201,6 +210,7 @@ class _OptionalDataState extends State<OptionalData> {
             data[3],
             age,
             number: true,
+            maxLength: 3,
             functionToCancel: () => _saveNewData(
               data[3],
               this.widget.notification.age,
@@ -220,12 +230,16 @@ class _OptionalDataState extends State<OptionalData> {
     return _changeSex
         ? Column(
             children: <Widget>[
-              Text(
-                data[4],
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 25,
-                ),
+              Row(
+                children: [
+                  Text(
+                    data[4],
+                    style: TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                ],
               ),
               RadioButtonListChangeField(
                 listSex,
@@ -303,11 +317,11 @@ class _OptionalDataState extends State<OptionalData> {
   }
 
   _changingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Salve ou cancele as alterações antes de prosseguir.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );

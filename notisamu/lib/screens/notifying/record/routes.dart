@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:page_transition/page_transition.dart';
 import 'infoExtra.dart';
 
 class Routes extends StatefulWidget {
@@ -16,6 +17,14 @@ class _RoutesState extends State<Routes> {
 
   String _radioValueRoute;
 
+  bool _error;
+
+  @override
+  void initState() {
+    _error = false;
+    super.initState();
+  }
+
   void radioButtonChangeRoute(String value) {
     setState(() {
       _radioValueRoute = value;
@@ -26,7 +35,7 @@ class _RoutesState extends State<Routes> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Vias de administração"),
       ),
       body: _body(context),
@@ -44,7 +53,8 @@ class _RoutesState extends State<Routes> {
             SizedBox(
               height: 8,
             ),
-            _text("*Via em que a administração foi usada erroneamente: "),
+            _text("Via em que a administração foi usada erroneamente*: ",
+                error: _error),
             SizedBox(
               height: 16,
             ),
@@ -64,22 +74,23 @@ class _RoutesState extends State<Routes> {
     );
   }
 
-  _text(perguntas) {
+  _text(perguntas, {bool error}) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
           "Selecione uma via de administração.",
-          style: TextStyle(color: Colors.red),
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
@@ -91,15 +102,20 @@ class _RoutesState extends State<Routes> {
         this.widget.notification.setRoute(_radioValueRoute);
 
         if (this.widget.notification.route != null) {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => InfoExtra(this.widget.notification)));
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: InfoExtra(this.widget.notification)));
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 }

@@ -20,10 +20,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     "Circunstância notificável": false,
     "Quase erro": false,
   };
+  String _class = "";
 
   int buttonState = 2;
-  Color colorButton = Colors.blue;
-  IconData buttonIcon = Icons.assignment; //alterar
+  Color colorButton = Color(0xFF002C3E);
+  IconData buttonIcon = Icons.assignment;
   bool showCheckBox = false;
 
   final database = Firestore.instance;
@@ -33,10 +34,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     super.initState();
     _classifications.forEach((key, value) {
       if (key.compareTo(widget.notice.data['classification']) == 0) {
-        value = true;
+        _classifications[key] = true;
+        _class = key;
         buttonState = 1;
-        colorButton = Colors.orange;
-        buttonIcon = Icons.update; //alterar
+        colorButton = Color(0xFF78BCC4); //talvez trocar para 0xFF777D71);
+        buttonIcon = Icons.assignment; //alterar
       }
     });
   }
@@ -45,7 +47,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
@@ -64,9 +66,13 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         Positioned(
           bottom: 40,
           child: AnimatedSwitcher(
-            duration: Duration(milliseconds: 400),
+            duration: Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
-              return ScaleTransition(child: child, scale: animation);
+              return SlideTransition(
+                position: Tween(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
+                    .animate(animation),
+                child: child,
+              );
             },
             child: showCheckBox
                 ? _checkboxClassifications(context)
@@ -136,7 +142,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           string,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 18,
           ),
           textAlign: TextAlign.left,
         ),
@@ -145,7 +151,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         ),
         Text(
           string2,
-          style: TextStyle(fontSize: 20),
+          style: TextStyle(fontSize: 18),
         ),
         SizedBox(height: 30),
       ],
@@ -160,7 +166,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           string,
           style: TextStyle(
             fontWeight: FontWeight.bold,
-            fontSize: 25,
+            fontSize: 18,
           ),
         ),
         SizedBox(
@@ -172,7 +178,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
               .map<Widget>(
                 (entry) => Text(
                   entry,
-                  style: TextStyle(fontSize: 20),
+                  style: TextStyle(fontSize: 18),
                 ),
               )
               .toList(),
@@ -184,12 +190,14 @@ class _DetailsNoticeState extends State<DetailsNotice> {
 
   _buttonFAB(IconData icon, Color color, int integer) {
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 200),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return ScaleTransition(child: child, scale: animation);
       },
-      child: FloatingActionButton(
+      child: FloatingActionButton.extended(
+        label: showCheckBox ? Text('Confirmar') : Text("Classificar"),
         key: ValueKey<IconData>(icon),
+        tooltip: "Adicionar uma classificação",
         onPressed: () {
           switch (integer) {
             case 1: //Insere
@@ -197,7 +205,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 buttonState = 3;
                 showCheckBox = true;
                 buttonIcon = Icons.check;
-                colorButton = Colors.green;
+                colorButton = Color(0xFF648D56);
               });
 
               break;
@@ -207,7 +215,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 buttonState = 3;
                 showCheckBox = true;
                 buttonIcon = Icons.check;
-                colorButton = Colors.green;
+                colorButton = Color(0xFF648D56);
               });
               break;
 
@@ -220,11 +228,11 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                 if (widget.notice.data['classification'].isEmpty) {
                   buttonState = 1;
                   buttonIcon = Icons.assignment;
-                  colorButton = Colors.blue;
+                  colorButton = Color(0xFF002C3E);
                 } else {
                   buttonState = 2;
-                  buttonIcon = Icons.update;
-                  colorButton = Colors.orange;
+                  buttonIcon = Icons.assignment;
+                  colorButton = Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
                 }
                 showCheckBox = false;
               });
@@ -234,9 +242,8 @@ class _DetailsNoticeState extends State<DetailsNotice> {
               break;
           }
         },
-        child: Icon(icon),
+        icon: Icon(icon),
         backgroundColor: color,
-        shape: CircleBorder(),
       ),
     );
   }
@@ -249,26 +256,54 @@ class _DetailsNoticeState extends State<DetailsNotice> {
       margin: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          color: Colors.grey[200]),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _classifications.keys
-            .map<Widget>(
-              (String key) => CheckboxListTile(
-                title: _text(key),
-                value: _classifications[key],
-                onChanged: (bool value) {
+          color: Color(0xFFFFF8DC)),
+      child: Column(mainAxisSize: MainAxisSize.min, children: [
+        Row(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            CloseButton(
+              onPressed: () {
+                setState(() {
                   setState(() {
-                    _classifications.forEach((k, v) {
-                      _classifications[k] = false;
-                    });
-                    _classifications[key] = value;
+                    if (widget.notice.data['classification'].isEmpty) {
+                      buttonState = 1;
+                      buttonIcon = Icons.assignment;
+                      colorButton = Color(0xFF002C3E);
+                    } else {
+                      buttonState = 2;
+                      buttonIcon = Icons.assignment;
+                      colorButton =
+                          Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
+                    }
+                    showCheckBox = false;
                   });
-                },
-              ),
+                });
+              },
             )
-            .toList(),
-      ),
+          ],
+        ),
+        Column(
+          children: _classifications.keys
+              .map<Widget>(
+                (String key) => RadioListTile(
+                  title: _text(key),
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _class,
+                  onChanged: (value) {
+                    setState(() {
+                      _class = value;
+                      _classifications.forEach((k, v) {
+                        _classifications[k] = false;
+                      });
+                      _classifications[value] = true;
+                    });
+                  },
+                ),
+              )
+              .toList(),
+        ),
+      ]),
     );
   }
 

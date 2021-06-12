@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/cardNotify.dart';
 import 'package:noti_samu/screens/Admin/detailsNotice.dart';
 import 'package:noti_samu/services/baseAuth.dart';
+import 'package:page_transition/page_transition.dart';
 
 class Feed extends StatefulWidget {
   Feed(this.base, this.auth);
@@ -15,30 +16,36 @@ class Feed extends StatefulWidget {
 }
 
 class _FeedState extends State<Feed> {
-  Map<String, bool> _filter = {
-    "Incidente com dano": false,
-    "Incidente sem dano": false,
-    "Circunstância notificável": false,
-    "Quase erro": false,
+  Map<String, List<String>> _menuFilter = {
+    "Filtrar incidentes": [
+      "Incidente com dano",
+      "Incidente sem dano",
+      "Circunstância notificável",
+      "Quase erro",
+      "Sem classificação",
+    ],
+    "Ordenar por": [
+      "Data de ocorrência",
+      "Idade",
+    ],
   };
 
-  Map<String, bool> _orderBy = {
-    "Data de ocorrência": false,
-    "Idade": false,
-  };
+  List<String> _filters = [];
 
-  String _choiceFilter;
-  String _choiceIncident;
-  bool showCheckboxFilter = false;
-  bool showCheckboxOrder = false;
+  String _radioFilter;
+  String _radioOrder;
+  bool showMenu = false;
 
   bool admin;
+
+  double _slideClassification = 1.0;
+  double _slideOrder = 1.0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("NotiSAMU"),
         leading: IconButton(
           icon: Icon(
@@ -51,8 +58,7 @@ class _FeedState extends State<Feed> {
           },
         ),
         actions: <Widget>[
-          _orderButton(),
-          _filterButton(),
+          //_menu(), //Não está sendo usado
         ],
       ),
       body: _body(context),
@@ -60,179 +66,329 @@ class _FeedState extends State<Feed> {
   }
 
   _body(BuildContext context) {
-    String type =
-        showCheckboxFilter ? "Filtro" : (showCheckboxOrder ? "Ordem" : "");
+    String type = showMenu ? "Menu" : "MenuOFF";
 
-    return Stack(
-      children: <Widget>[
-        _listIncidents(),
-        Positioned(
-          top: 0,
-          right: 0,
-          child: _checkboxAnimated(context, type),
+    return Container(
+      child: Column(
+        children: [
+          _filtersOn(),
+          Divider(
+            color: Color(0xFF002C3E),
+            height: 1,
+          ),
+          Flexible(
+            flex: 1,
+            child: Stack(
+              children: [
+                _listIncidents(),
+                Positioned(
+                  top: 0,
+                  right: 0,
+                  left: 0,
+                  child: _checkboxAnimated(context, type),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _filtersOn() {
+    return Container(
+      padding: EdgeInsets.only(top: 8.0),
+      width: MediaQuery.of(context).size.width,
+      child: Column(
+        children: [
+          _animatedTypeOfFilter("Classificação: ", _radioFilter, _radioFilter,
+              _slideClassification),
+          _animatedTypeOfFilter(
+              "Ordenado por: ", _radioOrder, _radioOrder, _slideOrder),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              //Serve somente para deixar o botão filtrar mais no canto direito
+              AnimatedContainer(
+                padding: EdgeInsets.only(left: 16.0, right: 16.0),
+                duration: Duration(milliseconds: 300),
+                width: _radioFilter != null || _radioOrder != null
+                    ? 0
+                    : MediaQuery.of(context).size.width / 2,
+              ),
+              _animatedShowFilterButton(),
+              _animatedRemoveFilters(),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+
+  _animatedTypeOfFilter(
+      String widget, String widget2, String radio, double slide) {
+    return AnimatedSwitcher(
+        duration: Duration(milliseconds: 200),
+        transitionBuilder: (Widget child, Animation<double> animation) {
+          return SlideTransition(
+            position: Tween(begin: Offset(slide, 0.0), end: Offset(0.0, 0.0))
+                .animate(animation),
+            child: child,
+          );
+        },
+        child: radio != null
+            ? Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  _text(widget),
+                  _text(widget2),
+                ],
+              )
+            : Container());
+  }
+
+  _animatedRemoveFilters() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      width: _radioFilter != null || _radioOrder != null
+          ? MediaQuery.of(context).size.width / 2
+          : 0,
+      child: Center(
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              _removeFilterButton(),
+            ],
+          ),
         ),
-      ],
+      ),
+    );
+  }
+
+  _animatedShowFilterButton() {
+    return AnimatedContainer(
+      duration: Duration(milliseconds: 300),
+      width: MediaQuery.of(context).size.width / 2,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          _showFilterButton(),
+        ],
+      ),
+    );
+  }
+
+  _showFilterButton() {
+    return ButtonTheme(
+      key: ValueKey<String>("Filtrar"),
+      child: ElevatedButton(
+        style: ElevatedButton.styleFrom(
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        ),
+        onPressed: () {
+          setState(() {
+            showMenu = !showMenu;
+          });
+        },
+        child: Text(
+          "Filtrar",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
+    );
+  }
+
+  _removeFilterButton() {
+    return ButtonTheme(
+      key: ValueKey<String>("Remover filtros"),
+      child: OutlinedButton(
+        style: OutlinedButton.styleFrom(
+          side: BorderSide(color: Color(0xFF002C3E)),
+          primary: Color(0xFF002C3E),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+        ),
+        onPressed: () {
+          setState(() {
+            _radioFilter = null;
+            _radioOrder = null;
+            _filters = [];
+            _slideClassification = 1.0;
+            _slideOrder = 1.0;
+          });
+        },
+        child: Text(
+          "Remover filtros",
+          style: TextStyle(
+            fontSize: 18,
+          ),
+        ),
+      ),
     );
   }
 
   _listIncidents() {
     return Container(
-      padding: EdgeInsets.only(top: 5, left: 5, right: 5),
-      child: StreamBuilder<QuerySnapshot>(
-        stream: _order(
-          _choiceFilter,
-          this.widget.base,
-          specif: _choiceIncident,
-        ),
-        builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-          print("Snapshot ${snapshot.data}");
-          if (snapshot.hasError) _snapshotError(snapshot);
+      padding: EdgeInsets.only(left: 5, right: 5),
+      alignment: FractionalOffset.center,
+      child: Stack(
+        children: [
+          StreamBuilder<QuerySnapshot>(
+            stream: _order(
+              _filters,
+              this.widget.base,
+            ),
+            builder:
+                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+              print("Snapshot ${snapshot.data}");
+              if (snapshot.hasError) _snapshotError(snapshot);
 
-          switch (snapshot.connectionState) {
-            case ConnectionState.waiting:
-              return Center(
-                child: CircularProgressIndicator(),
-              );
-              break;
+              switch (snapshot.connectionState) {
+                case ConnectionState.waiting:
+                  return Center(
+                    child: CircularProgressIndicator(),
+                  );
+                  break;
 
-            case ConnectionState.none:
-              _snapshotEmpty();
-              break;
+                case ConnectionState.none:
+                  return _snapshotEmpty();
+                  break;
 
-            case ConnectionState.active:
-              return Center(
-                child: ListView(
-                  children: _listNotify(snapshot),
-                ),
-              );
-              break;
+                case ConnectionState.active:
+                  return Center(
+                    child: ListView(
+                      children: _listNotify(snapshot),
+                    ),
+                  );
+                  break;
 
-            default:
-              _snapshotEmpty();
-              break;
-          }
-        },
+                default:
+                  return _snapshotEmpty();
+                  break;
+              }
+            },
+          ),
+        ],
       ),
     );
   }
 
-  _filterButton() {
-    return IconButton(
-      icon: Icon(Icons.filter_list),
-      tooltip: "Filtrar",
-      onPressed: () {
-        setState(() {
-          showCheckboxFilter = !showCheckboxFilter;
-          if (showCheckboxFilter) showCheckboxOrder = false;
-        });
-      },
-    );
-  }
-
-  _orderButton() {
-    return IconButton(
-      icon: Icon(Icons.storage),
-      tooltip: "Ordenar",
-      onPressed: () {
-        setState(() {
-          showCheckboxOrder = !showCheckboxOrder;
-          if (showCheckboxOrder) showCheckboxFilter = false;
-        });
-      },
-    );
-  }
-
-  _checkboxFilter(BuildContext context) {
+  _checkboxMenu(BuildContext context) {
     return Container(
-      key: ValueKey<bool>(showCheckboxFilter),
-      width: MediaQuery.of(this.context).size.width - 80,
+      key: ValueKey<bool>(showMenu),
+      width: MediaQuery.of(this.context).size.width,
       padding: EdgeInsets.only(left: 16, right: 16),
       margin: EdgeInsets.only(right: 8, left: 8),
       decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          color: Colors.grey[200]),
+          //borderRadius: BorderRadius.all(Radius.circular(16.0)),
+          color: Color(0xFFFFF8DC)),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: _filter.keys
-            .map<Widget>((String key) => CheckboxListTile(
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.end,
+            children: [
+              _closedButton(),
+            ],
+          ),
+          Column(
+            children: _menuFilter.keys
+                .map<Widget>(
+                  (String key) => Theme(
+                    data: ThemeData(accentColor: Color(0xFF78BCC4)),
+                    child: ExpansionTile(
+                      title: _text(key),
+                      children: <Widget>[
+                        _buildExpandableContent(key, _menuFilter[key]),
+                      ],
+                    ),
+                  ),
+                )
+                .toList(),
+          ),
+        ],
+      ),
+    );
+  }
+
+  _buildExpandableContent(String value, List<String> l) {
+    switch (value) {
+      case "Filtrar incidentes":
+        return Column(
+          children: l
+              .map<Widget>(
+                (String key) => RadioListTile(
                   title: _text(key),
-                  value: _filter[key],
-                  onChanged: (bool change) {
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _radioFilter,
+                  onChanged: (value) {
                     setState(() {
-                      _filter.forEach((k, v) {
-                        _filter[k] = false; //reseta todo filtro
-                      });
-                      _orderBy.forEach((k, v) {
-                        _orderBy[k] = false; //reseta toda ordem
-                      });
-                      _filter[key] = change;
-                      if (change) {
-                        //se change for true filtra por categoria e o tipo de incidente
-                        _choiceFilter = "Classificação";
-                        _choiceIncident = key;
-                      } else if (_filter[_choiceIncident] == false) {
-                        _choiceFilter = null;
-                        _choiceIncident = null;
+                      _radioFilter = value;
+                      if (!_filters.contains("Classificação")) {
+                        _filters.add("Classificação");
+
+                        _slideClassification = -1.0;
+                      }
+                      if (value == null) {
+                        _filters.remove("Classificação");
+                        _slideClassification = 1.0;
                       }
                     });
                   },
-                ))
-            .toList(),
-      ),
-    );
-  }
-
-  _checkboxOrder(BuildContext context) {
-    return Container(
-      key: ValueKey<bool>(showCheckboxOrder),
-      width: MediaQuery.of(this.context).size.width - 80,
-      padding: EdgeInsets.only(left: 16, right: 16),
-      margin: EdgeInsets.only(right: 8, left: 8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          color: Colors.grey[200]),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: _orderBy.keys
-            .map<Widget>((String key) => CheckboxListTile(
+                  toggleable: true,
+                ),
+              )
+              .toList(),
+        );
+        break;
+      case "Ordenar por":
+        return Column(
+          children: l
+              .map<Widget>(
+                (String key) => RadioListTile(
                   title: _text(key),
-                  value: _orderBy[key],
-                  onChanged: (bool change) {
+                  activeColor: Color(0xFF648D56),
+                  value: key,
+                  groupValue: _radioOrder,
+                  onChanged: (value) {
                     setState(() {
-                      _filter.forEach((k, v) {
-                        _filter[k] = false; //reseta todo filtro
-                      });
-                      _orderBy.forEach((k, v) {
-                        _orderBy[k] = false; // reseta toda ordem
-                      });
-                      _orderBy[key] = change;
-                      if (change) // se change for true filtra pela ordem escolhida
-                        _choiceFilter = key;
-                      else if (_orderBy[_choiceFilter] == false)
-                        _choiceFilter = null;
+                      if (!_filters.contains(_radioOrder)) {
+                        _radioOrder = value;
+
+                        _slideOrder = -1.0;
+                      }
+                      if (value == null) {
+                        _slideOrder = 1.0;
+                      }
+
+                      ;
                     });
                   },
-                ))
-            .toList(),
-      ),
-    );
+                  toggleable: true,
+                ),
+              )
+              .toList(),
+        );
+        break;
+      default:
+    }
   }
 
   _checkboxAnimated(BuildContext context, String type) {
     Widget checkbox;
     switch (type) {
-      case "Ordem":
-        checkbox = showCheckboxOrder
-            ? _checkboxOrder(context)
+      case "Menu":
+        checkbox = showMenu
+            ? _checkboxMenu(context)
             : Container(
-                key: ValueKey<bool>(showCheckboxOrder),
-              );
-        break;
-      case "Filtro":
-        checkbox = showCheckboxFilter
-            ? _checkboxFilter(context)
-            : Container(
-                key: ValueKey<bool>(showCheckboxFilter),
+                key: ValueKey<bool>(showMenu),
               );
         break;
       default:
@@ -241,9 +397,13 @@ class _FeedState extends State<Feed> {
     }
 
     return AnimatedSwitcher(
-      duration: Duration(milliseconds: 400),
+      duration: Duration(milliseconds: 200),
       transitionBuilder: (Widget child, Animation<double> animation) {
-        return ScaleTransition(child: child, scale: animation);
+        return SlideTransition(
+          position: Tween(begin: Offset(0.0, -2.0), end: Offset(0.0, 0.0))
+              .animate(animation),
+          child: child,
+        );
       },
       child: checkbox,
     );
@@ -252,12 +412,18 @@ class _FeedState extends State<Feed> {
   _text(String string) {
     return Text(
       string,
-      style: TextStyle(fontSize: 20),
+      style: TextStyle(fontSize: 18),
     );
   }
 
-  _order(String type, String base, {String specif}) {
+  _order(List<String> type, String base) {
     var dataBase;
+    String f;
+    if (_radioFilter == "Sem classificação") {
+      f = "";
+    } else {
+      f = _radioFilter;
+    }
 
     if (base.compareTo("geral") == 0) {
       dataBase = Firestore.instance.collection('notification');
@@ -269,31 +435,36 @@ class _FeedState extends State<Feed> {
       admin = false;
     }
 
-    switch (type) {
-      case "Data da ocorrência":
-        return dataBase.orderBy("occurrenceDate", descending: true).snapshots();
-        break;
-      case "Idade":
-        return dataBase.orderBy("age").snapshots();
-        break;
-      case "Classificação":
-        return dataBase
+    if (type.isNotEmpty) {
+      if (type.contains("Ordenar por")) {
+        if (_radioOrder.compareTo("Data da ocorrência") == 0) {
+          dataBase = dataBase.orderBy("occurrenceDate", descending: true);
+        } else if (_radioOrder.compareTo("Idade") == 0) {
+          dataBase = dataBase.orderBy("age");
+        }
+      }
+
+      if (type.contains("Classificação")) {
+        dataBase = dataBase
             .orderBy("createdAt", descending: true)
-            .where("classification", isEqualTo: specif)
-            .snapshots();
-        break;
-      default: //Ordena por data de criação
-        return dataBase.orderBy("createdAt", descending: true).snapshots();
-        break;
+            .where("classification", isEqualTo: f);
+      }
+    } else {
+      dataBase = dataBase.orderBy("createdAt", descending: true);
     }
+    return dataBase.snapshots();
   }
 
   _listNotify(AsyncSnapshot snapshot) {
     return snapshot.data.documents.map<Widget>((DocumentSnapshot doc) {
       return GestureDetector(
         onTap: () {
-          Navigator.of(context).push(MaterialPageRoute(
-              builder: (context) => DetailsNotice(doc, admin)));
+          Navigator.push(
+              context,
+              PageTransition(
+                  duration: Duration(milliseconds: 200),
+                  type: PageTransitionType.rightToLeft,
+                  child: DetailsNotice(doc, admin)));
         },
         child: CardNotify(doc),
       );
@@ -317,6 +488,16 @@ class _FeedState extends State<Feed> {
           fontSize: 18,
         ),
       ),
+    );
+  }
+
+  _closedButton() {
+    return CloseButton(
+      onPressed: () {
+        setState(() {
+          showMenu = false;
+        });
+      },
     );
   }
 }

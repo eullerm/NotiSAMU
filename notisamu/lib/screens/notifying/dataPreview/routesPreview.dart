@@ -4,6 +4,7 @@ import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
+import 'package:page_transition/page_transition.dart';
 
 class RoutesPreview extends StatefulWidget {
   Notify notification;
@@ -18,6 +19,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   String _radioValueRoute;
 
   bool _changeRoute;
+  bool _error;
 
   void radioButtonChangeRoute(String value) {
     setState(() {
@@ -27,8 +29,13 @@ class _RoutesPreviewState extends State<RoutesPreview> {
 
   @override
   void initState() {
-    _changeRoute = false;
-    _radioValueRoute = this.widget.notification.route;
+    if (!listRoutes.contains(this.widget.notification.route)) {
+      _changeRoute = true;
+    } else {
+      _radioValueRoute = this.widget.notification.route;
+      _changeRoute = false;
+    }
+
     super.initState();
   }
 
@@ -36,7 +43,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Colors.red,
+        backgroundColor: Color(0xFFF7444E),
         title: Text("Vias de administração"),
       ),
       body: _body(context),
@@ -77,7 +84,8 @@ class _RoutesPreviewState extends State<RoutesPreview> {
       SizedBox(
         height: 8,
       ),
-      _text("*Via em que a administração foi usada erroneamente: "),
+      _text("Via em que a administração foi usada erroneamente*: ",
+          error: _error),
       SizedBox(
         height: 16,
       ),
@@ -94,22 +102,23 @@ class _RoutesPreviewState extends State<RoutesPreview> {
     );
   }
 
-  _text(perguntas) {
+  _text(perguntas, {bool error}) {
     return Text(
       perguntas,
       textAlign: TextAlign.left,
       style: TextStyle(
         fontSize: 18,
+        color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
       ),
     );
   }
 
   _missingElement(BuildContext context) {
-    return Scaffold.of(context).showSnackBar(
+    return ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(
-          "Selecione uma via de administração.",
-          style: TextStyle(color: Colors.red),
+          "Selecione ao menos uma via de administração.",
+          style: TextStyle(color: Color(0xFFF7444E)),
         ),
       ),
     );
@@ -118,26 +127,32 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => InfoExtraPreview(this.widget.notification)));
+        Navigator.of(context).push(PageTransition(
+            duration: Duration(milliseconds: 200),
+            type: PageTransitionType.rightToLeft,
+            child: InfoExtraPreview(this.widget.notification)));
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),
-      backgroundColor: Colors.redAccent,
+      backgroundColor: Color(0xFFF7444E),
     );
   }
 
   _changeButton(BuildContext context) {
+    _radioValueRoute == null ? print("null") : print("not null");
     return FloatingActionButton.extended(
       onPressed: () {
         this.widget.notification.setRoute(_radioValueRoute);
 
-        if (this.widget.notification.route != null) {
+        if (_radioValueRoute != null) {
           setState(() {
             _changeRoute = false;
           });
         } else {
           _missingElement(context);
+          setState(() {
+            _error = true;
+          });
         }
       },
       label: Text('Confirmar'),

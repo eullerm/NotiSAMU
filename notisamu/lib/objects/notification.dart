@@ -11,9 +11,9 @@ class Notify extends Model {
   DateTime _occurrenceDate;
   String _period;
   String _route;
-  List<String> _medicines = List();
-  List<String> _category = List();
-  List<String> _incidents = List();
+  List<String> _medicines = [];
+  List<String> _category = [];
+  List<String> _incidents = [];
   String _infoExtra;
   final String _base;
 
@@ -116,7 +116,9 @@ class Notify extends Model {
   }
 
   setRoute(String string) {
-    this._route = string;
+    if (string != "") {
+      this._route = string;
+    }
   }
 
   setMedicines(String string) {
@@ -145,14 +147,19 @@ class Notify extends Model {
   }
 
   clearMedicines() {
-    _medicines = List();
+    _medicines = [];
   }
 
   clearCategorys() {
-    _category = List();
+    _category = [];
   }
 
   clearIncidents() {
-    _incidents = List();
+    _incidents = [];
+  }
+
+  clearRoute() {
+    String reset;
+    this._route = reset;
   }
 }

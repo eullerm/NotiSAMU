@@ -2,33 +2,48 @@ import 'package:flutter/material.dart';
 
 class TextPreview extends StatelessWidget {
   TextPreview(this.string,
-      {this.string2, this.list, this.itsList = false, this.function});
+      {this.string2,
+      this.list,
+      this.isList = false,
+      this.function,
+      this.isScrollable = false,
+      this.scroll});
 
   final String string;
   final String string2;
   final List<String> list;
-  final bool itsList;
+  final bool isList;
   final Function function;
+  final bool isScrollable;
+  ScrollController scroll;
 
   @override
   Widget build(BuildContext context) {
+    scroll = ScrollController();
     return GestureDetector(
       onTap: function,
       child: Column(
         children: <Widget>[
-          Text(
-            string,
-            style: TextStyle(
-              fontWeight: FontWeight.bold,
-              fontSize: 25,
-            ),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Text(
+                this.string,
+                style: TextStyle(
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18,
+                ),
+              ),
+              Icon(Icons.edit_outlined),
+            ],
           ),
-          itsList
-              ? Column(
-                  children: list
-                      .map<Widget>((String i) => _secundaryText(i))
-                      .toList())
-              : _secundaryText(string2),
+          Divider(
+            height: 0,
+            color: Colors.black,
+          ),
+          isList
+              ? _listText(this.list, this.isScrollable)
+              : _secundaryText(this.string2),
         ],
       ),
     );
@@ -40,17 +55,47 @@ class TextPreview extends StatelessWidget {
         SizedBox(
           height: 8,
         ),
-        Text(
-          string,
-          style: TextStyle(
-            fontSize: 20,
+        Padding(
+          padding: EdgeInsets.only(left: 8),
+          child: Row(
+            children: [
+              Expanded(
+                flex: 2,
+                child: Text(
+                  string,
+                  style: TextStyle(
+                    fontSize: 18,
+                  ),
+                  textAlign: TextAlign.start,
+                ),
+              ),
+            ],
           ),
-          textAlign: TextAlign.center,
         ),
         SizedBox(
-          height: 20,
+          height: 8,
         ),
       ],
     );
+  }
+
+  _listText(List<String> list, bool isScrollable) {
+    return isScrollable
+        ? Flexible(
+            child: Scrollbar(
+              thickness: 8.0,
+              radius: Radius.circular(50.0),
+              isAlwaysShown: isScrollable,
+              child: ListView(
+                shrinkWrap: true,
+                children:
+                    list.map<Widget>((String i) => _secundaryText(i)).toList(),
+              ),
+            ),
+          )
+        : Column(
+            children:
+                list.map<Widget>((String i) => _secundaryText(i)).toList(),
+          );
   }
 }
