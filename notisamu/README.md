@@ -1,16 +1,19 @@
-# noti_samu
+# NotiSAMU
 
-A new Flutter project.
+Projeto de iniciação científica, da UFF, cujo obetivo era a criação de um app mobile para notificação de incidentes durante atendimentos ambulatoriais.
 
-## Getting Started
+## 🛠️ Construído com
 
-This project is a starting point for a Flutter application.
+Para a criação do projeto foi utilizado flutter e firebase.
 
-A few resources to get you started if this is your first Flutter project:
+- Flutter: Utilizado para fazer a interface.
+- Firebase: Banco de dados NOSQL.
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## 📦 Desenvolvimento
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+Capaz de rodar tanto para iOS quanto android com um único código.
+
+## ✒️ Autores
+
+- **Euller Macena** - Desenvolvimento.
+- **Aline Lima** - Documentação. 
