@@ -18,6 +18,15 @@ Capaz de rodar tanto para iOS quanto android com um único código.
 - **Euller Macena** - Desenvolvimento.
 - **Aline Lima** - Documentação. 
 
+### :zap: Como executar
+
+Para executar, execute o seguinte comando dentro da pasta do projeto:
+```sh
+$ cd .\notisamu\
+$ flutter pub get
+$ flutter run
+```
+
 ## :iphone: Telas
 
 - **Tela de login**
