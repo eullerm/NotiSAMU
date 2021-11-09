@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:noti_samu/aboutApp.dart';
 import 'package:noti_samu/advice/advice.dart';
 import 'package:noti_samu/objects/user.dart';
 import 'package:noti_samu/services/baseAuth.dart';
@@ -67,16 +68,12 @@ class _LoginState extends State<Login> {
             Navigator.push(
                 context,
                 PageTransition(
-                    duration: Duration(milliseconds: 200),
-                    type: PageTransitionType.rightToLeft,
-                    child: Advice(user.base, this.widget.auth)));
+                    duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: Advice(user.base, this.widget.auth)));
           else if (user.admin)
             Navigator.push(
                 context,
                 PageTransition(
-                    duration: Duration(milliseconds: 200),
-                    type: PageTransitionType.rightToLeft,
-                    child: Feed(user.base, this.widget.auth)));
+                    duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: Feed(user.base, this.widget.auth)));
         }
       } on PlatformException catch (e) {
         print('Login error: $e');
@@ -138,6 +135,7 @@ class _LoginState extends State<Login> {
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
+      floatingActionButton: _aboutApp(),
     );
   }
 
@@ -179,6 +177,24 @@ class _LoginState extends State<Login> {
           ],
         ),
       ),
+    );
+  }
+
+  _aboutApp() {
+    return FloatingActionButton.extended(
+      onPressed: () {
+        Navigator.push(context, PageTransition(duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: AboutApp()));
+      },
+      label: Text(
+        "Sobre o App",
+        style: TextStyle(color: Color(0xFF002C3E)),
+      ),
+      icon: Icon(
+        Icons.info_outline,
+        color: Color(0xFF002C3E),
+      ),
+      backgroundColor: Colors.white,
+      shape: StadiumBorder(side: BorderSide(color: Color(0xFF002C3E), width: 4)),
     );
   }
 
@@ -248,8 +264,7 @@ class _LoginState extends State<Login> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Color(0xFF002C3E),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         ),
         onPressed: () {
           validateAndSubmit();
@@ -271,11 +286,7 @@ class _LoginState extends State<Login> {
           SizedBox(height: 5),
           Text(
             _errorMessage,
-            style: TextStyle(
-                fontSize: 16.0,
-                color: Color(0xFFF7444E),
-                height: 1.0,
-                fontWeight: FontWeight.w300),
+            style: TextStyle(fontSize: 16.0, color: Color(0xFFF7444E), height: 1.0, fontWeight: FontWeight.w300),
           ),
           SizedBox(height: 10),
         ],
