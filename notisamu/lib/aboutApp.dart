@@ -54,7 +54,7 @@ class _AboutAppState extends State<AboutApp> {
           children: <TextSpan>[
             TextSpan(
               text:
-                  "O aplicativo tem como objetivo reunir informações sobre incidentes ocorridos durante o atendimento ambulatorial de emergência e analisar os dados para compreender o quadro dos problemas, como indisponibilidade de medicamentos, de equipamentos e erros humanos, para assim poder agir para melhorar o atendimento.",
+                  "O aplicativo tem como objetivo reunir informações sobre incidentes ocorridos durante o atendimento pré-hospitalar de emergência e analisar os dados para compreender o quadro dos problemas, como indisponibilidade de medicamentos, de equipamentos e erros humanos, para assim poder agir para melhorar o atendimento.",
               style: TextStyle(fontSize: 15, color: Colors.black),
             ),
           ],
