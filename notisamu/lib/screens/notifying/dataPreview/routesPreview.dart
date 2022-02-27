@@ -4,11 +4,13 @@ import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/prescriptionErrorPreview.dart';
 import 'package:page_transition/page_transition.dart';
 
 class RoutesPreview extends StatefulWidget {
   Notify notification;
-  RoutesPreview(this.notification);
+  bool isWrongPrescription;
+  RoutesPreview(this.notification, {this.isWrongPrescription = false});
   @override
   _RoutesPreviewState createState() => _RoutesPreviewState();
 }
@@ -29,6 +31,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
 
   @override
   void initState() {
+    print(this.widget.isWrongPrescription);
     if (!listRoutes.contains(this.widget.notification.route)) {
       _changeRoute = true;
     } else {
@@ -47,9 +50,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
         title: Text("Vias de administração"),
       ),
       body: _body(context),
-      floatingActionButton: _changeRoute
-          ? Builder(builder: (context) => _changeButton(context))
-          : _buttonNext(),
+      floatingActionButton: _changeRoute ? Builder(builder: (context) => _changeButton(context)) : _buttonNext(),
     );
   }
 
@@ -84,8 +85,7 @@ class _RoutesPreviewState extends State<RoutesPreview> {
       SizedBox(
         height: 8,
       ),
-      _text("Via em que a administração foi usada erroneamente*: ",
-          error: _error),
+      _text("Via em que a administração foi usada erroneamente*: ", error: _error),
       SizedBox(
         height: 16,
       ),
@@ -127,10 +127,15 @@ class _RoutesPreviewState extends State<RoutesPreview> {
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        Navigator.of(context).push(PageTransition(
-            duration: Duration(milliseconds: 200),
-            type: PageTransitionType.rightToLeft,
-            child: InfoExtraPreview(this.widget.notification)));
+        if (this.widget.isWrongPrescription) {
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200),
+              type: PageTransitionType.rightToLeft,
+              child: PrescriptionErrorPreview(this.widget.notification)));
+        } else {
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: InfoExtraPreview(this.widget.notification)));
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

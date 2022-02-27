@@ -121,6 +121,10 @@ class _SuccessState extends State<Success> {
           'base': this.widget.notification.base,
           'medicines': this.widget.notification.medicines,
           'route': this.widget.notification.route,
+          'isWrongMedicineUsed': this.widget.notification.isWrongMedicineUsed,
+          'isMedicineReaction': this.widget.notification.isMedicineReaction,
+          'infoAboutReaction': this.widget.notification.infoAboutReaction,
+          'wrongMedicinesUsed': this.widget.notification.wrongMedicinesUsed,
         })
         .timeout(Duration(seconds: 10))
         .whenComplete(
@@ -130,9 +134,7 @@ class _SuccessState extends State<Success> {
               Duration(seconds: 2),
               () => Navigator.of(context).pushAndRemoveUntil(
                 PageTransition(
-                    duration: Duration(milliseconds: 200),
-                    type: PageTransitionType.leftToRight,
-                    child: Notifying(this.widget.notification.base)),
+                    duration: Duration(milliseconds: 200), type: PageTransitionType.leftToRight, child: Notifying(this.widget.notification.base)),
                 ModalRoute.withName('/'),
               ),
             );

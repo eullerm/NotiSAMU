@@ -12,17 +12,16 @@ class Medicines extends StatefulWidget {
 }
 
 class _MedicinesState extends State<Medicines> {
-  Map<String, bool> listMedicines, filtredMecines;
+  Map<String, bool> listMedicines, filteredMedicines;
   bool _error;
 
   @override
   void initState() {
-    listMedicines = filtredMecines = Map.fromIterable(ListMedicines().medicines,
-        key: (e) => e, value: (e) => false);
+    listMedicines = filteredMedicines = Map.fromIterable(ListMedicines().medicines, key: (e) => e, value: (e) => false);
     if (this.widget.notification.medicines.isNotEmpty) {
       this.widget.notification.medicines.forEach((element) {
         listMedicines[element] = true;
-        filtredMecines[element] = true;
+        filteredMedicines[element] = true;
       });
     }
     _error = false;
@@ -50,8 +49,7 @@ class _MedicinesState extends State<Medicines> {
             SizedBox(
               height: 8,
             ),
-            _text("Selecione os medicamentos usados no atendimento*: ",
-                error: _error),
+            _text("Selecione os medicamentos usados no atendimento*: ", error: _error),
             SizedBox(
               height: 16,
             ),
@@ -77,15 +75,15 @@ class _MedicinesState extends State<Medicines> {
       thickness: 8.0,
       radius: Radius.circular(50.0),
       child: ListView.builder(
-        itemCount: filtredMecines.length,
+        itemCount: filteredMedicines.length,
         itemBuilder: (BuildContext context, int index) {
-          String key = filtredMecines.keys.elementAt(index);
+          String key = filteredMedicines.keys.elementAt(index);
           return CheckboxListTile(
               title: _text(key),
-              value: filtredMecines[key],
+              value: filteredMedicines[key],
               onChanged: (bool change) {
                 setState(() {
-                  filtredMecines[key] = change;
+                  filteredMedicines[key] = change;
                   listMedicines[key] = change;
                 });
               });
@@ -114,8 +112,8 @@ class _MedicinesState extends State<Medicines> {
         element = element.toLowerCase();
         return element.contains(value);
       }).toList();
-      filtredMecines = {};
-      filtredMecines = Map.fromIterable(
+      filteredMedicines = {};
+      filteredMedicines = Map.fromIterable(
         list,
         key: (e) => e,
         value: (e) => listMedicines[e],
@@ -157,10 +155,8 @@ class _MedicinesState extends State<Medicines> {
         });
 
         if (this.widget.notification.medicines.isNotEmpty) {
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: Category(this.widget.notification)));
+          Navigator.of(context).push(
+              PageTransition(duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: Category(this.widget.notification)));
         } else {
           _missingElement(context);
           setState(() {

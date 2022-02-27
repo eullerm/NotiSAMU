@@ -51,9 +51,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         title: Text("NotiSAMU"),
       ),
       body: _body(context),
-      floatingActionButton: this.widget.admin
-          ? _buttonFAB(buttonIcon, colorButton, buttonState)
-          : Container(),
+      floatingActionButton: this.widget.admin ? _buttonFAB(buttonIcon, colorButton, buttonState) : Container(),
     );
   }
 
@@ -69,8 +67,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             duration: Duration(milliseconds: 200),
             transitionBuilder: (Widget child, Animation<double> animation) {
               return SlideTransition(
-                position: Tween(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0))
-                    .animate(animation),
+                position: Tween(begin: Offset(0.0, 1.0), end: Offset(0.0, 0.0)).animate(animation),
                 child: child,
               );
             },
@@ -93,28 +90,20 @@ class _DetailsNoticeState extends State<DetailsNotice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
             _textColumn("Relator:", widget.notice.data['notifying']),
-            this.widget.admin
-                ? _textColumn("Base:",
-                    Bases().getSpecificBase(widget.notice.data['base']))
-                : Container(),
+            this.widget.admin ? _textColumn("Base:", Bases().getSpecificBase(widget.notice.data['base'])) : Container(),
             _textColumn("Profissão:", widget.notice.data['occupation']),
             _textColumn("Paciente:", widget.notice.data['patient']),
             _textColumn("Idade:", widget.notice.data['age']),
             _textColumn("Sexo:", widget.notice.data['sex']),
-            _textColumn(
-                "Nº da ocorrência:", widget.notice.data['occurrenceNumber']),
+            _textColumn("Nº da ocorrência:", widget.notice.data['occurrenceNumber']),
             _textColumn("Local:", widget.notice.data['local']),
             _textColumn(
-                "Data da ocorrência:",
-                DateFormat("dd/MM/yyyy")
-                    .format(widget.notice.data['occurrenceDate'].toDate())),
+                "Data da ocorrência:", DateFormat("dd/MM/yyyy").format(widget.notice.data['occurrenceDate'].toDate())),
             _textColumn("Periodo:", widget.notice.data['period']),
             _textList("Medicamentos:", widget.notice.data['medicines']),
             _textList("Categorias:", widget.notice.data['category']),
             _textList("Incidentes:", widget.notice.data['incident']),
-            widget.notice.data['route'] != null
-                ? _textColumn("Via:", widget.notice.data['route'])
-                : Container(),
+            widget.notice.data['route'] != null ? _textColumn("Via:", widget.notice.data['route']) : Container(),
             _textColumn("Classificação:", widget.notice.data['classification']),
             _textColumn("Info extra:", widget.notice.data['infoExtra']),
             this.widget.admin ? SizedBox(height: 50) : Container(),
@@ -254,9 +243,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
       width: MediaQuery.of(this.context).size.width - 48,
       padding: EdgeInsets.only(left: 16, right: 16),
       margin: EdgeInsets.only(right: 8, left: 8),
-      decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(Radius.circular(20.0)),
-          color: Color(0xFFFFF8DC)),
+      decoration: BoxDecoration(borderRadius: BorderRadius.all(Radius.circular(20.0)), color: Color(0xFFFFF8DC)),
       child: Column(mainAxisSize: MainAxisSize.min, children: [
         Row(
           mainAxisAlignment: MainAxisAlignment.end,
@@ -272,8 +259,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
                     } else {
                       buttonState = 2;
                       buttonIcon = Icons.assignment;
-                      colorButton =
-                          Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
+                      colorButton = Color(0xFF78BCC4); //talvez trocar  0xFF777D71;
                     }
                     showCheckBox = false;
                   });
@@ -320,9 +306,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
         .timeout(Duration(seconds: 10))
         .whenComplete(() => setState(() {
               Navigator.of(context).pop(
-                MaterialPageRoute(
-                    builder: (context) =>
-                        DetailsNotice(widget.notice, widget.admin)),
+                MaterialPageRoute(builder: (context) => DetailsNotice(widget.notice, widget.admin)),
               );
             }))
         .catchError((error) => print("$error"));

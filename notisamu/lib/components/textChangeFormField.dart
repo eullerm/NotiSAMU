@@ -11,6 +11,7 @@ class TextChangeFormField extends StatelessWidget {
     this.maxLength = 50,
     this.maxLines = 1,
     this.minLines = 1,
+    this.error = false,
   });
 
   final String field;
@@ -21,6 +22,7 @@ class TextChangeFormField extends StatelessWidget {
   final int maxLength;
   final int maxLines;
   final int minLines;
+  bool error;
 
   @override
   Widget build(BuildContext context) {
@@ -33,6 +35,7 @@ class TextChangeFormField extends StatelessWidget {
               style: TextStyle(
                 fontWeight: FontWeight.bold,
                 fontSize: 18,
+                color: (error != null && error) ? Color(0xFFF7444E) : Colors.black,
               ),
             ),
           ],

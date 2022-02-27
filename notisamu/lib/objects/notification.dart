@@ -14,6 +14,10 @@ class Notify extends Model {
   List<String> _medicines = [];
   List<String> _category = [];
   List<String> _incidents = [];
+  List<String> _wrongMedicinesUsed = [];
+  String _isWrongMedicineUsed;
+  String _isMedicineReaction;
+  String _infoAboutReaction;
   String _infoExtra;
   final String _base;
 
@@ -71,12 +75,28 @@ class Notify extends Model {
     return _incidents;
   }
 
+  List<String> get wrongMedicinesUsed {
+    return _wrongMedicinesUsed;
+  }
+
   String get infoExtra {
     return _infoExtra;
   }
 
   String get base {
     return _base;
+  }
+
+  String get isWrongMedicineUsed {
+    return _isWrongMedicineUsed;
+  }
+
+  String get isMedicineReaction {
+    return _isMedicineReaction;
+  }
+
+  String get infoAboutReaction {
+    return _infoAboutReaction;
   }
 
   setNotifying(String string) {
@@ -142,6 +162,25 @@ class Notify extends Model {
       this._incidents.add(string);
   }
 
+  setWrongMedicinesUsed(String string) {
+    if (this._wrongMedicinesUsed == null)
+      this._wrongMedicinesUsed = [string];
+    else
+      this._wrongMedicinesUsed.add(string);
+  }
+
+  setIsWrongMedicineUsed(String string) {
+    return _isWrongMedicineUsed = string;
+  }
+
+  setIsMedicineReaction(String string) {
+    return _isMedicineReaction = string;
+  }
+
+  setInfoAboutReaction(String string) {
+    return _infoAboutReaction = string;
+  }
+
   setInfoExtra(String info) {
     _infoExtra = info;
   }
@@ -156,6 +195,10 @@ class Notify extends Model {
 
   clearIncidents() {
     _incidents = [];
+  }
+
+  clearWrongMedicinesUsed() {
+    _wrongMedicinesUsed = [];
   }
 
   clearRoute() {

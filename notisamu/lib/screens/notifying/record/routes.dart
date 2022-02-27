@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:noti_samu/components/radioButtonList.dart';
 import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
+import 'package:noti_samu/screens/notifying/record/prescriptionError.dart';
 import 'package:page_transition/page_transition.dart';
 import 'infoExtra.dart';
 
 class Routes extends StatefulWidget {
   Notify notification;
-  Routes(this.notification);
+  bool isWrongPrescription;
+  Routes(this.notification, {this.isWrongPrescription = false});
   @override
   _RoutesState createState() => _RoutesState();
 }
@@ -53,8 +55,7 @@ class _RoutesState extends State<Routes> {
             SizedBox(
               height: 8,
             ),
-            _text("Via em que a administração foi usada erroneamente*: ",
-                error: _error),
+            _text("Via em que a administração foi usada erroneamente*: ", error: _error),
             SizedBox(
               height: 16,
             ),
@@ -102,10 +103,13 @@ class _RoutesState extends State<Routes> {
         this.widget.notification.setRoute(_radioValueRoute);
 
         if (this.widget.notification.route != null) {
-          Navigator.of(context).push(PageTransition(
-              duration: Duration(milliseconds: 200),
-              type: PageTransitionType.rightToLeft,
-              child: InfoExtra(this.widget.notification)));
+          if (this.widget.isWrongPrescription) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: PrescriptionError(this.widget.notification)));
+          } else {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: InfoExtra(this.widget.notification)));
+          }
         } else {
           _missingElement(context);
           setState(() {

@@ -14,12 +14,13 @@ class InfoExtra extends StatefulWidget {
 class _InfoExtraState extends State<InfoExtra> {
   TextEditingController information = TextEditingController();
 
+  bool _error;
+
   @override
   void initState() {
     super.initState();
-    if (this.widget.notification.infoExtra != null)
-      information =
-          TextEditingController(text: this.widget.notification.infoExtra);
+    _error = false;
+    if (this.widget.notification.infoExtra != null) information = TextEditingController(text: this.widget.notification.infoExtra);
   }
 
   @override
@@ -43,11 +44,14 @@ class _InfoExtraState extends State<InfoExtra> {
             SizedBox(
               height: 20,
             ),
-            Text(
-              ("Você considera que algum fator ou agente tenha contribuído" +
-                  " para este incidente? Se sim, especifique."),
-              style: TextStyle(
-                fontSize: 16,
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                "Descreva como foi o incidente. Você acredita que algum fator contribuiu para o ocorrido?",
+                style: TextStyle(
+                  fontSize: 18,
+                  color: (_error != null && _error) ? Color(0xFFF7444E) : Colors.black,
+                ),
               ),
             ),
             SizedBox(
@@ -78,17 +82,30 @@ class _InfoExtraState extends State<InfoExtra> {
     );
   }
 
+  _missingElement(BuildContext context) {
+    return ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(
+        content: Text(
+          "Descreva o incidente antes de continuar.",
+          style: TextStyle(color: Color(0xFFF7444E)),
+        ),
+      ),
+    );
+  }
+
   _buttonNext() {
     return FloatingActionButton.extended(
       onPressed: () {
-        if (information.text.isEmpty)
-          this.widget.notification.setInfoExtra("Nada informado.");
-        else
+        if (information.text.isEmpty) {
+          _missingElement(context);
+          setState(() {
+            _error = true;
+          });
+        } else {
           this.widget.notification.setInfoExtra(information.text);
-        Navigator.of(context).push(PageTransition(
-            duration: Duration(milliseconds: 200),
-            type: PageTransitionType.rightToLeft,
-            child: Advice2(this.widget.notification)));
+          Navigator.of(context).push(
+              PageTransition(duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: Advice2(this.widget.notification)));
+        }
       },
       label: Text('Continuar'),
       icon: Icon(Icons.skip_next),

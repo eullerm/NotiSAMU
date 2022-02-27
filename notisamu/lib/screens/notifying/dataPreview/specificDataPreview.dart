@@ -4,6 +4,7 @@ import 'package:noti_samu/objects/incidents.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/components/textPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/InfoExtraPreview.dart';
+import 'package:noti_samu/screens/notifying/dataPreview/prescriptionErrorPreview.dart';
 import 'package:noti_samu/screens/notifying/dataPreview/routesPreview.dart';
 import 'package:page_transition/page_transition.dart';
 
@@ -27,6 +28,7 @@ class _SpecificDataState extends State<SpecificData> {
   bool _changeCategory;
   bool _changeIncidents;
   bool _isWrongRoute;
+  bool _isWrongPrescription;
   bool _error;
 
   @override
@@ -55,6 +57,7 @@ class _SpecificDataState extends State<SpecificData> {
     _changeCategory = false;
     _changeIncidents = false;
     _isWrongRoute = false;
+    _isWrongPrescription = false;
     _error = false;
     super.initState();
   }
@@ -89,9 +92,7 @@ class _SpecificDataState extends State<SpecificData> {
         title: Text("Dados específicos"),
       ),
       body: _body(context),
-      floatingActionButton: (_changeCategory || _changeIncidents)
-          ? Builder(builder: (context) => _changeButton(context))
-          : _buttonNext(),
+      floatingActionButton: (_changeCategory || _changeIncidents) ? Builder(builder: (context) => _changeButton(context)) : _buttonNext(),
     );
   }
 
@@ -107,8 +108,7 @@ class _SpecificDataState extends State<SpecificData> {
               ),
               CheckboxChangeField(
                 incidents,
-                changeIncident: (String key1, String key2, bool change) =>
-                    _selectedIncidents(key1, key2, change),
+                changeIncident: (String key1, String key2, bool change) => _selectedIncidents(key1, key2, change),
               ),
               SizedBox(height: 40),
             ],
@@ -176,6 +176,7 @@ class _SpecificDataState extends State<SpecificData> {
           //Caso ele tenha ido para a proxima tela e
           //voltado para modificar algo nessa
           _isWrongRoute = false;
+          _isWrongPrescription = false;
         });
         if (this.widget.notification.incidents.isNotEmpty) {
           this.widget.notification.incidents.forEach((element) {
@@ -185,19 +186,33 @@ class _SpecificDataState extends State<SpecificData> {
               });
             }
           });
+          this.widget.notification.category.forEach((element) {
+            if (element.compareTo("Erro de prescrição") == 0) {
+              setState(() {
+                _isWrongPrescription = true;
+              });
+            }
+          });
           if (_isWrongRoute) {
+            print(_isWrongPrescription);
             Navigator.of(context).push(PageTransition(
                 duration: Duration(milliseconds: 200),
                 type: PageTransitionType.rightToLeft,
-                child: RoutesPreview(this.widget.notification)));
+                child: RoutesPreview(
+                  this.widget.notification,
+                  isWrongPrescription: _isWrongPrescription,
+                )));
+          } else if (_isWrongPrescription) {
+            Navigator.of(context).push(PageTransition(
+                duration: Duration(milliseconds: 200),
+                type: PageTransitionType.rightToLeft,
+                child: PrescriptionErrorPreview(this.widget.notification)));
           } else {
             //Garante que não vai ter nada relacionado a via errada
             this.widget.notification.clearRoute();
 
             Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200),
-                type: PageTransitionType.rightToLeft,
-                child: InfoExtraPreview(this.widget.notification)));
+                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: InfoExtraPreview(this.widget.notification)));
           }
         } else {
           _missingElement(context);
@@ -215,10 +230,7 @@ class _SpecificDataState extends State<SpecificData> {
   _changeButton(BuildContext context) {
     return FloatingActionButton.extended(
       onPressed: () {
-        this
-            .widget
-            .notification
-            .clearCategorys(); //Garante que a lista de incidentes vai estar limpa
+        this.widget.notification.clearCategorys(); //Garante que a lista de incidentes vai estar limpa
         this.widget.notification.clearIncidents();
         _selected.forEach(
           (k, v) {
