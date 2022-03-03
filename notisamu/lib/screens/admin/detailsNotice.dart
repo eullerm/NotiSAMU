@@ -97,14 +97,27 @@ class _DetailsNoticeState extends State<DetailsNotice> {
             _textColumn("Sexo:", widget.notice.data['sex']),
             _textColumn("Nº da ocorrência:", widget.notice.data['occurrenceNumber']),
             _textColumn("Local:", widget.notice.data['local']),
-            _textColumn(
-                "Data da ocorrência:", DateFormat("dd/MM/yyyy").format(widget.notice.data['occurrenceDate'].toDate())),
+            _textColumn("Data da ocorrência:", DateFormat("dd/MM/yyyy").format(widget.notice.data['occurrenceDate'].toDate())),
             _textColumn("Periodo:", widget.notice.data['period']),
             _textList("Medicamentos:", widget.notice.data['medicines']),
             _textList("Categorias:", widget.notice.data['category']),
             _textList("Incidentes:", widget.notice.data['incident']),
             widget.notice.data['route'] != null ? _textColumn("Via:", widget.notice.data['route']) : Container(),
-            _textColumn("Classificação:", widget.notice.data['classification']),
+            widget.notice.data['classification'].isNotEmpty
+                ? _textColumn("Classificação:", widget.notice.data['classification'])
+                : _textColumn("Classificação:", "Aguardando classificação"),
+            widget.notice.data['isWrongMedicineUsed'] != null
+                ? _textColumn("O medicamento com erro de prescrição chegou a ser administrado?:", widget.notice.data['isWrongMedicineUsed'])
+                : Container(),
+            widget.notice.data['isMedicineReaction'] != null
+                ? _textColumn("Houve alguma reação?:", widget.notice.data['isMedicineReaction'])
+                : Container(),
+            widget.notice.data['infoAboutReaction'].isNotEmpty
+                ? _textColumn("Informações sobre a reação:", widget.notice.data['infoAboutReaction'])
+                : Container(),
+            widget.notice.data['wrongMedicinesUsed'] != null
+                ? _textList("Medicamento envolvido no incidente:", widget.notice.data['wrongMedicinesUsed'])
+                : Container(),
             _textColumn("Info extra:", widget.notice.data['infoExtra']),
             this.widget.admin ? SizedBox(height: 50) : Container(),
           ],

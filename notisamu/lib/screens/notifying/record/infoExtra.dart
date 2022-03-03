@@ -47,7 +47,7 @@ class _InfoExtraState extends State<InfoExtra> {
             Align(
               alignment: Alignment.topLeft,
               child: Text(
-                "Descreva como foi o incidente. Você acredita que algum fator contribuiu para o ocorrido?",
+                "Descreva como foi o incidente. Você acredita que algum fator contribuiu para o ocorrido?*",
                 style: TextStyle(
                   fontSize: 18,
                   color: (_error != null && _error) ? Color(0xFFF7444E) : Colors.black,

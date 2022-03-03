@@ -22,6 +22,7 @@ class _FeedState extends State<Feed> {
       "Incidente sem dano",
       "Circunstância notificável",
       "Quase erro",
+      "RAM",
       "Sem classificação",
     ],
     "Ordenar por": [
@@ -101,10 +102,8 @@ class _FeedState extends State<Feed> {
       width: MediaQuery.of(context).size.width,
       child: Column(
         children: [
-          _animatedTypeOfFilter("Classificação: ", _radioFilter, _radioFilter,
-              _slideClassification),
-          _animatedTypeOfFilter(
-              "Ordenado por: ", _radioOrder, _radioOrder, _slideOrder),
+          _animatedTypeOfFilter("Classificação: ", _radioFilter, _radioFilter, _slideClassification),
+          _animatedTypeOfFilter("Ordenado por: ", _radioOrder, _radioOrder, _slideOrder),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -112,9 +111,7 @@ class _FeedState extends State<Feed> {
               AnimatedContainer(
                 padding: EdgeInsets.only(left: 16.0, right: 16.0),
                 duration: Duration(milliseconds: 300),
-                width: _radioFilter != null || _radioOrder != null
-                    ? 0
-                    : MediaQuery.of(context).size.width / 2,
+                width: _radioFilter != null || _radioOrder != null ? 0 : MediaQuery.of(context).size.width / 2,
               ),
               _animatedShowFilterButton(),
               _animatedRemoveFilters(),
@@ -125,14 +122,12 @@ class _FeedState extends State<Feed> {
     );
   }
 
-  _animatedTypeOfFilter(
-      String widget, String widget2, String radio, double slide) {
+  _animatedTypeOfFilter(String widget, String widget2, String radio, double slide) {
     return AnimatedSwitcher(
         duration: Duration(milliseconds: 200),
         transitionBuilder: (Widget child, Animation<double> animation) {
           return SlideTransition(
-            position: Tween(begin: Offset(slide, 0.0), end: Offset(0.0, 0.0))
-                .animate(animation),
+            position: Tween(begin: Offset(slide, 0.0), end: Offset(0.0, 0.0)).animate(animation),
             child: child,
           );
         },
@@ -150,9 +145,7 @@ class _FeedState extends State<Feed> {
   _animatedRemoveFilters() {
     return AnimatedContainer(
       duration: Duration(milliseconds: 300),
-      width: _radioFilter != null || _radioOrder != null
-          ? MediaQuery.of(context).size.width / 2
-          : 0,
+      width: _radioFilter != null || _radioOrder != null ? MediaQuery.of(context).size.width / 2 : 0,
       child: Center(
         child: SingleChildScrollView(
           scrollDirection: Axis.horizontal,
@@ -186,8 +179,7 @@ class _FeedState extends State<Feed> {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           primary: Color(0xFF002C3E),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         ),
         onPressed: () {
           setState(() {
@@ -211,8 +203,7 @@ class _FeedState extends State<Feed> {
         style: OutlinedButton.styleFrom(
           side: BorderSide(color: Color(0xFF002C3E)),
           primary: Color(0xFF002C3E),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(32)),
         ),
         onPressed: () {
           setState(() {
@@ -244,8 +235,7 @@ class _FeedState extends State<Feed> {
               _filters,
               this.widget.base,
             ),
-            builder:
-                (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+            builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
               print("Snapshot ${snapshot.data}");
               if (snapshot.hasError) _snapshotError(snapshot);
 
@@ -400,8 +390,7 @@ class _FeedState extends State<Feed> {
       duration: Duration(milliseconds: 200),
       transitionBuilder: (Widget child, Animation<double> animation) {
         return SlideTransition(
-          position: Tween(begin: Offset(0.0, -2.0), end: Offset(0.0, 0.0))
-              .animate(animation),
+          position: Tween(begin: Offset(0.0, -2.0), end: Offset(0.0, 0.0)).animate(animation),
           child: child,
         );
       },
@@ -429,9 +418,7 @@ class _FeedState extends State<Feed> {
       dataBase = Firestore.instance.collection('notification');
       admin = true;
     } else {
-      dataBase = Firestore.instance
-          .collection('notification')
-          .where("base", isEqualTo: base);
+      dataBase = Firestore.instance.collection('notification').where("base", isEqualTo: base);
       admin = false;
     }
 
@@ -445,9 +432,7 @@ class _FeedState extends State<Feed> {
       }
 
       if (type.contains("Classificação")) {
-        dataBase = dataBase
-            .orderBy("createdAt", descending: true)
-            .where("classification", isEqualTo: f);
+        dataBase = dataBase.orderBy("createdAt", descending: true).where("classification", isEqualTo: f);
       }
     } else {
       dataBase = dataBase.orderBy("createdAt", descending: true);
@@ -460,11 +445,7 @@ class _FeedState extends State<Feed> {
       return GestureDetector(
         onTap: () {
           Navigator.push(
-              context,
-              PageTransition(
-                  duration: Duration(milliseconds: 200),
-                  type: PageTransitionType.rightToLeft,
-                  child: DetailsNotice(doc, admin)));
+              context, PageTransition(duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: DetailsNotice(doc, admin)));
         },
         child: CardNotify(doc),
       );

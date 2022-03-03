@@ -63,7 +63,7 @@ class _InfoExtraPreviewState extends State<InfoExtraPreview> {
                 : <Widget>[
                     SizedBox(height: 20),
                     TextPreview(
-                      "Descreva como foi o incidente. Você acredita que algum fator contribuiu para o ocorrido?",
+                      "Descreva como foi o incidente. Você acredita que algum fator contribuiu para o ocorrido?*",
                       string2: information.text,
                       function: () => _change(),
                     ),
