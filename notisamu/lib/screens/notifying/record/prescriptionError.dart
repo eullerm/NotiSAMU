@@ -224,15 +224,8 @@ class _PrescriptionErrorState extends State<PrescriptionError> {
                 SizedBox(
                   height: 8,
                 ),
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: FittedBox(
-                    fit: BoxFit.fitWidth,
-                    child: _text(
-                        "Descreva a reação causada (Hipotensão, rebaixamento de nível de consciência, êmese, depressão respiratória, etc)*: ",
-                        error: _error),
-                  ),
-                ),
+                _text("Descreva a reação causada (Hipotensão, rebaixamento de nível de consciência, êmese, depressão respiratória, etc)*: ",
+                    error: _error),
                 SizedBox(
                   height: 16,
                 ),

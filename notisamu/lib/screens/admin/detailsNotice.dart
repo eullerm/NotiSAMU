@@ -19,6 +19,7 @@ class _DetailsNoticeState extends State<DetailsNotice> {
     "Incidente sem dano": false,
     "Circunstância notificável": false,
     "Quase erro": false,
+    "RAM": false,
   };
   String _class = "";
 
