@@ -13,12 +13,12 @@ if (flutterRoot == null) {
 
 def flutterVersionCode = localProperties.getProperty('flutter.versionCode')
 if (flutterVersionCode == null) {
-    flutterVersionCode = '9'
+    flutterVersionCode = '10'
 }
 
 def flutterVersionName = localProperties.getProperty('flutter.versionName')
 if (flutterVersionName == null) {
-    flutterVersionName = '1.0.8'
+    flutterVersionName = '1.0.9'
 }
 
 def keystoreProperties = new Properties()
@@ -44,8 +44,8 @@ android {
         applicationId "com.notisamuapp"
         minSdkVersion 16
         targetSdkVersion 30
-        versionCode 9
-        versionName '1.0.8'
+        versionCode 10
+        versionName '1.0.9'
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
     }
