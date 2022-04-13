@@ -4,12 +4,10 @@ import 'package:noti_samu/objects/ListMedicines.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/prescriptionError.dart';
 import 'package:page_transition/page_transition.dart';
-import 'infoExtra.dart';
 
 class Routes extends StatefulWidget {
   Notify notification;
-  bool isWrongPrescription;
-  Routes(this.notification, {this.isWrongPrescription = false});
+  Routes(this.notification);
   @override
   _RoutesState createState() => _RoutesState();
 }
@@ -103,13 +101,8 @@ class _RoutesState extends State<Routes> {
         this.widget.notification.setRoute(_radioValueRoute);
 
         if (this.widget.notification.route != null) {
-          if (this.widget.isWrongPrescription) {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: PrescriptionError(this.widget.notification)));
-          } else {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: InfoExtra(this.widget.notification)));
-          }
+          Navigator.of(context).push(PageTransition(
+              duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: PrescriptionError(this.widget.notification)));
         } else {
           _missingElement(context);
           setState(() {

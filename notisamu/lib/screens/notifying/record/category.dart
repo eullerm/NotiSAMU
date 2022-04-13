@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:noti_samu/components/checkboxChangeField.dart';
 import 'package:noti_samu/objects/incidents.dart';
-import 'package:noti_samu/screens/notifying/record/infoExtra.dart';
 import 'package:noti_samu/objects/notification.dart';
 import 'package:noti_samu/screens/notifying/record/prescriptionError.dart';
 import 'package:noti_samu/screens/notifying/record/routes.dart';
@@ -17,7 +16,6 @@ class Category extends StatefulWidget {
 class _CategoryState extends State<Category> {
   Incidents incidents = Incidents();
   bool _isWrongRoute;
-  bool _isWrongPrescription;
   bool _error;
 
   Map<String, List<String>> _selected = {};
@@ -26,7 +24,6 @@ class _CategoryState extends State<Category> {
   void initState() {
     super.initState();
     _isWrongRoute = false;
-    _isWrongPrescription = false;
     _error = false;
     //Caso ja tenha algum incidente guardado
     if (this.widget.notification.category != null) {
@@ -152,7 +149,6 @@ class _CategoryState extends State<Category> {
           //Caso ele tenha ido para a proxima tela e
           //voltado para modificar algo nessa
           _isWrongRoute = false;
-          _isWrongPrescription = false;
         });
 
         if (this.widget.notification.incidents.isNotEmpty) {
@@ -162,30 +158,15 @@ class _CategoryState extends State<Category> {
                 _isWrongRoute = true;
               });
             }
-            this.widget.notification.category.forEach((element) {
-              if (element.compareTo("Erro de prescrição") == 0) {
-                setState(() {
-                  _isWrongPrescription = true;
-                });
-              }
-            });
           });
           if (_isWrongRoute) {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200),
-                type: PageTransitionType.rightToLeft,
-                child: Routes(
-                  this.widget.notification,
-                  isWrongPrescription: _isWrongPrescription,
-                )));
-          } else if (_isWrongPrescription) {
-            Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: PrescriptionError(this.widget.notification)));
+            Navigator.of(context).push(
+                PageTransition(duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: Routes(this.widget.notification)));
           } else {
             //Garante que não tera nada relacionado a via errada
             this.widget.notification.clearRoute();
             Navigator.of(context).push(PageTransition(
-                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: InfoExtra(this.widget.notification)));
+                duration: Duration(milliseconds: 200), type: PageTransitionType.rightToLeft, child: PrescriptionError(this.widget.notification)));
           }
         } else {
           _missingElement(context);
